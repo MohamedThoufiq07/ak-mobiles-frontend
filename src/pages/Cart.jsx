@@ -2,364 +2,270 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-// Error Boundary Wrapper
+// ─── Error Boundary ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error("Cart Error Boundary caught an error", error, errorInfo);
-  }
-
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error, info) { console.error('Cart error:', error, info); }
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#F8FAFC',
-          padding: '20px',
-          fontFamily: 'system-ui, sans-serif'
-        }}>
-          <div style={{ fontSize: '80px', marginBottom: '20px' }}>⚠️</div>
-          <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#0F172A', marginBottom: '10px' }}>
-            Something went wrong
-          </h2>
-          <p style={{ color: '#64748B', marginBottom: '30px', textAlign: 'center' }}>
-            We encountered an error loading your cart.
-          </p>
-          <button 
+        <div style={styles.errorWrap}>
+          <div style={{ fontSize: 64, marginBottom: 16 }}>⚠️</div>
+          <h2 style={styles.errorTitle}>Something went wrong</h2>
+          <p style={styles.errorSub}>We couldn't load your cart.</p>
+          <button
+            style={styles.errorBtn}
             onClick={() => {
               localStorage.removeItem('cart');
               localStorage.removeItem('cartItems');
               window.location.reload();
             }}
-            style={{
-              background: 'linear-gradient(135deg, #EF4444, #DC2626)',
-              color: 'white',
-              padding: '14px 32px',
-              borderRadius: '10px',
-              border: 'none',
-              fontWeight: '600',
-              fontSize: '16px',
-              cursor: 'pointer'
-            }}
           >
-            Reset Cart & Reload
+            Reset &amp; Reload
           </button>
         </div>
       );
     }
-
-    return this.props.children; 
+    return this.props.children;
   }
 }
 
+// ─── Step Progress Bar ────────────────────────────────────────────────────────
+const StepBar = () => {
+  const steps = ['Browse', 'Cart', 'Checkout', 'Payment'];
+  return (
+    <div style={styles.stepBar}>
+      {steps.map((label, i) => {
+        const isDone   = i === 0;
+        const isActive = i === 1;
+        return (
+          <React.Fragment key={label}>
+            <div style={styles.stepItem}>
+              <div style={{
+                ...styles.stepDot,
+                background: isDone ? '#1D9E75' : isActive ? '#534AB7' : '#E2E8F0',
+                color:      isDone || isActive ? '#fff' : '#94A3B8',
+              }}>
+                {isDone ? '✓' : i + 1}
+              </div>
+              <span style={{
+                ...styles.stepLabel,
+                color: isDone ? '#1D9E75' : isActive ? '#534AB7' : '#94A3B8',
+                fontWeight: isActive ? 600 : 400,
+              }}>
+                {label}
+              </span>
+            </div>
+            {i < steps.length - 1 && (
+              <div style={{
+                ...styles.stepLine,
+                background: isDone ? '#1D9E75' : '#E2E8F0',
+              }} />
+            )}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+};
+
+// ─── Trust Badges ─────────────────────────────────────────────────────────────
+const TrustBadge = ({ icon, label }) => (
+  <div style={styles.trustItem}>
+    <span style={{ fontSize: 18, marginBottom: 4 }}>{icon}</span>
+    <span style={styles.trustText}>{label}</span>
+  </div>
+);
+
+// ─── Main Cart ────────────────────────────────────────────────────────────────
 const CartInner = () => {
-  const { 
-    cartItems, 
-    updateQuantity, 
-    removeFromCart 
-  } = useCart();
-
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
   const navigate = useNavigate();
+  const [promo, setPromo] = React.useState('');
+  const [promoApplied, setPromoApplied] = React.useState(false);
 
-  // Check if cart is undefined or null before using it
-  const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
+  const safeCart = Array.isArray(cartItems) ? cartItems : [];
 
-  // Remove item
-  const removeItem = (id) => {
-    removeFromCart(id);
+  const removeItem = (id) => removeFromCart(id);
+  const updateQty  = (id, qty) => { if (qty >= 1) updateQuantity(id, qty); };
+
+  const subtotal   = safeCart.reduce((s, item) => s + (Number(item.price) || 0) * (Number(item.quantity || item.qty) || 1), 0);
+  const discount   = promoApplied ? Math.round(subtotal * 0.05) : 0;
+  const gst        = Math.round((subtotal - discount) * 0.18);
+  const grandTotal = subtotal - discount + gst;
+
+  const handlePromo = () => {
+    if (promo.trim().toUpperCase() === 'AK500') setPromoApplied(true);
+    else alert('Invalid promo code. Try AK500');
   };
 
-  // Update quantity
-  const updateQty = (id, qty) => {
-    if (qty < 1) return;
-    updateQuantity(id, qty);
-  };
-
-  // Calculate total, handling both 'quantity' and 'qty', and 'price' safety
-  const total = safeCartItems.reduce((sum, item) => {
-    const itemPrice = Number(item.price) || 0;
-    const itemQty = Number(item.qty || item.quantity) || 1;
-    return sum + (itemPrice * itemQty);
-  }, 0);
-
-  const gst = Math.round(total * 0.18);
-  const grandTotal = total + gst;
-
-  // EMPTY CART UI
-  if (safeCartItems.length === 0) {
+  // ── Empty State ──
+  if (safeCart.length === 0) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#F8FAFC',
-        padding: '20px',
-        fontFamily: 'system-ui, sans-serif'
-      }}>
-        <div style={{ fontSize: '80px', marginBottom: '20px' }}>🛒</div>
-        <h2 style={{ 
-          fontSize: '24px', 
-          fontWeight: '700',
-          color: '#0F172A',
-          marginBottom: '10px'
-        }}>
-          Your Cart is Empty
-        </h2>
-        <p style={{ 
-          color: '#64748B', 
-          marginBottom: '30px',
-          textAlign: 'center'
-        }}>
-          Looks like you haven't added any phones yet!
-        </p>
-        <Link to="/products" style={{
-          background: 'linear-gradient(135deg, #2563EB, #7C3AED)',
-          color: 'white',
-          padding: '14px 32px',
-          borderRadius: '10px',
-          textDecoration: 'none',
-          fontWeight: '600',
-          fontSize: '16px'
-        }}>
-          Shop Now →
-        </Link>
+      <div style={styles.emptyWrap}>
+        <div style={{ fontSize: 72, marginBottom: 16 }}>🛒</div>
+        <h2 style={styles.emptyTitle}>Your cart is empty</h2>
+        <p style={styles.emptySub}>Looks like you haven't added any phones yet!</p>
+        <Link to="/products" style={styles.shopNowBtn}>Shop Now →</Link>
       </div>
     );
   }
 
-  // CART WITH ITEMS UI
+  // ── Cart with Items ──
   return (
-    <div style={{ 
-      minHeight: '100vh',
-      background: '#F8FAFC',
-      padding: '30px 20px',
-      fontFamily: 'system-ui, sans-serif'
-    }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-        
-        <h1 style={{
-          fontSize: '28px',
-          fontWeight: '700',
-          color: '#0F172A',
-          marginBottom: '30px'
-        }}>
-          🛒 Your Cart ({safeCartItems.length} items)
-        </h1>
+    <div style={styles.pageWrap}>
+      <div style={styles.container}>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_350px] gap-6">
-          
-          {/* LEFT - Cart Items */}
+        {/* Progress Steps */}
+        <StepBar />
+
+        {/* Page Title */}
+        <div style={styles.titleRow}>
+          <span style={{ fontSize: 22, marginRight: 10 }}>🛒</span>
+          <h1 style={styles.pageTitle}>Your cart</h1>
+          <span style={styles.countBadge}>{safeCart.length} item{safeCart.length > 1 ? 's' : ''}</span>
+        </div>
+
+        <div style={styles.grid}>
+
+          {/* ── LEFT: Items ── */}
           <div>
-            {safeCartItems.map((item) => {
-              const itemId = item.product || item.id;
-              const itemQty = item.quantity || item.qty || 1;
-              
-              return (
-                <div key={itemId} className="bg-white rounded-2xl p-4 sm:p-5 mb-4 shadow-[0_2px_8px_rgba(0,0,0,0.06)] flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start text-center sm:text-left">
-                  {/* Image */}
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    style={{
-                      width: '80px',
-                      height: '100px',
-                      objectFit: 'contain',
-                      background: '#F1F5F9',
-                      borderRadius: '10px',
-                      padding: '8px'
-                    }}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = 
-                      `https://placehold.co/80x100/e2e8f0/475569?text=${encodeURIComponent(item.brand || 'Phone')}`;
-                    }}
-                  />
+            {safeCart.map((item) => {
+              const id  = item.product || item.id;
+              const qty = Number(item.quantity || item.qty) || 1;
+              const itemTotal = (Number(item.price) || 0) * qty;
 
-                  {/* Details */}
-                  <div style={{ flex: 1 }}>
-                    <p style={{ 
-                      fontSize: '12px',
-                      color: '#2563EB',
-                      fontWeight: '600',
-                      marginBottom: '4px'
-                    }}>
-                      {item.brand || 'Smartphone'}
-                    </p>
-                    <h3 style={{ 
-                      fontSize: '15px',
-                      fontWeight: '700',
-                      color: '#0F172A',
-                      marginBottom: '8px'
-                    }}>
-                      {item.name}
-                    </h3>
-                    <p style={{ 
-                      fontSize: '18px',
-                      fontWeight: '700',
-                      color: '#2563EB'
-                    }}>
-                      ₹{item.price?.toLocaleString('en-IN')}
-                    </p>
+              return (
+                <div key={id} style={styles.itemCard}>
+
+                  {/* Phone Image */}
+                  <div style={styles.imgBox}>
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      style={styles.itemImg}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `https://placehold.co/80x100/EEEDFE/534AB7?text=${encodeURIComponent(item.brand || 'Phone')}`;
+                      }}
+                    />
                   </div>
 
-                  {/* Quantity + Remove */}
-                  <div style={{ 
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '12px'
-                  }}>
-                    {/* Qty controls */}
-                    <div style={{ 
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '8px',
-                      padding: '4px 8px'
-                    }}>
-                      <button
-                        onClick={() => updateQty(itemId, itemQty - 1)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          fontSize: '18px',
-                          cursor: 'pointer',
-                          color: '#2563EB',
-                          fontWeight: '700'
-                        }}
-                      >−</button>
-                      <span style={{ fontWeight: '600', minWidth: '20px', textAlign: 'center' }}>
-                        {itemQty}
-                      </span>
-                      <button
-                        onClick={() => updateQty(itemId, itemQty + 1)}
-                        style={{
-                          background: 'none',
-                          border: 'none',
-                          fontSize: '18px',
-                          cursor: 'pointer',
-                          color: '#2563EB',
-                          fontWeight: '700'
-                        }}
-                      >+</button>
+                  {/* Details */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <span style={styles.brandPill}>{item.brand || 'Smartphone'}</span>
+                    <h3 style={styles.itemName}>{item.name}</h3>
+                    {item.specs && <p style={styles.itemSpec}>{item.specs}</p>}
+
+                    <div style={styles.priceRow}>
+                      <span style={styles.itemPrice}>₹{Number(item.price).toLocaleString('en-IN')}</span>
+                      {item.mrp && item.mrp > item.price && (
+                        <>
+                          <span style={styles.itemMrp}>₹{Number(item.mrp).toLocaleString('en-IN')}</span>
+                          <span style={styles.saveTag}>Save ₹{(item.mrp - item.price).toLocaleString('en-IN')}</span>
+                        </>
+                      )}
                     </div>
 
-                    {/* Remove */}
-                    <button
-                      onClick={() => removeItem(itemId)}
-                      style={{
-                        background: '#FEE2E2',
-                        color: '#EF4444',
-                        border: 'none',
-                        borderRadius: '8px',
-                        padding: '6px 14px',
-                        cursor: 'pointer',
-                        fontWeight: '600',
-                        fontSize: '13px'
-                      }}
-                    >
-                      Remove
-                    </button>
+                    {/* Qty + Remove */}
+                    <div style={styles.actionRow}>
+                      <div style={styles.qtyBox}>
+                        <button style={styles.qtyBtn} onClick={() => updateQty(id, qty - 1)}>−</button>
+                        <span style={styles.qtyVal}>{qty}</span>
+                        <button style={styles.qtyBtn} onClick={() => updateQty(id, qty + 1)}>+</button>
+                      </div>
+                      <button style={styles.removeBtn} onClick={() => removeItem(id)}>
+                        🗑 Remove
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Item Total */}
+                  <div style={styles.itemTotalBox}>
+                    <span style={styles.itemTotalLabel}>Item total</span>
+                    <span style={styles.itemTotalVal}>₹{itemTotal.toLocaleString('en-IN')}</span>
                   </div>
                 </div>
               );
             })}
+
+            {/* Delivery Strip */}
+            <div style={styles.deliveryStrip}>
+              <span style={{ fontSize: 20 }}>🚚</span>
+              <div style={{ flex: 1 }}>
+                <div style={styles.deliveryTitle}>Free delivery to Virudhachalam</div>
+                <div style={styles.deliverySub}>Estimated 2–4 business days · Genuine products guaranteed</div>
+              </div>
+              <span style={styles.deliveryCheck}>✓</span>
+            </div>
           </div>
 
-          {/* RIGHT - Order Summary */}
-          <div style={{
-            background: 'white',
-            borderRadius: '16px',
-            padding: '24px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-            height: 'fit-content',
-            position: 'sticky',
-            top: '100px'
-          }} className="cart-summary-card">
-            <h3 style={{ 
-              fontSize: '18px',
-              fontWeight: '700',
-              color: '#0F172A',
-              marginBottom: '20px',
-              paddingBottom: '12px',
-              borderBottom: '1px solid #F1F5F9'
-            }}>
-              Order Summary
-            </h3>
+          {/* ── RIGHT: Summary ── */}
+          <div style={styles.summaryCard}>
+            <h3 style={styles.summaryTitle}>Order summary</h3>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748B' }}>Subtotal</span>
-                <span style={{ fontWeight: '600' }}>
-                  ₹{total.toLocaleString('en-IN')}
-                </span>
+            <div style={styles.summaryRow}>
+              <span style={styles.summaryLabel}>Subtotal ({safeCart.length} item{safeCart.length > 1 ? 's' : ''})</span>
+              <span style={styles.summaryVal}>₹{subtotal.toLocaleString('en-IN')}</span>
+            </div>
+
+            {promoApplied && (
+              <div style={styles.summaryRow}>
+                <span style={styles.summaryLabel}>Promo (AK500 – 5%)</span>
+                <span style={styles.discountVal}>−₹{discount.toLocaleString('en-IN')}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748B' }}>GST (18%)</span>
-                <span style={{ fontWeight: '600' }}>
-                  ₹{gst.toLocaleString('en-IN')}
-                </span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#64748B' }}>Delivery</span>
-                <span style={{ color: '#10B981', fontWeight: '600' }}>FREE</span>
-              </div>
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                paddingTop: '12px',
-                borderTop: '2px solid #F1F5F9',
-                fontSize: '18px',
-                fontWeight: '700'
-              }}>
-                <span>Total</span>
-                <span style={{ color: '#2563EB' }}>
-                  ₹{grandTotal.toLocaleString('en-IN')}
-                </span>
+            )}
+
+            <div style={styles.summaryRow}>
+              <span style={styles.summaryLabel}>GST (18%)</span>
+              <span style={styles.summaryVal}>₹{gst.toLocaleString('en-IN')}</span>
+            </div>
+
+            <div style={styles.summaryRow}>
+              <span style={styles.summaryLabel}>Delivery</span>
+              <span style={styles.freeVal}>FREE</span>
+            </div>
+
+            <div style={styles.summaryDivider} />
+
+            <div style={styles.totalRow}>
+              <span style={styles.totalLabel}>Total</span>
+              <div style={{ textAlign: 'right' }}>
+                <div style={styles.totalVal}>₹{grandTotal.toLocaleString('en-IN')}</div>
+                <div style={styles.taxNote}>Incl. all taxes</div>
               </div>
             </div>
 
-            <Link to="/checkout" style={{
-              display: 'block',
-              background: 'linear-gradient(135deg, #F97316, #EF4444)',
-              color: 'white',
-              padding: '16px',
-              borderRadius: '12px',
-              textDecoration: 'none',
-              fontWeight: '700',
-              fontSize: '16px',
-              textAlign: 'center',
-              marginTop: '24px'
-            }}>
-              Proceed to Checkout →
+            {/* Promo Code */}
+            {!promoApplied ? (
+              <div style={styles.promoBox}>
+                <input
+                  style={styles.promoInput}
+                  placeholder="Promo code (try AK500)"
+                  value={promo}
+                  onChange={(e) => setPromo(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handlePromo()}
+                />
+                <button style={styles.promoBtn} onClick={handlePromo}>Apply</button>
+              </div>
+            ) : (
+              <div style={styles.promoSuccess}>✓ Promo AK500 applied! You saved ₹{discount.toLocaleString('en-IN')}</div>
+            )}
+
+            {/* Checkout Button */}
+            <Link to="/checkout" state={{ fromCart: true }} style={styles.checkoutBtn}>
+              🔒 Proceed to Checkout
             </Link>
 
-            <Link to="/products" style={{
-              display: 'block',
-              textAlign: 'center',
-              color: '#2563EB',
-              marginTop: '12px',
-              textDecoration: 'none',
-              fontSize: '14px',
-              fontWeight: '500'
-            }}>
+            <Link to="/products" style={styles.continueLink}>
               ← Continue Shopping
             </Link>
+
+
           </div>
         </div>
       </div>
@@ -367,6 +273,107 @@ const CartInner = () => {
   );
 };
 
+// ─── Styles ───────────────────────────────────────────────────────────────────
+const styles = {
+  // Error
+  errorWrap:  { minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'#F8FAFC', padding:20, fontFamily:'system-ui,sans-serif' },
+  errorTitle: { fontSize:22, fontWeight:700, color:'#0F172A', marginBottom:8 },
+  errorSub:   { color:'#64748B', marginBottom:24, textAlign:'center' },
+  errorBtn:   { background:'#EF4444', color:'#fff', border:'none', borderRadius:10, padding:'12px 28px', fontSize:15, fontWeight:600, cursor:'pointer' },
+
+  // Empty
+  emptyWrap:  { minHeight:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', background:'#F8FAFC', padding:20, fontFamily:'system-ui,sans-serif' },
+  emptyTitle: { fontSize:24, fontWeight:700, color:'#0F172A', marginBottom:8 },
+  emptySub:   { color:'#64748B', marginBottom:28, textAlign:'center' },
+  shopNowBtn: { background:'linear-gradient(135deg,#534AB7,#7C3AED)', color:'#fff', padding:'14px 32px', borderRadius:12, textDecoration:'none', fontWeight:700, fontSize:16 },
+
+  // Page
+  pageWrap:   { minHeight:'100vh', background:'#F1F0FB', padding:'30px 16px', fontFamily:'system-ui,sans-serif' },
+  container:  { maxWidth:1100, margin:'0 auto' },
+
+  // Step bar
+  stepBar:    { display:'flex', alignItems:'center', marginBottom:28 },
+  stepItem:   { display:'flex', alignItems:'center', gap:6 },
+  stepDot:    { width:26, height:26, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700 },
+  stepLabel:  { fontSize:12 },
+  stepLine:   { flex:1, height:2, margin:'0 8px', minWidth:24 },
+
+  // Title
+  titleRow:   { display:'flex', alignItems:'center', gap:8, marginBottom:24 },
+  pageTitle:  { fontSize:22, fontWeight:700, color:'#0F172A' },
+  countBadge: { background:'#534AB7', color:'#fff', fontSize:11, fontWeight:600, padding:'3px 10px', borderRadius:20 },
+
+  // Grid
+  grid: {
+    display:'grid',
+    gridTemplateColumns:'1fr 320px',
+    gap:20,
+    '@media(max-width:768px)': { gridTemplateColumns:'1fr' },
+  },
+
+  // Item card
+  itemCard:   { background:'#fff', borderRadius:16, padding:18, marginBottom:12, display:'flex', gap:14, alignItems:'flex-start', boxShadow:'0 1px 4px rgba(83,74,183,0.08)', border:'1px solid #EEEDFE' },
+  imgBox:     { width:80, height:100, background:'#F8F7FF', borderRadius:12, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 },
+  itemImg:    { width:70, height:90, objectFit:'contain' },
+  brandPill:  { display:'inline-block', background:'#EEEDFE', color:'#534AB7', fontSize:10, fontWeight:600, padding:'2px 10px', borderRadius:20, marginBottom:6 },
+  itemName:   { fontSize:14, fontWeight:700, color:'#0F172A', marginBottom:4, lineHeight:1.4 },
+  itemSpec:   { fontSize:11, color:'#94A3B8', marginBottom:8 },
+  priceRow:   { display:'flex', alignItems:'center', gap:6, flexWrap:'wrap', marginBottom:12 },
+  itemPrice:  { fontSize:17, fontWeight:700, color:'#534AB7' },
+  itemMrp:    { fontSize:12, color:'#94A3B8', textDecoration:'line-through' },
+  saveTag:    { background:'#E1F5EE', color:'#0F6E56', fontSize:10, fontWeight:600, padding:'2px 8px', borderRadius:20 },
+
+  actionRow:  { display:'flex', alignItems:'center', gap:10, flexWrap:'wrap' },
+  qtyBox:     { display:'flex', alignItems:'center', border:'1.5px solid #EEEDFE', borderRadius:8, overflow:'hidden', background:'#F8F7FF' },
+  qtyBtn:     { width:32, height:32, border:'none', background:'transparent', fontSize:18, cursor:'pointer', color:'#534AB7', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center' },
+  qtyVal:     { width:32, textAlign:'center', fontSize:14, fontWeight:600, color:'#0F172A' },
+  removeBtn:  { background:'#FEE2E2', color:'#EF4444', border:'none', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12, fontWeight:600 },
+
+  itemTotalBox:  { textAlign:'right', flexShrink:0, minWidth:80 },
+  itemTotalLabel:{ fontSize:10, color:'#94A3B8', display:'block', marginBottom:4 },
+  itemTotalVal:  { fontSize:15, fontWeight:700, color:'#0F172A' },
+
+  // Delivery strip
+  deliveryStrip: { background:'#fff', borderRadius:14, padding:'14px 18px', display:'flex', alignItems:'center', gap:12, border:'1px solid #E1F5EE' },
+  deliveryTitle: { fontSize:13, fontWeight:600, color:'#0F172A' },
+  deliverySub:   { fontSize:11, color:'#64748B', marginTop:2 },
+  deliveryCheck: { fontSize:16, color:'#1D9E75', fontWeight:700 },
+
+  // Summary card
+  summaryCard:   { background:'#fff', borderRadius:16, padding:22, height:'fit-content', position:'sticky', top:90, boxShadow:'0 2px 12px rgba(83,74,183,0.10)', border:'1px solid #EEEDFE' },
+  summaryTitle:  { fontSize:16, fontWeight:700, color:'#0F172A', marginBottom:18, paddingBottom:12, borderBottom:'1.5px solid #F1F0FB' },
+  summaryRow:    { display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 },
+  summaryLabel:  { fontSize:13, color:'#64748B' },
+  summaryVal:    { fontSize:13, fontWeight:600, color:'#0F172A' },
+  discountVal:   { fontSize:13, fontWeight:600, color:'#0F6E56' },
+  freeVal:       { fontSize:13, fontWeight:600, color:'#1D9E75' },
+  summaryDivider:{ height:1.5, background:'#F1F0FB', margin:'14px 0' },
+  totalRow:      { display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 },
+  totalLabel:    { fontSize:16, fontWeight:700, color:'#0F172A' },
+  totalVal:      { fontSize:20, fontWeight:700, color:'#534AB7' },
+  taxNote:       { fontSize:10, color:'#94A3B8', textAlign:'right', marginTop:2 },
+
+  // Promo
+  promoBox:     { display:'flex', gap:8, marginBottom:16 },
+  promoInput:   { flex:1, border:'1.5px solid #EEEDFE', borderRadius:8, padding:'9px 12px', fontSize:12, background:'#F8F7FF', color:'#0F172A', outline:'none' },
+  promoBtn:     { background:'none', border:'1.5px solid #534AB7', color:'#534AB7', borderRadius:8, padding:'9px 14px', fontSize:12, cursor:'pointer', fontWeight:600, whiteSpace:'nowrap' },
+  promoSuccess: { background:'#E1F5EE', color:'#0F6E56', fontSize:12, fontWeight:600, padding:'10px 14px', borderRadius:8, marginBottom:16, textAlign:'center' },
+
+  // Checkout
+  checkoutBtn:   { display:'block', background:'#534AB7', color:'#fff', padding:15, borderRadius:12, textDecoration:'none', fontWeight:700, fontSize:15, textAlign:'center', marginBottom:10, letterSpacing:0.3 },
+  continueLink:  { display:'block', textAlign:'center', color:'#534AB7', fontSize:13, fontWeight:500, textDecoration:'none', marginBottom:18 },
+
+  // Trust
+  trustRow:     { display:'flex', gap:8, marginBottom:14 },
+  trustItem:    { flex:1, background:'#F8F7FF', borderRadius:10, padding:'10px 6px', display:'flex', flexDirection:'column', alignItems:'center', gap:4 },
+  trustText:    { fontSize:9, color:'#64748B', textAlign:'center', lineHeight:1.3 },
+
+  // Payment
+  paymentRow:   { display:'flex', gap:6, justifyContent:'center', flexWrap:'wrap' },
+  paymentPill:  { background:'#F1F0FB', color:'#534AB7', fontSize:10, fontWeight:600, padding:'4px 10px', borderRadius:6, border:'1px solid #EEEDFE' },
+};
+
+// ─── Export ───────────────────────────────────────────────────────────────────
 const Cart = () => (
   <ErrorBoundary>
     <CartInner />

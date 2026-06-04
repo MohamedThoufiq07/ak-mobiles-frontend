@@ -172,7 +172,7 @@ const ProductCardUI = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
-    navigate('/cart');
+    navigate('/checkout');
   };
 
   return (
@@ -194,9 +194,8 @@ const ProductCardUI = ({ product }) => {
         )}
       </div>
 
-      {/* Wishlist Button */}
       <button
-        className="absolute top-4 right-4 z-10 p-2 bg-slate-800/80 rounded-full text-slate-400 hover:text-brand-danger hover:bg-red-900/40 transition-colors shadow-sm"
+        className="absolute top-4 right-4 z-10 p-2 bg-white/90 rounded-full text-slate-400 hover:text-brand-danger hover:bg-red-50 transition-colors shadow-sm"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

@@ -58,7 +58,7 @@ const ProductDetailPage = () => {
 
   const handleBuyNow = () => {
     addToCart(product, quantity);
-    navigate('/cart');
+    navigate('/checkout');
   };
 
   if (loading) return <LoadingSpinner fullScreen />;

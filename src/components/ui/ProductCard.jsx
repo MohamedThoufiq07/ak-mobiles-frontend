@@ -46,7 +46,7 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product, 1);
-    navigate('/cart');
+    navigate('/checkout');
   };
 
   const handleWishlist = (e) => {
