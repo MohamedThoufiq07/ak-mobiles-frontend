@@ -18,16 +18,16 @@ const Footer = () => {
               Virudhachalam's most trusted mobile store. Genuine products at the best prices.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
+              <a href="https://www.instagram.com/akmobilesvirudhachalam/" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
                 <FiInstagram size={14} />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
+              <a href="https://www.facebook.com/profile.php?id=61590666747486" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
                 <FiFacebook size={14} />
               </a>
               <a href="https://youtube.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
                 <FiYoutube size={14} />
               </a>
-              <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-slate-500 hover:text-white">
+              <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-slate-500 hover:text-white">
                 <FaWhatsapp size={14} />
               </a>
             </div>
@@ -39,8 +39,8 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li><Link to="/" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Home</Link></li>
               <li><Link to="/products" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Shop All</Link></li>
-              <li><Link to="/products?category=Smartphones" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Brands</Link></li>
-              <li><Link to="/products?tag=SALE" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Offers & Deals</Link></li>
+              <li><a href="/#brands" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Brands</a></li>
+              <li><a href="/#offers" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Offers & Deals</a></li>
               <li><Link to="/about" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> About Us</Link></li>
               <li><Link to="/contact" className="text-slate-650 hover:text-brand-blue transition-colors flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-brand-blue"></span> Contact Us</Link></li>
             </ul>
@@ -65,11 +65,11 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2.5 text-slate-600">
                 <FiMapPin className="text-brand-blue mt-1 flex-shrink-0" size={16} />
-                <span>Main Road, Near Bus Stand,<br />Virudhachalam, TN 606001</span>
+                <span>No 113 B, Near Agarval Eye Hospital,<br />Shakti Nagar, Vriddhachalam 606001</span>
               </li>
               <li className="flex items-center gap-2.5 text-slate-600">
                 <FiPhone className="text-brand-blue flex-shrink-0" size={16} />
-                <a href="tel:+919876543210" className="hover:text-slate-900 transition-colors">+91 98765 43210</a>
+                <a href="tel:04143261221" className="hover:text-slate-900 transition-colors">04143 261 221</a>
               </li>
               <li className="flex items-center gap-2.5 text-slate-600">
                 <FiMail className="text-brand-blue flex-shrink-0" size={16} />
@@ -77,12 +77,12 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2.5 text-slate-600">
                 <FiClock className="text-brand-blue flex-shrink-0" size={16} />
-                <span>Mon - Sat: 9 AM - 9 PM</span>
+                <span>Open until 10:00 PM (Mon - Sun)</span>
               </li>
             </ul>
             
             <a 
-              href="https://wa.me/919876543210" 
+              href="https://wa.me/917947107854" 
               target="_blank" 
               rel="noreferrer"
               className="mt-4 inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-2 rounded-full font-bold text-xs transition-colors shadow-lg shadow-[#25D366]/20"

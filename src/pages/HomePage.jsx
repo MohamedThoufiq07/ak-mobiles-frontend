@@ -558,7 +558,7 @@ const HomePage = () => {
       </section>
 
       {/* BRAND SHOP SECTION */}
-      <section className="py-16 bg-transparent">
+      <section id="brands" className="py-16 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-14">
             <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900">Shop by Brand</h2>
@@ -610,7 +610,7 @@ const HomePage = () => {
       </section>
 
       {/* FEATURED PRODUCTS (HOT DEALS) */}
-      <section className="py-16 bg-transparent">
+      <section id="offers" className="py-16 bg-transparent">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
             <div>
@@ -726,7 +726,7 @@ const HomePage = () => {
               spaceBetween={24}
               slidesPerView="auto"
               navigation
-              className="px-8 sm:px-12 md:px-16 py-4"
+              className="px-8 sm:px-12 md:px-16 py-4 swiper-custom-nav"
             >
               {DEMO_PRODUCTS.map(getMappedProduct).map(product => (
                 <SwiperSlide key={product.id || product._id} className="h-auto !w-[250px] sm:!w-[300px]">

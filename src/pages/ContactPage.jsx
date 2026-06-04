@@ -82,8 +82,8 @@ const ContactPage = () => {
                     <div>
                       <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Store Address</h3>
                       <p className="text-white text-sm leading-relaxed">
-                        Main Road, Near Bus Stand,<br />
-                        Virudhachalam, Tamil Nadu - 606001
+                        No 113 B, Near Agarval Eye Hospital, Opposite Bus Stand,<br />
+                        Junction Road, Shakti Nagar, Vriddhachalam-606001, Tamil Nadu
                       </p>
                     </div>
                   </div>
@@ -94,9 +94,9 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Phone Number</h3>
-                      <a href="tel:+919876543210" className="text-white hover:underline transition-colors block text-sm mb-1.5">+91 98765 43210</a>
-                      <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-green-500/90 text-white rounded-full px-3 py-1 text-xs font-bold shadow-sm hover:bg-green-400 hover:scale-105 transition-all">
-                        <FaWhatsapp size={14} /> Chat on WhatsApp
+                      <a href="tel:04143261221" className="text-white hover:underline transition-colors block text-sm mb-1.5">04143 261 221 (Landline)</a>
+                      <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-green-500/90 text-white rounded-full px-3 py-1 text-xs font-bold shadow-sm hover:bg-green-400 hover:scale-105 transition-all">
+                        <FaWhatsapp size={14} /> WhatsApp Us (+91 79471 07854)
                       </a>
                     </div>
                   </div>
@@ -117,7 +117,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Store Hours</h3>
-                      <p className="text-white text-sm">Monday - Sunday: 9:30 AM - 9:30 PM</p>
+                      <p className="text-white text-sm">Monday - Sunday: Open until 10:00 PM</p>
                       <p className="text-yellow-300 text-xs font-bold mt-1 uppercase tracking-wider">Open all days</p>
                     </div>
                   </div>

@@ -1,7 +1,8 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
-import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiSettings, FiChevronRight } from 'react-icons/fi';
+import { useWishlist } from '../../context/WishlistContext';
+import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiSettings, FiChevronRight, FiHeart } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../assets/logo_dark_text.png';
@@ -9,6 +10,7 @@ import logo from '../../assets/logo_dark_text.png';
 const Header = () => {
   const { isAuthenticated, user, logout, isAdmin } = useAuth();
   const { cartItemCount } = useCart();
+  const { wishlist } = useWishlist();
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
@@ -106,6 +108,16 @@ const Header = () => {
 
           {/* Actions (Cart & User Profile) */}
           <div className="flex items-center gap-4 z-50 shrink-0">
+            {/* Wishlist */}
+            <Link to="/wishlist" className="relative text-slate-600 hover:text-red-500 transition-colors p-2 hidden sm:block">
+              <FiHeart size={22} />
+              {wishlist?.length > 0 && (
+                <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-white">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+
             {/* Cart */}
             <Link to="/cart" className="relative text-slate-600 hover:text-slate-900 transition-colors p-2">
               <FiShoppingCart size={22} />

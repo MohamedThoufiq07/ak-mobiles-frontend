@@ -64,6 +64,21 @@ const ProductsPage = () => {
     fetchProducts();
   }, [page, filters, setSearchParams]);
 
+  // Sync state with URL params when they change externally (e.g. from Footer links)
+  useEffect(() => {
+    const categoryParam = searchParams.get('category') || '';
+    const brandParam = searchParams.get('brand') ? searchParams.get('brand').split(',') : [];
+    
+    setFilters(prev => {
+      // Only update if they differ to avoid infinite loops
+      if (prev.category !== categoryParam || prev.brand.join(',') !== brandParam.join(',')) {
+        setPage(1); // Reset page on category change
+        return { ...prev, category: categoryParam, brand: brandParam };
+      }
+      return prev;
+    });
+  }, [searchParams]);
+
   // Handle filter changes
   const handleBrandChange = (brand) => {
     setFilters(prev => {
