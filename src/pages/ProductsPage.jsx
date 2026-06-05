@@ -24,6 +24,8 @@ const ProductsPage = () => {
     category: searchParams.get('category') || '',
     minPrice: searchParams.get('minPrice') || '',
     maxPrice: searchParams.get('maxPrice') || '',
+    discount: searchParams.get('discount') || '',
+    rating: searchParams.get('rating') || '',
     sort: searchParams.get('sort') || 'newest'
   });
 
@@ -38,6 +40,8 @@ const ProductsPage = () => {
         if (filters.category) queryParams += `&category=${filters.category}`;
         if (filters.minPrice) queryParams += `&minPrice=${filters.minPrice}`;
         if (filters.maxPrice) queryParams += `&maxPrice=${filters.maxPrice}`;
+        if (filters.discount) queryParams += `&discount=${filters.discount}`;
+        if (filters.rating) queryParams += `&rating=${filters.rating}`;
         if (filters.sort) queryParams += `&sort=${filters.sort}`;
         
         // Update URL params
@@ -47,6 +51,8 @@ const ProductsPage = () => {
         if (filters.category) newParams.set('category', filters.category);
         if (filters.minPrice) newParams.set('minPrice', filters.minPrice);
         if (filters.maxPrice) newParams.set('maxPrice', filters.maxPrice);
+        if (filters.discount) newParams.set('discount', filters.discount);
+        if (filters.rating) newParams.set('rating', filters.rating);
         if (filters.sort !== 'newest') newParams.set('sort', filters.sort);
         setSearchParams(newParams, { replace: true });
 
@@ -117,6 +123,8 @@ const ProductsPage = () => {
       category: '',
       minPrice: '',
       maxPrice: '',
+      discount: '',
+      rating: '',
       sort: 'newest'
     });
     setPage(1);
@@ -235,35 +243,181 @@ const ProductsPage = () => {
                 </div>
               </div>
 
-              {/* Price Filter */}
+              {/* Discount Filter */}
               <div className="mb-8">
-                <h3 className="font-bold text-slate-850 mb-4 pb-2 border-b border-slate-100">Price Range (₹)</h3>
-                <div className="flex items-center gap-2 mb-4">
-                  <input
-                    type="number"
-                    name="minPrice"
-                    placeholder="Min"
-                    value={filters.minPrice}
-                    onChange={handlePriceChange}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 text-slate-800 placeholder-slate-400"
-                  />
-                  <span className="text-slate-400">-</span>
-                  <input
-                    type="number"
-                    name="maxPrice"
-                    placeholder="Max"
-                    value={filters.maxPrice}
-                    onChange={handlePriceChange}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 text-slate-800 placeholder-slate-400"
-                  />
+                <h3 className="font-bold text-slate-850 mb-4 pb-2 border-b border-slate-100">Discount</h3>
+                <div className="space-y-2">
+                  {[
+                    { label: 'All Discounts', value: '' },
+                    { label: '10% Off or more', value: '10' },
+                    { label: '25% Off or more', value: '25' },
+                    { label: '35% Off or more', value: '35' },
+                    { label: '50% Off or more', value: '50' },
+                    { label: '60% Off or more', value: '60' },
+                    { label: '70% Off or more', value: '70' }
+                  ].map(opt => (
+                    <div key={opt.value} className="flex items-center">
+                      <input
+                        type="radio"
+                        id={`discount-${opt.value || 'all'}`}
+                        name="discount"
+                        value={opt.value}
+                        checked={filters.discount === opt.value}
+                        onChange={(e) => {
+                          setFilters(prev => ({ ...prev, discount: e.target.value }));
+                          setPage(1);
+                        }}
+                        className="w-4 h-4 text-brand-blue focus:ring-brand-blue border-slate-300"
+                      />
+                      <label htmlFor={`discount-${opt.value || 'all'}`} className="ml-3 text-sm text-slate-650 hover:text-slate-800 cursor-pointer select-none">
+                        {opt.label}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-                <button 
-                  onClick={applyPriceFilter}
-                  className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-medium rounded-xl transition-colors"
-                >
-                  Apply
-                </button>
               </div>
+
+              {/* Rating Filter */}
+              <div className="mb-8">
+                <h3 className="font-bold text-slate-850 mb-4 pb-2 border-b border-slate-100">Customer Rating</h3>
+                <div className="space-y-2">
+                  {[
+                    { label: 'All Ratings', value: '' },
+                    { label: '4★ & above', value: '4' },
+                    { label: '3★ & above', value: '3' },
+                    { label: '2★ & above', value: '2' },
+                    { label: '1★ & above', value: '1' }
+                  ].map(opt => (
+                    <div key={opt.value} className="flex items-center">
+                      <input
+                        type="radio"
+                        id={`rating-${opt.value || 'all'}`}
+                        name="rating"
+                        value={opt.value}
+                        checked={filters.rating === opt.value}
+                        onChange={(e) => {
+                          setFilters(prev => ({ ...prev, rating: e.target.value }));
+                          setPage(1);
+                        }}
+                        className="w-4 h-4 text-brand-blue focus:ring-brand-blue border-slate-300"
+                      />
+                      <label htmlFor={`rating-${opt.value || 'all'}`} className="ml-3 text-sm text-slate-650 hover:text-slate-800 cursor-pointer select-none">
+                        {opt.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Price Filter */}
+              {(() => {
+                const minVal = Number(filters.minPrice) || 0;
+                const maxVal = Number(filters.maxPrice) || 200000;
+                const minPercent = (minVal / 200000) * 100;
+                const maxPercent = (maxVal / 200000) * 100;
+
+                return (
+                  <div className="mb-8">
+                    <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100 select-none">
+                      <h3 className="font-bold text-slate-850 uppercase tracking-wider text-xs">Price</h3>
+                      {(filters.minPrice || filters.maxPrice) && (
+                        <button 
+                          onClick={() => {
+                            setFilters(prev => ({ ...prev, minPrice: '', maxPrice: '' }));
+                            setPage(1);
+                          }}
+                          className="text-xs font-bold text-brand-blue hover:underline uppercase"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Native HTML Dual Range Slider */}
+                    <div className="mb-6 px-1">
+                      <div className="slider-container">
+                        <div className="slider-track" />
+                        <div 
+                          className="slider-range" 
+                          style={{ 
+                            left: `${minPercent}%`, 
+                            width: `${maxPercent - minPercent}%` 
+                          }}
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="200000"
+                          step="1000"
+                          name="minPrice"
+                          value={minVal}
+                          onChange={(e) => {
+                            const val = Math.min(Number(e.target.value), maxVal - 5000);
+                            setFilters(prev => ({ ...prev, minPrice: val.toString() }));
+                          }}
+                          className="thumb-input"
+                        />
+                        <input
+                          type="range"
+                          min="0"
+                          max="200000"
+                          step="1000"
+                          name="maxPrice"
+                          value={maxVal}
+                          onChange={(e) => {
+                            const val = Math.max(Number(e.target.value), minVal + 5000);
+                            setFilters(prev => ({ ...prev, maxPrice: val.toString() }));
+                          }}
+                          className="thumb-input"
+                        />
+                      </div>
+                      
+                      {/* Dots underneath slider representing steps */}
+                      <div className="flex justify-between px-1.5 -mt-1 select-none">
+                        {[0, 1, 2, 3, 4, 5, 6].map(i => (
+                          <div key={i} className="w-[3px] h-[3px] rounded-full bg-slate-350" />
+                        ))}
+                      </div>
+
+                      {/* Current range text below slider */}
+                      <div className="flex justify-between text-[11px] text-slate-500 mt-2 px-1 select-none font-semibold">
+                        <span>₹{minVal.toLocaleString('en-IN')}</span>
+                        <span>₹{maxVal.toLocaleString('en-IN')}{maxVal >= 200000 ? '+' : ''}</span>
+                      </div>
+                    </div>
+
+                    {/* Editable Price Inputs */}
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <input
+                        type="number"
+                        name="minPrice"
+                        placeholder="Min"
+                        value={filters.minPrice}
+                        onChange={handlePriceChange}
+                        className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-brand-blue text-slate-700"
+                      />
+                      
+                      <span className="text-slate-400 text-xs">to</span>
+                      
+                      <input
+                        type="number"
+                        name="maxPrice"
+                        placeholder="Max"
+                        value={filters.maxPrice}
+                        onChange={handlePriceChange}
+                        className="w-full px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:border-brand-blue text-slate-700"
+                      />
+                    </div>
+                    
+                    <button 
+                      onClick={applyPriceFilter}
+                      className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-medium rounded-xl transition-colors"
+                    >
+                      Apply Price
+                    </button>
+                  </div>
+                );
+              })()}
 
             </div>
           </div>

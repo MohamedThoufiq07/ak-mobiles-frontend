@@ -331,12 +331,12 @@ const CheckoutPage = () => {
                 <div className="bg-slate-50 p-6 border-b border-slate-200">
                   <h2 className="text-xl font-bold text-slate-900 mb-4">Order Summary</h2>
                   
-                  <div className="space-y-4 mb-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="space-y-4 mb-4 max-h-60 overflow-y-auto pt-2 pr-2 custom-scrollbar">
                     {cartItems.map((item) => (
                       <div key={item.product} className="flex gap-3">
-                        <div className="w-16 h-16 shrink-0 bg-white border border-slate-100 rounded-md p-1 relative">
+                        <div className="w-16 h-16 shrink-0 bg-white border border-slate-100 rounded-md p-1 relative z-10">
                           <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
-                          <span className="absolute -top-2 -right-2 bg-slate-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                          <span className="absolute -top-1.5 -right-1.5 bg-[#534AB7] text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-sm z-20">
                             {item.quantity}
                           </span>
                         </div>
@@ -380,13 +380,9 @@ const CheckoutPage = () => {
                     type="submit"
                     form="checkout-form"
                     disabled={isProcessing}
-                    className="w-full btn-primary h-14 text-lg flex items-center justify-center gap-2 mb-4 shadow-xl shadow-brand-orange/20 disabled:opacity-70 disabled:shadow-none"
+                    className="w-full h-14 text-lg flex items-center justify-center gap-2 mb-4 bg-[#534AB7] hover:bg-[#433b9f] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#534AB7]/25 disabled:opacity-70 disabled:shadow-none"
                   >
-                    {isProcessing ? 'Processing...' : (
-                      <>
-                        <FiLock /> Pay Securely via Razorpay
-                      </>
-                    )}
+                    {isProcessing ? 'Processing...' : 'Place Order'}
                   </button>
                   
                   <div className="mt-6 pt-6 border-t border-slate-100">

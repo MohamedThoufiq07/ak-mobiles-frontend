@@ -261,7 +261,7 @@ const ProductCardUI = ({ product }) => {
             </button>
             <button
               onClick={handleBuyNow}
-              className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-brand-orange to-red-500 text-white rounded-full py-1.5 hover:opacity-90 transition-opacity flex justify-center items-center text-center"
+              className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-brand-orange to-red-500 text-white rounded-full py-1.5 hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-95 transition-all duration-200 flex justify-center items-center text-center shadow-sm"
             >
               Buy Now
             </button>

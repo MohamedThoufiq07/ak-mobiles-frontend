@@ -176,7 +176,7 @@ const ProductCard = ({ product }) => {
             {product.stock > 0 && (
               <button
                 onClick={handleBuyNow}
-                className="flex-1 py-1.5 rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-orange to-red-500 text-white hover:opacity-95 active:scale-[0.97] transition-all duration-300 shadow-sm"
+                className="flex-1 py-1.5 rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-orange to-red-500 text-white hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-[0.97] transition-all duration-200 shadow-sm"
               >
                 Buy Now
               </button>

@@ -258,7 +258,7 @@ const CartInner = () => {
 
             {/* Checkout Button */}
             <Link to="/checkout" state={{ fromCart: true }} style={styles.checkoutBtn}>
-              🔒 Proceed to Checkout
+              Proceed to Checkout
             </Link>
 
             <Link to="/products" style={styles.continueLink}>

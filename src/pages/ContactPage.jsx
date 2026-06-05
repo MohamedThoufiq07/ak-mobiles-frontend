@@ -67,21 +67,21 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
             className="lg:w-1/3 flex"
           >
-            <div className="bg-gradient-to-tr from-brand-blue to-purple-600 text-white rounded-2xl p-8 shadow-lg relative overflow-hidden flex flex-col justify-between w-full min-h-[480px]">
+            <div className="bg-gradient-to-tr from-blue-50 to-indigo-50/70 text-slate-800 rounded-2xl p-8 shadow-sm border border-blue-100 relative overflow-hidden flex flex-col justify-between w-full min-h-[480px]">
               {/* Background light glow decoration */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-100/50 rounded-full blur-2xl -mr-10 -mt-10"></div>
               
               <div>
-                <h2 className="text-2xl font-bold mb-8 relative z-10">Contact Information</h2>
+                <h2 className="text-2xl font-bold mb-8 text-slate-950 relative z-10">Contact Information</h2>
                 
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-start gap-4">
-                    <div className="bg-white/10 p-3 rounded-xl border border-white/10 shrink-0">
-                      <FiMapPin size={18} className="text-white" />
+                    <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm shrink-0">
+                      <FiMapPin size={18} className="text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Store Address</h3>
-                      <p className="text-white text-sm leading-relaxed">
+                      <h3 className="font-bold text-xs text-slate-500 uppercase tracking-wider mb-1">Store Address</h3>
+                      <p className="text-slate-700 text-sm leading-relaxed">
                         No 113 B, Near Agarval Eye Hospital, Opposite Bus Stand,<br />
                         Junction Road, Shakti Nagar, Vriddhachalam-606001, Tamil Nadu
                       </p>
@@ -89,42 +89,42 @@ const ContactPage = () => {
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="bg-white/10 p-3 rounded-xl border border-white/10 shrink-0">
-                      <FiPhone size={18} className="text-white" />
+                    <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm shrink-0">
+                      <FiPhone size={18} className="text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Phone Number</h3>
-                      <a href="tel:04143261221" className="text-white hover:underline transition-colors block text-sm mb-1.5">04143 261 221 (Landline)</a>
-                      <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-green-500/90 text-white rounded-full px-3 py-1 text-xs font-bold shadow-sm hover:bg-green-400 hover:scale-105 transition-all">
+                      <h3 className="font-bold text-xs text-slate-500 uppercase tracking-wider mb-1">Phone Number</h3>
+                      <a href="tel:04143261221" className="text-blue-600 font-semibold hover:underline transition-colors block text-sm mb-1.5">04143 261 221 (Landline)</a>
+                      <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 bg-green-500 text-white rounded-full px-3 py-1 text-xs font-bold shadow-sm hover:bg-green-600 hover:scale-105 transition-all">
                         <FaWhatsapp size={14} /> WhatsApp Us (+91 79471 07854)
                       </a>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="bg-white/10 p-3 rounded-xl border border-white/10 shrink-0">
-                      <FiMail size={18} className="text-white" />
+                    <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm shrink-0">
+                      <FiMail size={18} className="text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Email Address</h3>
-                      <a href="mailto:support@akmobiles.com" className="text-white hover:underline transition-colors text-sm">support@akmobiles.com</a>
+                      <h3 className="font-bold text-xs text-slate-500 uppercase tracking-wider mb-1">Email Address</h3>
+                      <a href="mailto:support@akmobiles.com" className="text-blue-600 font-semibold hover:underline transition-colors text-sm">support@akmobiles.com</a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="bg-white/10 p-3 rounded-xl border border-white/10 shrink-0">
-                      <FiClock size={18} className="text-white" />
+                    <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm shrink-0">
+                      <FiClock size={18} className="text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-blue-100 uppercase tracking-wider mb-1">Store Hours</h3>
-                      <p className="text-white text-sm">Monday - Sunday: Open until 10:00 PM</p>
-                      <p className="text-yellow-300 text-xs font-bold mt-1 uppercase tracking-wider">Open all days</p>
+                      <h3 className="font-bold text-xs text-slate-500 uppercase tracking-wider mb-1">Store Hours</h3>
+                      <p className="text-slate-700 text-sm">Monday - Sunday: Open until 10:00 PM</p>
+                      <p className="text-emerald-600 text-xs font-bold mt-1 uppercase tracking-wider">Open all days</p>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="border-t border-white/10 pt-4 text-center text-xs text-blue-100">
+              <div className="border-t border-slate-200 pt-4 text-center text-xs text-slate-500 font-medium">
                 AK MOBILES — Trusted Mobile Retailer
               </div>
             </div>
@@ -198,7 +198,7 @@ const ContactPage = () => {
                   <button 
                     type="submit" 
                     disabled={loading}
-                    className="btn-premium w-full md:w-auto px-8 flex items-center justify-center gap-2"
+                    className="w-full md:w-auto px-8 py-3 bg-blue-50 hover:bg-blue-100 active:scale-98 text-blue-600 border border-blue-200 font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm"
                   >
                     {loading ? 'Sending...' : <><FiSend /> Send Message</>}
                   </button>
@@ -210,22 +210,99 @@ const ContactPage = () => {
       </div>
 
       {/* Location Call to Action */}
-      <div className="w-full bg-gradient-to-br from-slate-50 to-blue-50/30 py-16 px-4 mt-8 mx-4 rounded-3xl border border-slate-200/50 shadow-sm max-w-[calc(100%-2rem)] flex flex-col items-center justify-center text-center">
-        <div className="text-6xl mb-6">📍</div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-4 tracking-tight">
-          Visit Our Showroom
-        </h2>
-        <p className="text-slate-600 mb-8 max-w-md mx-auto leading-relaxed">
-          Main Road, Near Bus Stand, Virudhachalam, Cuddalore District, Tamil Nadu - 606001
-        </p>
-        <a 
-          href="https://maps.google.com/?q=Virudhachalam+Bus+Stand" 
-          target="_blank" 
-          rel="noreferrer" 
-          className="btn-premium px-8 py-4 text-base"
-        >
-          See Location in Google Maps &rarr;
-        </a>
+      <div className="w-full bg-gradient-to-br from-[#F8FAFC] to-[#F1F5F9] border border-slate-200/60 rounded-3xl p-8 md:p-12 mt-12 mx-4 max-w-[calc(100%-2rem)] shadow-sm">
+        <div className="flex flex-col lg:flex-row gap-8 items-center">
+          
+          {/* Left: Info */}
+          <div className="lg:w-1/2 text-left space-y-6">
+            <span className="text-[10px] font-extrabold tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block">
+              Store Locator
+            </span>
+            
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              Visit Our Showroom in <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Virudhachalam</span>
+            </h2>
+            
+            <p className="text-slate-500 text-sm md:text-base leading-relaxed">
+              Drop by to experience and test the latest flagships and mobile accessories in person. Our experts are ready to help you find your next phone.
+            </p>
+
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center border border-blue-200">
+                  <span className="text-blue-600 text-xs">📍</span>
+                </div>
+                <span className="text-sm font-semibold text-slate-700">Opposite Bus Stand, Junction Road, Virudhachalam</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center border border-blue-200">
+                  <span className="text-blue-600 text-xs">🏥</span>
+                </div>
+                <span className="text-sm font-medium text-slate-650">Near Agarwal Eye Hospital</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center border border-blue-200">
+                  <span className="text-blue-600 text-xs">🚗</span>
+                </div>
+                <span className="text-sm font-medium text-slate-650">Ample free customer parking available</span>
+              </div>
+            </div>
+
+            <div className="pt-4">
+              <a 
+                href="https://maps.google.com/?q=Virudhachalam+Bus+Stand" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="px-8 py-3.5 text-sm bg-blue-50 hover:bg-blue-100 active:scale-98 text-blue-600 border border-blue-200 font-extrabold rounded-xl inline-flex items-center justify-center gap-2 transition-all shadow-sm"
+              >
+                🗺️ See Location in Google Maps &rarr;
+              </a>
+            </div>
+          </div>
+          
+          {/* Right: Map Graphic Mockup */}
+          <div className="lg:w-1/2 w-full">
+            <a 
+              href="https://maps.google.com/?q=Virudhachalam+Bus+Stand" 
+              target="_blank" 
+              rel="noreferrer"
+              className="block group relative rounded-2xl overflow-hidden border border-slate-200 shadow-md h-64 md:h-80 w-full"
+            >
+              {/* Map Image/Mockup Background */}
+              <div className="absolute inset-0 bg-[#E2E8F0] bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:16px_16px] flex items-center justify-center">
+                {/* Styled Grid Lines resembling Map */}
+                <div className="absolute inset-0 opacity-20 bg-gradient-to-tr from-slate-300 via-transparent to-slate-300"></div>
+                
+                {/* Visual Map Routes */}
+                <svg className="absolute w-full h-full text-slate-300/40" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M-10 120 C 150 120, 250 240, 410 240" stroke="#CBD5E1" strokeWidth="12" />
+                  <path d="M120 -10 C 120 150, 320 180, 320 310" stroke="#CBD5E1" strokeWidth="8" />
+                  <path d="M-10 120 C 150 120, 250 240, 410 240" stroke="#FFFFFF" strokeWidth="6" />
+                  <path d="M120 -10 C 120 150, 320 180, 320 310" stroke="#FFFFFF" strokeWidth="4" />
+                </svg>
+
+                {/* Pulse Glow Location Marker */}
+                <div className="relative flex items-center justify-center z-10">
+                  <div className="absolute w-12 h-12 rounded-full bg-blue-500/20 animate-ping"></div>
+                  <div className="absolute w-8 h-8 rounded-full bg-blue-500/40 animate-pulse"></div>
+                  <div className="w-5 h-5 rounded-full bg-blue-600 border-2 border-white shadow-md flex items-center justify-center">
+                    <span className="text-white text-[9px] font-black">AK</span>
+                  </div>
+                </div>
+
+                {/* Floating Map Popup Card */}
+                <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 rounded-xl border border-white/60 shadow-lg flex items-center justify-between transition-transform group-hover:translate-y-[-2px]">
+                  <div className="text-left">
+                    <h4 className="font-bold text-slate-900 text-xs">AK Mobiles Store</h4>
+                    <p className="text-[10px] text-slate-500 mt-0.5">Junction Road, Virudhachalam</p>
+                  </div>
+                  <span className="bg-blue-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-lg">Directions</span>
+                </div>
+              </div>
+            </a>
+          </div>
+
+        </div>
       </div>
     </>
   );
