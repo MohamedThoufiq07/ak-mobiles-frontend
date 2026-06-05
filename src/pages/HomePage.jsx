@@ -58,7 +58,7 @@ const DEMO_PRODUCTS = [
 
 // Brand data with official colors for custom CSS logos
 const BRAND_DATA = [
-  { name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg', color: '#000000', bg: '#f5f5f7', weight: '600', style: 'normal', transform: 'none', symbol: '' },
+  { name: 'Apple', logo: '', color: '#000000', bg: '#f5f5f7', weight: '600', style: 'normal', transform: 'none', symbol: '' },
   { name: 'Samsung', logo: '', color: '#1428A0', bg: '#e8eaf6', weight: '800', style: 'normal', transform: 'uppercase', symbol: '' },
   { name: 'Xiaomi', logo: 'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://mi.com&size=256', color: '#FF6900', bg: '#fff3e0', weight: '700', style: 'normal', transform: 'none', symbol: '' },
   { name: 'POCO', logo: 'https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://poco.in&size=256', color: '#1a1a1a', bg: '#FFF9C4', weight: '900', style: 'normal', transform: 'uppercase', symbol: '' },
