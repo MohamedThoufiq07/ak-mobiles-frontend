@@ -18,16 +18,16 @@ const Footer = () => {
               Virudhachalam's most trusted mobile store. Genuine products at the best prices.
             </p>
             <div className="flex items-center gap-3">
-              <a href="https://www.instagram.com/akmobilesvirudhachalam/" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
+              <a href="https://www.instagram.com/akmobilesvirudhachalam/" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#E1306C] hover:border-[#E1306C] transition-colors text-[#E1306C] hover:text-white shadow-sm">
                 <FiInstagram size={14} />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61590666747486" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
+              <a href="https://www.facebook.com/profile.php?id=61590666747486" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-colors text-[#1877F2] hover:text-white shadow-sm">
                 <FiFacebook size={14} />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-brand-blue hover:border-brand-blue transition-colors text-slate-500 hover:text-white">
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#FF0000] hover:border-[#FF0000] transition-colors text-[#FF0000] hover:text-white shadow-sm">
                 <FiYoutube size={14} />
               </a>
-              <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-slate-500 hover:text-white">
+              <a href="https://wa.me/917947107854" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-colors text-[#25D366] hover:text-white shadow-sm">
                 <FaWhatsapp size={14} />
               </a>
             </div>
