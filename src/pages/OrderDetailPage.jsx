@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiArrowLeft, FiDownload, FiCheck, FiPackage, FiTruck, FiMapPin, FiInfo } from 'react-icons/fi';
+import { FiArrowLeft, FiDownload, FiCheck, FiCheckCircle, FiPackage, FiTruck, FiMapPin, FiInfo } from 'react-icons/fi';
 import api from '../utils/api';
 import { formatPrice } from '../utils/formatPrice';
 import { jsPDF } from 'jspdf';

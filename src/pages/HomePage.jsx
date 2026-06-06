@@ -153,7 +153,7 @@ const REVIEWS = [
 ];
 
 // Reusable Product Card Component
-const ProductCardUI = ({ product }) => {
+const ProductCardUI = ({ product, disableHover = false }) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
@@ -177,8 +177,8 @@ const ProductCardUI = ({ product }) => {
 
   return (
     <motion.div
-      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className="card-solid relative group h-full flex flex-col p-4"
+      whileHover={disableHover ? {} : { y: -8, transition: { duration: 0.2 } }}
+      className={`${disableHover ? 'bg-white rounded-[14px]' : 'card-solid'} relative group h-full flex flex-col p-4`}
     >
       {/* Badges */}
       <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
@@ -214,6 +214,8 @@ const ProductCardUI = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
         />
       </Link>
@@ -272,9 +274,29 @@ const ProductCardUI = ({ product }) => {
   );
 };
 
+// Map a real product document onto the shape the homepage card expects.
+const toCard = (p) => ({
+  _id: p._id,
+  id: p._id,
+  name: p.name,
+  brand: p.brand,
+  price: p.originalPrice,
+  offer: p.offerPrice,
+  offerPrice: p.offerPrice,
+  originalPrice: p.originalPrice,
+  discount: p.discount,
+  rating: p.rating,
+  reviews: p.numReviews,
+  stock: p.stock,
+  image: p.images?.[0]?.url,
+  images: p.images,
+});
+
 const HomePage = () => {
   const [filter, setFilter] = useState('All');
   const [realProducts, setRealProducts] = useState([]);
+  const [flashSaleProducts, setFlashSaleProducts] = useState([]);
+  const [flashSettings, setFlashSettings] = useState(null);
 
   useEffect(() => {
     const fetchRealProducts = async () => {
@@ -285,22 +307,52 @@ const HomePage = () => {
         console.error('Error fetching real products:', err);
       }
     };
+    const fetchFlashSale = async () => {
+      try {
+        const [prodRes, setRes] = await Promise.all([
+          api.get('/products?flashSale=true&limit=12'),
+          api.get('/settings'),
+        ]);
+        setFlashSaleProducts(prodRes.data.products || []);
+        setFlashSettings(setRes.data.settings || null);
+      } catch (err) {
+        console.error('Error fetching flash sale:', err);
+      }
+    };
     fetchRealProducts();
+    fetchFlashSale();
   }, []);
 
-  // Flash sale countdown logic
+  // Whether the storefront should show a live, admin-driven flash sale.
+  const flashActive = Boolean(flashSettings?.flashSaleActive && flashSaleProducts.length > 0);
+  const flashCards = flashActive ? flashSaleProducts.map(toCard) : null;
+
+  // Flash sale countdown — only targets the admin-set end time when the sale is
+  // actually LIVE; otherwise it falls back to a decorative ~14h ticking timer.
   const [timeLeft, setTimeLeft] = useState({ hours: 14, minutes: 25, seconds: 40 });
   useEffect(() => {
+    const endsAt = (flashActive && flashSettings?.flashSaleEndsAt)
+      ? new Date(flashSettings.flashSaleEndsAt).getTime()
+      : null;
     const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return prev;
-      });
+      if (endsAt) {
+        const totalSec = Math.max(0, Math.floor((endsAt - Date.now()) / 1000));
+        setTimeLeft({
+          hours: Math.floor(totalSec / 3600),
+          minutes: Math.floor((totalSec % 3600) / 60),
+          seconds: totalSec % 60,
+        });
+      } else {
+        setTimeLeft(prev => {
+          if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
+          if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+          if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+          return prev;
+        });
+      }
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [flashActive, flashSettings]);
 
   const getMappedProduct = (demoProduct) => {
     if (!realProducts || realProducts.length === 0) return demoProduct;
@@ -508,6 +560,8 @@ const HomePage = () => {
                       <img
                         src={brand.logo}
                         alt={brand.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-7 h-7 object-contain shrink-0 pointer-events-none"
                         onError={(e) => { e.target.style.display = 'none'; }}
                       />
@@ -543,7 +597,7 @@ const HomePage = () => {
                   className={`bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300 group flex flex-col items-center h-full`}
                 >
                   <div className="w-24 h-24 mb-4 flex items-center justify-center bg-slate-50 border border-slate-100 rounded-full p-2 group-hover:scale-110 transition-transform duration-300 overflow-hidden shadow-sm">
-                    <img src={cat.image} alt={cat.name} className="max-w-full max-h-full object-contain" />
+                    <img src={cat.image} alt={cat.name} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain" />
                   </div>
                   <h3 className="text-base font-bold text-slate-800 mb-1 text-center">{cat.name}</h3>
                   <div className="flex items-center text-slate-500 text-xs font-medium">
@@ -583,6 +637,8 @@ const HomePage = () => {
                     <img
                       src={brand.logo}
                       alt={brand.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-12 h-12 sm:w-14 sm:h-14 object-contain group-hover:scale-110 transition-transform duration-300"
                       onError={(e) => {
                         e.target.style.display = 'none';
@@ -660,9 +716,9 @@ const HomePage = () => {
 
             <div className="w-full lg:w-1/3 text-center lg:text-left text-slate-800">
               <h2 className="text-4xl font-black text-brand-blue mb-2 italic flex items-center justify-center lg:justify-start gap-2">
-                <FiZap /> FLASH SALE
+                <FiZap /> {(flashActive && flashSettings?.flashSaleTitle) ? flashSettings.flashSaleTitle.toUpperCase() : 'FLASH SALE'}
               </h2>
-              <p className="text-xl text-slate-600 mb-6 font-medium">Deals ending soon! Lowest prices of the month.</p>
+              <p className="text-xl text-slate-600 mb-6 font-medium">{(flashActive && flashSettings?.flashSaleSubtitle) ? flashSettings.flashSaleSubtitle : 'Deals ending soon! Lowest prices of the month.'}</p>
 
               <div className="flex items-center justify-center lg:justify-start gap-4">
                 <div className="bg-white/80 backdrop-blur-md rounded-xl p-3 border border-slate-200 min-w-[70px] text-slate-800 shadow-sm">
@@ -697,7 +753,7 @@ const HomePage = () => {
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
                 className="pb-4 pt-2 w-full max-w-[280px] sm:max-w-[584px] lg:max-w-[888px] mx-auto lg:mx-0 overflow-hidden"
               >
-                {DEMO_PRODUCTS.map(getMappedProduct).map(product => (
+                {(flashCards || DEMO_PRODUCTS.map(getMappedProduct)).map(product => (
                   <SwiperSlide key={product.id || product._id} className="h-auto !w-[250px] sm:!w-[280px]">
                     <ProductCardUI product={{ ...product, tag: 'SALE' }} />
                   </SwiperSlide>
@@ -729,11 +785,12 @@ const HomePage = () => {
             >
               {DEMO_PRODUCTS.map(getMappedProduct).map(product => (
                 <SwiperSlide key={product.id || product._id} className="h-auto !w-[250px] sm:!w-[300px]">
-                  <div className="p-[2px] rounded-2xl bg-gradient-to-br from-brand-blue via-slate-100 to-purple-400 shadow-md h-full">
-                    <div className="bg-white rounded-[14px] h-full">
-                      <ProductCardUI product={{ ...product, tag: 'NEW' }} />
-                    </div>
-                  </div>
+                  <motion.div 
+                    whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                    className="p-[2px] rounded-2xl bg-gradient-to-br from-brand-blue via-slate-100 to-purple-400 shadow-md h-full"
+                  >
+                    <ProductCardUI product={{ ...product, tag: 'NEW' }} disableHover={true} />
+                  </motion.div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -806,6 +863,8 @@ const HomePage = () => {
                     <img
                       src={`https://ui-avatars.com/api/?name=${review.name.replace(' ', '+')}&background=${review.color}&color=fff&size=48`}
                       alt={review.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-12 h-12 rounded-full shadow-sm"
                     />
                     <div>

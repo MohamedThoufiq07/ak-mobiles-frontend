@@ -18,9 +18,14 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const { data } = await api.get('/auth/profile');
-          setUser(data.user);
-          setIsAuthenticated(true);
-          setIsAdmin(data.user.role === 'admin');
+          // Admin accounts are NOT storefront users. If an admin token ended up
+          // in the storefront session (e.g. a stale token), drop it.
+          if (data.user.role === 'admin') {
+            localStorage.removeItem('token');
+          } else {
+            setUser(data.user);
+            setIsAuthenticated(true);
+          }
         } catch (error) {
           localStorage.removeItem('token');
         }
@@ -33,12 +38,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
+      // Admin accounts may not sign in to the storefront. Show a generic
+      // credentials error so it doesn't reveal that the email is an admin.
+      if (data.user.role === 'admin') {
+        toast.error('Incorrect email or password');
+        return { success: false, message: 'Incorrect email or password' };
+      }
       localStorage.setItem('token', data.token);
       setUser(data.user);
       setIsAuthenticated(true);
-      setIsAdmin(data.user.role === 'admin');
       toast.success('Logged in successfully!');
-      return { success: true };
+      return { success: true, user: data.user };
     } catch (error) {
       const msg = error.response?.data?.message || 'Login failed';
       toast.error(msg);

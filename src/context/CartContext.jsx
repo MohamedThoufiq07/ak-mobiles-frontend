@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useContext, useMemo, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 const CartContext = createContext();
@@ -12,7 +12,6 @@ export const CartProvider = ({ children }) => {
       if (storedCart) {
         const parsed = JSON.parse(storedCart);
         if (Array.isArray(parsed)) {
-          console.log('CartContext: Initialized cart items from localStorage:', parsed);
           return parsed;
         }
       }
@@ -21,30 +20,35 @@ export const CartProvider = ({ children }) => {
     }
     return [];
   });
-  
-  // Derived state
-  const safeCartItems = Array.isArray(cartItems) ? cartItems : [];
-  const cartItemCount = safeCartItems.reduce((acc, item) => acc + item.quantity, 0);
-  const cartSubtotal = safeCartItems.reduce((acc, item) => acc + (Number(item.price) || 0) * item.quantity, 0);
-  const cartTax = Math.round(cartSubtotal * 0.18); // 18% GST
-  const cartShipping = cartSubtotal > 50000 || safeCartItems.length === 0 ? 0 : 99; // Free shipping over 50k
-  const cartTotal = cartSubtotal + cartTax + cartShipping;
 
-  const saveCartToStorage = (items) => {
+  // Derived state — recomputed only when cartItems actually changes
+  const { safeCartItems, cartItemCount, cartSubtotal, cartTax, cartShipping, cartTotal } = useMemo(() => {
+    const items = Array.isArray(cartItems) ? cartItems : [];
+    const subtotal = items.reduce((acc, item) => acc + (Number(item.price) || 0) * item.quantity, 0);
+    const tax = Math.round(subtotal * 0.18); // 18% GST
+    const shipping = subtotal > 50000 || items.length === 0 ? 0 : 99; // Free shipping over 50k
+    return {
+      safeCartItems: items,
+      cartItemCount: items.reduce((acc, item) => acc + item.quantity, 0),
+      cartSubtotal: subtotal,
+      cartTax: tax,
+      cartShipping: shipping,
+      cartTotal: subtotal + tax + shipping,
+    };
+  }, [cartItems]);
+
+  const saveCartToStorage = useCallback((items) => {
     const safeItems = Array.isArray(items) ? items : [];
     try {
       localStorage.setItem('cart', JSON.stringify(safeItems));
       localStorage.setItem('cartItems', JSON.stringify(safeItems));
-      console.log('CartContext: Saved cart to localStorage:', safeItems);
     } catch (e) {
       console.error('CartContext: Failed to save cart items to localStorage', e);
     }
     setCartItems(safeItems);
-  };
+  }, []);
 
-  const addToCart = (product, quantity = 1) => {
-    console.log('CartContext: addToCart triggered with:', { product, quantity });
-    
+  const addToCart = useCallback((product, quantity = 1) => {
     if (!product) {
       console.error('CartContext: Cannot add to cart, product is null or undefined');
       toast.error('Failed to add to cart: Invalid product');
@@ -96,14 +100,20 @@ export const CartProvider = ({ children }) => {
     
     saveCartToStorage(updatedCart);
     toast.success(`${productName} added to cart!`);
-  };
+  }, [cartItems, saveCartToStorage]);
 
-  const updateQuantity = (productId, quantity) => {
+  const removeFromCart = useCallback((productId) => {
+    const updatedCart = cartItems.filter((x) => x.product !== productId);
+    saveCartToStorage(updatedCart);
+    toast.success('Item removed from cart');
+  }, [cartItems, saveCartToStorage]);
+
+  const updateQuantity = useCallback((productId, quantity) => {
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
-    
+
     const updatedCart = cartItems.map((item) => {
       if (item.product === productId) {
         if (quantity > item.stock) {
@@ -114,36 +124,26 @@ export const CartProvider = ({ children }) => {
       }
       return item;
     });
-    
-    saveCartToStorage(updatedCart);
-  };
 
-  const removeFromCart = (productId) => {
-    const updatedCart = cartItems.filter((x) => x.product !== productId);
     saveCartToStorage(updatedCart);
-    toast.success('Item removed from cart');
-  };
+  }, [cartItems, saveCartToStorage, removeFromCart]);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     saveCartToStorage([]);
-  };
+  }, [saveCartToStorage]);
 
-  return (
-    <CartContext.Provider
-      value={{
-        cartItems: safeCartItems,
-        cartItemCount,
-        cartSubtotal,
-        cartTax,
-        cartShipping,
-        cartTotal,
-        addToCart,
-        updateQuantity,
-        removeFromCart,
-        clearCart,
-      }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  const value = useMemo(() => ({
+    cartItems: safeCartItems,
+    cartItemCount,
+    cartSubtotal,
+    cartTax,
+    cartShipping,
+    cartTotal,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+  }), [safeCartItems, cartItemCount, cartSubtotal, cartTax, cartShipping, cartTotal, addToCart, updateQuantity, removeFromCart, clearCart]);
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 
@@ -7,41 +8,48 @@ import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 
-// Layouts
+// Layouts (eager — shell shown on every route)
 import Layout from './components/layout/Layout';
+import LoadingSpinner from './components/ui/LoadingSpinner';
 
-// Public Pages
-import HomePage from './pages/HomePage';
-import ProductsPage from './pages/ProductsPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import Cart from './pages/Cart';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import SearchResultsPage from './pages/SearchResultsPage';
-import NotFoundPage from './pages/NotFoundPage';
+// Pages (lazy — each becomes its own chunk, loaded on demand)
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProductsPage = lazy(() => import('./pages/ProductsPage'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
+const Cart = lazy(() => import('./pages/Cart'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+const SearchResultsPage = lazy(() => import('./pages/SearchResultsPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
-// Auth Pages
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ProfilePage from './pages/ProfilePage';
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('./pages/ForgotPasswordPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
-// Order Pages
-import CheckoutPage from './pages/CheckoutPage';
-import OrderSuccessPage from './pages/OrderSuccessPage';
-import MyOrdersPage from './pages/MyOrdersPage';
-import OrderDetailPage from './pages/OrderDetailPage';
-import WishlistPage from './pages/WishlistPage';
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage'));
+const MyOrdersPage = lazy(() => import('./pages/MyOrdersPage'));
+const OrderDetailPage = lazy(() => import('./pages/OrderDetailPage'));
+const WishlistPage = lazy(() => import('./pages/WishlistPage'));
 
-// Admin Pages
-import AdminDashboard from './pages/admin/AdminDashboard';
+// Admin (heavy: recharts) — kept out of the main bundle entirely
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const AdminProducts = lazy(() => import('./pages/admin/AdminProducts'));
+const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
+const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
+const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
+const AdminFlashSale = lazy(() => import('./pages/admin/AdminFlashSale'));
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
+const AdminForgotPassword = lazy(() => import('./pages/admin/AdminForgotPassword'));
 
-// Custom Admin Route Wrapper
-import { useAuth } from './context/AuthContext';
-const AdminRoute = ({ children }) => {
-  const { user, isAdmin, loading } = useAuth();
+// Admin auth is a SEPARATE session from the storefront (its own token/context).
+import { AdminAuthProvider, useAdminAuth } from './context/AdminAuthContext';
+const AdminRoute = () => {
+  const { isAdmin, loading } = useAdminAuth();
   if (loading) return null;
-  return user && isAdmin ? children : <Navigate to="/login" replace />;
+  return isAdmin ? <Outlet /> : <Navigate to="/admin/login" replace />;
 };
 
 function App() {
@@ -65,6 +73,7 @@ function App() {
               }}
             />
             <Router>
+              <Suspense fallback={<LoadingSpinner />}>
               <Routes>
                 {/* Public Routes with Standard Layout */}
                 <Route path="/" element={<Layout />}>
@@ -94,16 +103,25 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-                {/* Admin Routes (No Standard Layout) */}
-                <Route 
-                  path="/admin" 
-                  element={
-                    <AdminRoute>
-                      <AdminDashboard />
-                    </AdminRoute>
-                  } 
-                />
+                {/* Admin area — wrapped in its OWN auth provider (separate
+                    session from the storefront). /admin/login is public within
+                    it; everything else requires an admin session. */}
+                <Route path="/admin" element={<AdminAuthProvider />}>
+                  <Route path="login" element={<AdminLogin />} />
+                  <Route path="forgot-password" element={<AdminForgotPassword />} />
+                  <Route element={<AdminRoute />}>
+                    <Route element={<AdminLayout />}>
+                      <Route index element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                      <Route path="flash-sale" element={<AdminFlashSale />} />
+                      <Route path="users" element={<AdminUsers />} />
+                      <Route path="messages" element={<AdminMessages />} />
+                    </Route>
+                  </Route>
+                </Route>
               </Routes>
+              </Suspense>
             </Router>
           </WishlistProvider>
         </CartProvider>

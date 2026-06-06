@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiZap } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
@@ -188,4 +189,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

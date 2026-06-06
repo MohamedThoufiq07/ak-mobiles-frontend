@@ -2,13 +2,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiSettings, FiChevronRight, FiHeart } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiSearch, FiMenu, FiX, FiLogOut, FiChevronRight, FiHeart } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../assets/logo_dark_text.png';
 
 const Header = () => {
-  const { isAuthenticated, user, logout, isAdmin } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
   const { cartItemCount } = useCart();
   const { wishlist } = useWishlist();
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b bg-white/95 backdrop-blur-md border-slate-200/80 ${scrolled ? 'py-3.5 shadow-md shadow-slate-100/10' : 'py-5'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b bg-white border-slate-200/80 ${scrolled ? 'py-3.5 shadow-md shadow-slate-100/10' : 'py-5'}`}>
         <div className="w-full pl-2 pr-4 md:pl-4 md:pr-8 xl:pl-6 xl:pr-12 flex items-center justify-between gap-4 lg:gap-8">
 
           {/* 1. Logo */}
@@ -162,11 +162,6 @@ const Header = () => {
                     </div>
 
                     <div className="py-2">
-                      {isAdmin && (
-                        <Link to="/admin" onClick={() => setShowDropdown(false)} className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-sm font-semibold text-brand-blue transition-colors">
-                          <FiSettings size={18} /> Admin Dashboard
-                        </Link>
-                      )}
                       <Link to="/profile" onClick={() => setShowDropdown(false)} className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 text-sm font-medium text-slate-750 transition-colors">
                         <FiUser size={18} className="text-slate-500" /> My Profile
                       </Link>
@@ -284,9 +279,6 @@ const Header = () => {
                           </div>
                         </div>
                       </li>
-                      {isAdmin && (
-                        <li><Link to="/admin" onClick={closeMenu} className="flex items-center gap-3 px-2 py-2 text-brand-blue font-semibold"><FiSettings /> Admin Dashboard</Link></li>
-                      )}
                       <li><Link to="/profile" onClick={closeMenu} className="flex items-center gap-3 px-2 py-2 text-slate-650 font-medium hover:text-slate-800"><FiUser /> My Profile</Link></li>
                       <li><Link to="/my-orders" onClick={closeMenu} className="flex items-center gap-3 px-2 py-2 text-slate-650 font-medium hover:text-slate-800"><FiShoppingCart /> My Orders</Link></li>
                       <li><button onClick={() => { handleLogout(); closeMenu(); }} className="flex items-center gap-3 px-2 py-2 text-red-600 font-semibold w-full text-left hover:bg-red-50 rounded-lg"><FiLogOut /> Logout</button></li>

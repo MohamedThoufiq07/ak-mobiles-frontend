@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiMail, FiArrowLeft, FiCheckCircle } from 'react-icons/fi';
+import { FiMail, FiArrowLeft, FiCheckCircle, FiLock } from 'react-icons/fi';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
 
@@ -102,8 +102,5 @@ const ForgotPasswordPage = () => {
     </>
   );
 };
-
-// Import FiLock which was missing above
-import { FiLock } from 'react-icons/fi';
 
 export default ForgotPasswordPage;

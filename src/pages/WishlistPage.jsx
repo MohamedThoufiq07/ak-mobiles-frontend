@@ -96,7 +96,7 @@ const WishlistPage = () => {
                     <div className="flex gap-4 items-center sm:w-1/2 w-full">
                       <div className="w-20 h-20 bg-white rounded-lg p-2 border border-slate-100 shrink-0">
                         <Link to={`/products/${product._id}`}>
-                          <img src={product.images[0]?.url} alt={product.name} className="w-full h-full object-contain" />
+                          <img src={product.images?.[0]?.url} alt={product.name} className="w-full h-full object-contain" />
                         </Link>
                       </div>
                       <div>
