@@ -21,9 +21,10 @@ const SearchResultsPage = () => {
       setLoading(true);
       try {
         const { data } = await api.get(`/products?search=${encodeURIComponent(query)}`);
-        setProducts(data.products);
+        setProducts(Array.isArray(data?.products) ? data.products : []);
       } catch (error) {
         console.error('Error fetching search results:', error);
+        setProducts([]);
       } finally {
         setLoading(false);
       }

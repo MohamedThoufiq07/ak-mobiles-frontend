@@ -58,11 +58,15 @@ const ProductsPage = () => {
         setSearchParams(newParams, { replace: true });
 
         const { data } = await api.get(`/products${queryParams}`);
-        setProducts(data.products);
-        setTotalPages(data.pages);
-        setTotalProducts(data.total);
+        // Guard against a non-JSON / unexpected response (e.g. an SPA-fallback
+        // HTML page when the API URL is misconfigured) so the page degrades to
+        // the empty state instead of crashing on `undefined.length`.
+        setProducts(Array.isArray(data?.products) ? data.products : []);
+        setTotalPages(data?.pages || 1);
+        setTotalProducts(data?.total || 0);
       } catch (error) {
         console.error('Error fetching products:', error);
+        setProducts([]);
       } finally {
         setLoading(false);
       }

@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
 
         // Fetch related products
         const relatedRes = await api.get(`/products/${id}/related`);
-        setRelatedProducts(relatedRes.data.products);
+        setRelatedProducts(Array.isArray(relatedRes.data?.products) ? relatedRes.data.products : []);
 
       } catch (err) {
         setError('Product not found or error loading details.');
