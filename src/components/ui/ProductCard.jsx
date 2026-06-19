@@ -114,7 +114,7 @@ const ProductCard = ({ product }) => {
       </Link>
 
       {/* Product Info */}
-      <div className="p-4 flex flex-col flex-grow border-t border-slate-100">
+      <div className="p-4 flex flex-col flex-grow min-w-0 border-t border-slate-100">
 
         {/* Product Name */}
         <Link to={`/products/${product._id}`} className="block group-hover:text-brand-blue transition-colors">
@@ -164,7 +164,7 @@ const ProductCard = ({ product }) => {
             <button
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
-              className={`flex-1 py-1.5 rounded-full flex items-center justify-center gap-1 font-semibold text-xs transition-all duration-300
+              className={`flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center gap-1 font-semibold text-xs transition-all duration-300
                 ${product.stock > 0
                   ? 'border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white active:scale-[0.97]'
                   : 'border-2 border-slate-200 text-slate-400 cursor-not-allowed'
@@ -177,7 +177,7 @@ const ProductCard = ({ product }) => {
             {product.stock > 0 && (
               <button
                 onClick={handleBuyNow}
-                className="flex-1 py-1.5 rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-orange to-red-500 text-white hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-[0.97] transition-all duration-200 shadow-sm"
+                className="flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-orange to-red-500 text-white hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-[0.97] transition-all duration-200 shadow-sm"
               >
                 Buy Now
               </button>

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import api from '../utils/api';
 import ProductCard from '../components/ui/ProductCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 import { FiSearch } from 'react-icons/fi';
 
 const SearchResultsPage = () => {
@@ -37,16 +38,16 @@ const SearchResultsPage = () => {
         <title>Search Results for "{query}" | AK Mobiles</title>
       </Helmet>
 
-      <div className="bg-slate-100 py-8 border-b border-slate-200">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-            <FiSearch className="text-brand-orange" /> Search Results
+      <Reveal className="bg-slate-100 py-8 border-b border-slate-200">
+        <div className="container mx-auto px-4 min-w-0">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-3 min-w-0">
+            <FiSearch className="text-brand-orange shrink-0" /> <span className="truncate">Search Results</span>
           </h1>
-          <p className="text-slate-500 mt-2">
+          <p className="text-slate-500 mt-2 break-words">
             Showing results for <span className="font-bold text-brand-dark">"{query}"</span>
           </p>
         </div>
-      </div>
+      </Reveal>
 
       <div className="container mx-auto px-4 py-12 min-h-[60vh]">
         {loading ? (
@@ -63,11 +64,13 @@ const SearchResultsPage = () => {
         ) : (
           <div>
             <p className="text-slate-500 mb-6 font-medium">Found {products.length} products</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+            <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
               {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                <RevealItem key={product._id} className="min-w-0">
+                  <ProductCard product={product} />
+                </RevealItem>
               ))}
-            </div>
+            </RevealStagger>
           </div>
         )}
       </div>

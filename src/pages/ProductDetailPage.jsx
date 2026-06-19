@@ -11,6 +11,7 @@ import { formatPrice } from '../utils/formatPrice';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import RatingStars from '../components/ui/RatingStars';
 import ProductCard from '../components/ui/ProductCard';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -109,7 +110,7 @@ const ProductDetailPage = () => {
         <div className="flex flex-col lg:flex-row gap-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100">
           
           {/* Left Column - Images */}
-          <div className="lg:w-1/2 flex flex-col md:flex-row-reverse gap-4">
+          <Reveal className="lg:w-1/2 min-w-0 flex flex-col md:flex-row-reverse gap-4">
             {/* Main Image */}
             <div className="flex-1 bg-slate-50 rounded-xl p-8 relative flex items-center justify-center border border-slate-100 group">
               {product.discount > 0 && (
@@ -150,10 +151,10 @@ const ProductDetailPage = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </Reveal>
 
           {/* Right Column - Product Info */}
-          <div className="lg:w-1/2 flex flex-col">
+          <Reveal delay={0.1} className="lg:w-1/2 min-w-0 flex flex-col">
             <div className="mb-2">
               <span className="text-sm font-bold text-brand-blue tracking-wider uppercase">{product.brand}</span>
             </div>
@@ -197,31 +198,31 @@ const ProductDetailPage = () => {
                 </span>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 {/* Quantity */}
-                <div className="flex items-center border border-slate-300 rounded-lg h-12 w-32 shrink-0 bg-white">
-                  <button 
+                <div className="flex items-center border border-slate-300 rounded-lg h-12 w-36 shrink-0 bg-white">
+                  <button
                     onClick={() => setQuantity(q => Math.max(1, q - 1))}
                     disabled={product.stock <= 0}
-                    className="w-10 h-full text-slate-600 hover:bg-slate-100 rounded-l-lg disabled:opacity-50"
+                    className="w-11 h-full text-slate-600 hover:bg-slate-100 rounded-l-lg disabled:opacity-50"
                   >-</button>
-                  <input 
-                    type="number" 
-                    value={quantity} 
-                    readOnly 
+                  <input
+                    type="number"
+                    value={quantity}
+                    readOnly
                     className="w-full text-center border-x border-slate-300 h-full font-bold focus:outline-none text-slate-800"
                   />
-                  <button 
+                  <button
                     onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
                     disabled={product.stock <= 0 || quantity >= product.stock}
-                    className="w-10 h-full text-slate-600 hover:bg-slate-100 rounded-r-lg disabled:opacity-50"
+                    className="w-11 h-full text-slate-600 hover:bg-slate-100 rounded-r-lg disabled:opacity-50"
                   >+</button>
                 </div>
 
                 <button 
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
-                  className="flex-1 btn-premium h-12 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 min-w-[140px] btn-premium h-12 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FiShoppingCart /> Add to Cart
                 </button>
@@ -255,11 +256,11 @@ const ProductDetailPage = () => {
                 <span>1 Year Warranty</span>
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
 
         {/* Product Details Tabs */}
-        <div className="mt-12 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <Reveal className="mt-12 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="flex border-b border-slate-200">
             <button 
               className={`flex-1 py-4 font-bold text-center border-b-2 transition-colors ${activeTab === 'description' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
@@ -362,18 +363,20 @@ const ProductDetailPage = () => {
               </div>
             )}
           </div>
-        </div>
+        </Reveal>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-16">
+          <Reveal as="section" className="mt-16">
             <h2 className="text-2xl font-bold text-slate-800 mb-8 border-b border-slate-200 pb-4">You May Also Like</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map(related => (
-                <ProductCard key={related._id} product={related} />
+                <RevealItem key={related._id} className="min-w-0">
+                  <ProductCard product={related} />
+                </RevealItem>
               ))}
-            </div>
-          </div>
+            </RevealStagger>
+          </Reveal>
         )}
       </div>
     </>

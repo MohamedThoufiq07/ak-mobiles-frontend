@@ -185,8 +185,9 @@ const Header = () => {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-full transition-colors"
+              className="lg:hidden text-slate-600 p-2.5 hover:bg-slate-100 rounded-full transition-colors"
               onClick={() => setIsMenuOpen(true)}
+              aria-label="Open menu"
             >
               <FiMenu size={24} />
             </button>

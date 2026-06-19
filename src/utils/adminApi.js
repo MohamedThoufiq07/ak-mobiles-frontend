@@ -6,7 +6,8 @@ import toast from 'react-hot-toast';
 // storefront/customer session ('token'). Logging into the admin panel does
 // NOT log you into the shop, and vice-versa.
 const adminApi = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  // Prod: VITE_API_URL (the deployed backend + '/api'). Dev fallback: local backend.
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
   headers: { 'Content-Type': 'application/json' },
 });
 

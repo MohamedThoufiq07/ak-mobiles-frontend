@@ -5,6 +5,7 @@ import adminApi from '../../utils/adminApi';
 import { formatPrice } from '../../utils/formatPrice';
 import { STATUS_COLORS } from '../../utils/constants';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { Reveal } from '../../components/ui/animations';
 
 const STATUSES = ['Placed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
 
@@ -129,9 +130,9 @@ const AdminOrders = () => {
       ) : orders.length === 0 ? (
         <div className="bg-white rounded-xl border border-slate-100 p-12 text-center text-slate-500">No orders found.</div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <Reveal className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[760px]">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
                   <th className="p-4 font-semibold">Order ID</th>
@@ -146,15 +147,15 @@ const AdminOrders = () => {
               <tbody className="divide-y divide-slate-100">
                 {orders.map((order) => (
                   <tr key={order._id} className="hover:bg-slate-50">
-                    <td className="p-4 text-sm font-mono text-slate-600">{order._id.slice(-8)}</td>
-                    <td className="p-4 text-sm">
+                    <td className="p-4 text-sm font-mono text-slate-600 whitespace-nowrap">{order._id.slice(-8)}</td>
+                    <td className="p-4 text-sm whitespace-nowrap">
                       <p className="font-medium text-slate-900">{order.user?.name || order.shippingAddress?.name || 'Guest'}</p>
                       <p className="text-xs text-slate-400">{order.user?.email || order.shippingAddress?.email}</p>
                     </td>
-                    <td className="p-4 text-sm text-slate-500">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="p-4 text-sm text-slate-600">{order.orderItems?.length || 0}</td>
-                    <td className="p-4 text-sm font-bold text-slate-900">{formatPrice(order.totalPrice)}</td>
-                    <td className="p-4">
+                    <td className="p-4 text-sm text-slate-500 whitespace-nowrap">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="p-4 text-sm text-slate-600 whitespace-nowrap">{order.orderItems?.length || 0}</td>
+                    <td className="p-4 text-sm font-bold text-slate-900 whitespace-nowrap">{formatPrice(order.totalPrice)}</td>
+                    <td className="p-4 whitespace-nowrap">
                       <span className={`inline-block text-xs font-bold rounded-full px-2.5 py-1 ${STATUS_COLORS[order.orderStatus] || 'bg-slate-100 text-slate-800'}`}>
                         {order.orderStatus}
                       </span>
@@ -167,7 +168,7 @@ const AdminOrders = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </Reveal>
       )}
 
       {pages > 1 && (

@@ -4,7 +4,7 @@ import { FiMapPin, FiPhone, FiMail, FiClock, FiSend } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
-import { motion } from 'framer-motion';
+import { Reveal } from '../components/ui/animations';
 import logo from '../assets/logo_dark_text.png';
 
 const ContactPage = () => {
@@ -45,7 +45,7 @@ const ContactPage = () => {
       {/* Light & Modern Header */}
       <section className="relative pt-12 pb-16 overflow-hidden bg-gradient-to-tr from-blue-50/70 via-white to-purple-50/70 text-slate-800 mx-4 mt-4 rounded-3xl border border-slate-200/50 shadow-[0_15px_35px_rgba(0,0,0,0.03)] text-center">
         <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-tr from-purple-300/10 to-transparent rounded-full blur-[80px] pointer-events-none"></div>
-        <div className="container mx-auto px-6 relative z-10 max-w-2xl">
+        <Reveal className="container mx-auto px-6 relative z-10 max-w-2xl">
           <img src={logo} alt="AK Mobiles Logo" className="h-48 mx-auto object-contain mb-6" />
           <span className="text-xs font-extrabold tracking-widest text-brand-blue uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block mb-3">
             Get in Touch
@@ -54,19 +54,14 @@ const ContactPage = () => {
           <p className="text-slate-500 text-base md:text-lg leading-relaxed">
             Have queries about stock availability, pricing, or product warranty? Contact us using the form below or drop by our showroom in Virudhachalam.
           </p>
-        </div>
+        </Reveal>
       </section>
 
       <div className="container mx-auto px-4 py-16">
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
           
           {/* Contact Info - Sleek Gradient Panel */}
-          <motion.div 
-            initial={{ x: -30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="lg:w-1/3 flex"
-          >
+          <Reveal className="lg:w-1/3 flex">
             <div className="bg-gradient-to-tr from-blue-50 to-indigo-50/70 text-slate-800 rounded-2xl p-8 shadow-sm border border-blue-100 relative overflow-hidden flex flex-col justify-between w-full min-h-[480px]">
               {/* Background light glow decoration */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-blue-100/50 rounded-full blur-2xl -mr-10 -mt-10"></div>
@@ -128,15 +123,10 @@ const ContactPage = () => {
                 AK MOBILES — Trusted Mobile Retailer
               </div>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Contact Form - White Premium Shadow Card */}
-          <motion.div 
-            initial={{ x: 30, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="lg:w-2/3 flex"
-          >
+          <Reveal delay={0.1} className="lg:w-2/3 flex">
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100 flex flex-col justify-between w-full">
               <div>
                 <h2 className="text-2xl font-bold text-slate-800 mb-6">Send us a Message</h2>
@@ -151,7 +141,7 @@ const ContactPage = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="input-field bg-slate-50 border-slate-200"
+                        className="input-field bg-slate-50 border-slate-200 py-3"
                         placeholder="John Doe"
                       />
                     </div>
@@ -163,7 +153,7 @@ const ContactPage = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="input-field bg-slate-50 border-slate-200"
+                        className="input-field bg-slate-50 border-slate-200 py-3"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -177,7 +167,7 @@ const ContactPage = () => {
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="input-field bg-slate-50 border-slate-200"
+                      className="input-field bg-slate-50 border-slate-200 py-3"
                       placeholder="Product inquiry, warranty assistance, etc."
                     />
                   </div>
@@ -205,7 +195,7 @@ const ContactPage = () => {
                 </form>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </div>
 
@@ -214,7 +204,7 @@ const ContactPage = () => {
         <div className="flex flex-col lg:flex-row gap-8 items-center">
           
           {/* Left: Info */}
-          <div className="lg:w-1/2 text-left space-y-6">
+          <Reveal className="lg:w-1/2 text-left space-y-6">
             <span className="text-[10px] font-extrabold tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block">
               Store Locator
             </span>
@@ -258,10 +248,10 @@ const ContactPage = () => {
                 🗺️ See Location in Google Maps &rarr;
               </a>
             </div>
-          </div>
-          
+          </Reveal>
+
           {/* Right: Map Graphic Mockup */}
-          <div className="lg:w-1/2 w-full">
+          <Reveal delay={0.1} className="lg:w-1/2 w-full">
             <a 
               href="https://maps.google.com/?q=Virudhachalam+Bus+Stand" 
               target="_blank" 
@@ -300,7 +290,7 @@ const ContactPage = () => {
                 </div>
               </div>
             </a>
-          </div>
+          </Reveal>
 
         </div>
       </div>

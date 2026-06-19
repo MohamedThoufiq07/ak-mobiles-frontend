@@ -5,6 +5,7 @@ import adminApi from '../../utils/adminApi';
 import { formatPrice } from '../../utils/formatPrice';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import ProductFormModal from '../../components/admin/ProductFormModal';
+import { Reveal } from '../../components/ui/animations';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -65,17 +66,17 @@ const AdminProducts = () => {
         <div>
           <p className="text-sm text-slate-500">{total} product{total === 1 ? '' : 's'} total</p>
         </div>
-        <div className="flex gap-3">
-          <form onSubmit={handleSearch} className="relative">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSearch} className="relative flex-1 sm:flex-none">
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search products..."
-              className="pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue w-56"
+              className="pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue w-full sm:w-56"
             />
           </form>
-          <button onClick={openAdd} className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange hover:bg-brand-orangeHover text-white text-sm font-bold rounded-lg transition-colors">
+          <button onClick={openAdd} className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand-orange hover:bg-brand-orangeHover text-white text-sm font-bold rounded-lg transition-colors whitespace-nowrap">
             <FiPlus /> Add Product
           </button>
         </div>
@@ -88,9 +89,9 @@ const AdminProducts = () => {
           No products found{search ? ` for "${search}"` : ''}.
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <Reveal className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
                   <th className="p-4 font-semibold">Product</th>
@@ -115,14 +116,14 @@ const AdminProducts = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="p-4 text-sm text-slate-600">{p.brand}</td>
-                    <td className="p-4">
+                    <td className="p-4 text-sm text-slate-600 whitespace-nowrap">{p.brand}</td>
+                    <td className="p-4 whitespace-nowrap">
                       <p className="text-sm font-bold text-slate-900">{formatPrice(p.offerPrice)}</p>
                       {p.originalPrice > p.offerPrice && (
                         <p className="text-xs text-slate-400 line-through">{formatPrice(p.originalPrice)}</p>
                       )}
                     </td>
-                    <td className="p-4 text-sm">
+                    <td className="p-4 text-sm whitespace-nowrap">
                       <span className={p.stock > 0 ? 'text-slate-700' : 'text-red-600 font-semibold'}>
                         {p.stock > 0 ? p.stock : 'Out of stock'}
                       </span>
@@ -141,7 +142,7 @@ const AdminProducts = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </Reveal>
       )}
 
       {/* Pagination */}

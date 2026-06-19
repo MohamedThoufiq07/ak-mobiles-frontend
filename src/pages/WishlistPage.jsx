@@ -7,6 +7,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import { formatPrice } from '../utils/formatPrice';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 
 const WishlistPage = () => {
   const { wishlist, toggleWishlist } = useWishlist();
@@ -64,14 +65,14 @@ const WishlistPage = () => {
 
       <div className="bg-slate-50 py-10 min-h-[80vh]">
         <div className="container mx-auto px-4 max-w-6xl">
-          <h1 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+          <Reveal as="h1" className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
             <FiHeart className="text-brand-orange" /> My Wishlist
-          </h1>
+          </Reveal>
 
           {loading ? (
             <LoadingSpinner />
           ) : products.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 sm:p-12 text-center">
               <div className="w-24 h-24 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto mb-6">
                 <FiHeart size={48} />
               </div>
@@ -82,75 +83,58 @@ const WishlistPage = () => {
               </Link>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-              <div className="hidden sm:flex bg-slate-50 p-4 border-b border-slate-200 text-sm font-semibold text-slate-600">
-                <div className="w-1/2">Product</div>
-                <div className="w-1/4 text-center">Price</div>
-                <div className="w-1/4 text-right pr-4">Action</div>
-              </div>
-              
-              <div className="divide-y divide-slate-100">
-                {products.map((product) => (
-                  <div key={product._id} className="p-6 flex flex-col sm:flex-row items-start sm:items-center gap-6 group hover:bg-slate-50 transition-colors">
-                    {/* Image & Title */}
-                    <div className="flex gap-4 items-center sm:w-1/2 w-full">
-                      <div className="w-20 h-20 bg-white rounded-lg p-2 border border-slate-100 shrink-0">
-                        <Link to={`/products/${product._id}`}>
-                          <img src={product.images?.[0]?.url} alt={product.name} className="w-full h-full object-contain" />
-                        </Link>
-                      </div>
-                      <div>
-                        <Link to={`/products/${product._id}`} className="font-bold text-slate-900 hover:text-brand-orange transition-colors line-clamp-2">
-                          {product.name}
-                        </Link>
-                        <p className="text-sm text-slate-500 mt-1 uppercase tracking-wider">{product.brand}</p>
-                        
-                        <div className="mt-2 sm:hidden flex items-center gap-3">
-                          <span className="font-bold text-slate-900">{formatPrice(product.offerPrice)}</span>
-                          {product.stock > 0 ? (
-                            <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">In Stock</span>
-                          ) : (
-                            <span className="text-xs text-red-500 bg-red-50 px-2 py-1 rounded">Out of Stock</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Price & Stock (Desktop) */}
-                    <div className="hidden sm:flex flex-col items-center justify-center sm:w-1/4">
-                      <span className="font-bold text-lg text-slate-900">{formatPrice(product.offerPrice)}</span>
-                      {product.originalPrice > product.offerPrice && (
-                        <span className="text-sm text-slate-400 line-through">{formatPrice(product.originalPrice)}</span>
-                      )}
-                      {product.stock > 0 ? (
-                        <span className="text-xs text-green-600 mt-1">In Stock</span>
-                      ) : (
-                        <span className="text-xs text-red-500 mt-1">Out of Stock</span>
-                      )}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex sm:justify-end gap-3 w-full sm:w-1/4 mt-2 sm:mt-0">
-                      <button 
-                        onClick={() => handleRemove(product._id)}
-                        className="text-slate-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors"
-                        title="Remove from wishlist"
-                      >
-                        Remove
-                      </button>
-                      
-                      <button 
-                        onClick={() => handleAddToCart(product)}
-                        disabled={product.stock <= 0}
-                        className="btn-secondary py-2 px-4 flex items-center justify-center gap-2 flex-1 sm:flex-none disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-                      >
-                        <FiShoppingCart /> Add
-                      </button>
-                    </div>
+            <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <RevealItem
+                  key={product._id}
+                  className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 flex flex-col group hover:shadow-md transition-shadow"
+                >
+                  {/* Image */}
+                  <div className="w-full aspect-square bg-slate-50 rounded-xl p-4 border border-slate-100 mb-4 flex items-center justify-center">
+                    <Link to={`/products/${product._id}`} className="block w-full h-full">
+                      <img src={product.images?.[0]?.url} alt={product.name} className="w-full h-full object-contain" />
+                    </Link>
                   </div>
-                ))}
-              </div>
-            </div>
+
+                  {/* Title & Brand */}
+                  <Link to={`/products/${product._id}`} className="font-bold text-slate-900 hover:text-brand-orange transition-colors line-clamp-2 min-w-0">
+                    {product.name}
+                  </Link>
+                  <p className="text-sm text-slate-500 mt-1 uppercase tracking-wider">{product.brand}</p>
+
+                  {/* Price & Stock */}
+                  <div className="mt-3 flex items-center flex-wrap gap-x-3 gap-y-1">
+                    <span className="font-bold text-lg text-slate-900">{formatPrice(product.offerPrice)}</span>
+                    {product.originalPrice > product.offerPrice && (
+                      <span className="text-sm text-slate-400 line-through">{formatPrice(product.originalPrice)}</span>
+                    )}
+                  </div>
+                  {product.stock > 0 ? (
+                    <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded self-start mt-2">In Stock</span>
+                  ) : (
+                    <span className="text-xs text-red-500 bg-red-50 px-2 py-1 rounded self-start mt-2">Out of Stock</span>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-3 mt-5 pt-4 border-t border-slate-100">
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      disabled={product.stock <= 0}
+                      className="btn-secondary py-2.5 px-4 min-h-[44px] flex items-center justify-center gap-2 flex-1 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                    >
+                      <FiShoppingCart /> Add
+                    </button>
+                    <button
+                      onClick={() => handleRemove(product._id)}
+                      className="text-slate-400 hover:text-red-500 min-h-[44px] min-w-[44px] px-3 rounded-lg hover:bg-red-50 transition-colors text-sm font-medium"
+                      title="Remove from wishlist"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </RevealItem>
+              ))}
+            </RevealStagger>
           )}
         </div>
       </div>

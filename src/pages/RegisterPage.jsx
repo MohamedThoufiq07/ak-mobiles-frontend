@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
+import { Reveal } from '../components/ui/animations';
 import logo from '../assets/logo_dark_text.png';
 
 const RegisterPage = () => {
@@ -74,7 +75,7 @@ const RegisterPage = () => {
           <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full mix-blend-screen filter blur-[100px] opacity-25 bg-purple-600"></div>
         </div>
 
-        <div className="max-w-md w-full glass-card rounded-2xl shadow-lg pt-3 pb-4 px-5 relative z-10 border border-slate-200/60 text-slate-800">
+        <Reveal y={16} className="w-full max-w-md glass-card rounded-2xl shadow-lg pt-3 pb-4 px-5 relative z-10 border border-slate-200/60 text-slate-800">
           <div className="text-center mb-2.5">
             <Link to="/" className="inline-block mb-0.5">
               <img src={logo} alt="AK Mobiles" className="h-16 mx-auto object-contain" />
@@ -94,7 +95,7 @@ const RegisterPage = () => {
                   type="text"
                   name="name"
                   required
-                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-1.5 text-xs"
+                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-xs"
                   placeholder="Enter your full name"
                   value={formData.name}
                   onChange={handleChange}
@@ -112,7 +113,7 @@ const RegisterPage = () => {
                   type="email"
                   name="email"
                   required
-                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-1.5 text-xs"
+                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-xs"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={handleChange}
@@ -130,7 +131,7 @@ const RegisterPage = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   required
-                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-1.5 text-xs"
+                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-xs"
                   placeholder="At least 6 characters"
                   value={formData.password}
                   onChange={handleChange}
@@ -155,7 +156,7 @@ const RegisterPage = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   required
-                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-1.5 text-xs"
+                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-xs"
                   placeholder="Repeat your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
@@ -173,7 +174,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full btn-premium py-2.5 mt-2 disabled:opacity-70 text-xs font-bold"
+              className="w-full btn-premium py-3 mt-2 disabled:opacity-70 text-xs font-bold"
             >
               {isSubmitting ? 'Creating Account...' : 'Create Account'}
             </button>
@@ -185,7 +186,7 @@ const RegisterPage = () => {
               Sign in instead
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </>
   );

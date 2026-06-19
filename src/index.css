@@ -5,12 +5,39 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply text-slate-800 font-sans antialiased min-h-screen bg-slate-50/50;
+  html {
+    /* Smooth in-page anchor scrolling (e.g. /#brands, /#offers links).
+       NOTE: overflow-x is intentionally NOT set on <html> — doing so makes the
+       root a scroll container and breaks position:sticky (e.g. the cart summary).
+       Horizontal clipping is scoped to <body> below instead. */
+    scroll-behavior: smooth;
   }
-  
+
+  /* Hard guard against horizontal scrollbars at every breakpoint. */
+  body {
+    @apply max-w-full overflow-x-hidden text-slate-800 font-sans antialiased min-h-screen bg-slate-50/50;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold text-slate-900 tracking-tight;
+  }
+
+  /* Media that should never overflow or distort its box. */
+  img, video {
+    @apply max-w-full;
+  }
+
+  /* Accessibility: honor the OS "reduce motion" setting everywhere. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

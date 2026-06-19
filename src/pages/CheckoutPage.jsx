@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { formatPrice } from '../utils/formatPrice';
 import toast from 'react-hot-toast';
+import { Reveal } from '../components/ui/animations';
 
 const CheckoutStepBar = () => {
   const steps = ['Browse', 'Cart', 'Checkout', 'Payment'];
@@ -212,7 +213,7 @@ const CheckoutPage = () => {
               <form id="checkout-form" onSubmit={handlePayment} className="space-y-8">
                 
                 {/* Contact Info */}
-                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
+                <Reveal className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
                   <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <span className="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm">1</span>
                     Contact Information
@@ -254,10 +255,10 @@ const CheckoutPage = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </Reveal>
 
                 {/* Shipping Info */}
-                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
+                <Reveal delay={0.05} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
                   <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <span className="w-8 h-8 rounded-full bg-brand-dark text-white flex items-center justify-center text-sm">2</span>
                     Shipping Address
@@ -321,13 +322,13 @@ const CheckoutPage = () => {
                       />
                     </div>
                   </div>
-                </div>
+                </Reveal>
               </form>
             </div>
 
             {/* Right Column - Order Summary & Payment */}
             <div className="lg:w-1/3">
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 sticky top-24 overflow-hidden">
+              <Reveal delay={0.1} className="bg-white rounded-2xl shadow-sm border border-slate-200 sticky top-24 overflow-hidden">
                 <div className="bg-slate-50 p-6 border-b border-slate-200">
                   <h2 className="text-xl font-bold text-slate-900 mb-4">Order Summary</h2>
                   
@@ -463,7 +464,7 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

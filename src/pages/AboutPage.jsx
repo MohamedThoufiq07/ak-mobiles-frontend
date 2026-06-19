@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiUsers, FiAward, FiStar, FiClock, FiShield, FiPhone } from 'react-icons/fi';
+import { FiCheckCircle, FiUsers, FiAward, FiShield } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 import logoDarkText from '../assets/logo_dark_text.png';
 
 const AboutPage = () => {
@@ -59,29 +60,6 @@ const AboutPage = () => {
     }
   }, [animationStage]);
 
-  // Animation Variants for cards section
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 30, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
-    },
-  };
-
   return (
     <>
       <Helmet>
@@ -128,7 +106,7 @@ const AboutPage = () => {
               <span className="text-xs font-extrabold tracking-widest text-brand-blue uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block mb-4 shadow-sm">
                 Who We Are
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight tracking-tight text-slate-900 bg-gradient-to-r from-slate-900 via-slate-850 to-brand-blue bg-clip-text text-transparent">
+              <h1 className="text-[clamp(2.25rem,5vw,3.75rem)] font-black mb-6 leading-tight tracking-tight text-slate-900 bg-gradient-to-r from-slate-900 via-slate-850 to-brand-blue bg-clip-text text-transparent">
                 Connecting You to <br/>
                 <span className="bg-gradient-to-r from-brand-blue to-purple-600 bg-clip-text text-transparent">World Class Tech</span>
               </h1>
@@ -205,17 +183,17 @@ const AboutPage = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
             {/* Visual Frame */}
-            <div className="lg:w-1/2 relative w-full">
+            <Reveal className="lg:w-1/2 relative w-full">
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-purple-600 rounded-3xl transform rotate-2 opacity-5 scale-[0.98]"></div>
               <img 
                 src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80" 
                 alt="AK Mobiles Premium Phone Showcase" 
                 className="rounded-3xl shadow-xl w-full object-cover max-h-[420px] relative z-10 border border-slate-100 p-2 bg-white"
               />
-            </div>
-            
+            </Reveal>
+
             {/* Content block */}
-            <div className="lg:w-1/2">
+            <Reveal delay={0.1} className="lg:w-1/2">
               <span className="text-[10px] font-extrabold tracking-widest text-purple-600 uppercase bg-purple-50 border border-purple-100 px-3 py-1 rounded-full inline-block mb-3">
                 Established Regionally
               </span>
@@ -233,7 +211,7 @@ const AboutPage = () => {
                   From data transfer and configuration assistance to direct warranty coordination, we follow up every purchase with robust after-sales care, ensuring your digital companion is fully supported.
                 </p>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -242,44 +220,37 @@ const AboutPage = () => {
       <section className="py-16 bg-slate-950 text-white relative overflow-hidden mx-4 rounded-3xl border border-slate-900 shadow-md">
         <div className="absolute top-0 left-0 w-80 h-80 bg-gradient-to-tr from-brand-blue/10 to-transparent rounded-full blur-[80px]"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            <div className="text-center">
+          <RevealStagger className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+            <RevealItem className="text-center">
               <div className="text-5xl font-black mb-3 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">10+</div>
               <div className="text-xs uppercase tracking-widest font-bold text-slate-400">Years of Service</div>
-            </div>
-            <div className="text-center">
+            </RevealItem>
+            <RevealItem className="text-center">
               <div className="text-5xl font-black mb-3 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">50k+</div>
               <div className="text-xs uppercase tracking-widest font-bold text-slate-400">Happy Customer Visits</div>
-            </div>
-            <div className="text-center">
+            </RevealItem>
+            <RevealItem className="text-center">
               <div className="text-5xl font-black mb-3 bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">100%</div>
               <div className="text-xs uppercase tracking-widest font-bold text-slate-400">Genuine Inventory</div>
-            </div>
-            <div className="text-center">
+            </RevealItem>
+            <RevealItem className="text-center">
               <div className="text-5xl font-black mb-3 bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">4.9★</div>
               <div className="text-xs uppercase tracking-widest font-bold text-slate-400">Average Store Rating</div>
-            </div>
-          </div>
+            </RevealItem>
+          </RevealStagger>
         </div>
       </section>
 
       {/* Why Choose Us Cards */}
       <section className="py-24 bg-slate-50/50">
         <div className="container mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">Why Shop With Us?</h2>
+          <Reveal className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-[clamp(1.875rem,4vw,2.25rem)] font-extrabold text-slate-900 mb-4">Why Shop With Us?</h2>
             <p className="text-slate-500 text-lg">We stand by quality, affordability, and regional reliability.</p>
-          </div>
-          
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
-          >
-            <motion.div 
-              variants={itemVariants}
+          </Reveal>
+
+          <RevealStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <RevealItem
               className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
               <div className="w-14 h-14 bg-blue-50 text-brand-blue rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -289,10 +260,9 @@ const AboutPage = () => {
               <p className="text-slate-500 text-sm leading-relaxed">
                 All inventory is sourced directly from certified brand distributors. Complete box seals, GST bills, and official warranties.
               </p>
-            </motion.div>
-            
-            <motion.div 
-              variants={itemVariants}
+            </RevealItem>
+
+            <RevealItem
               className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
               <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -302,10 +272,9 @@ const AboutPage = () => {
               <p className="text-slate-500 text-sm leading-relaxed">
                 Competitive pricing structures, trade-in exchange bonuses, and special credit card/no-cost EMI structures.
               </p>
-            </motion.div>
-            
-            <motion.div 
-              variants={itemVariants}
+            </RevealItem>
+
+            <RevealItem
               className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
               <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -315,10 +284,9 @@ const AboutPage = () => {
               <p className="text-slate-500 text-sm leading-relaxed">
                 Our in-store technical team works to help you compare specs and select the ideal device. No pushy sales.
               </p>
-            </motion.div>
-            
-            <motion.div 
-              variants={itemVariants}
+            </RevealItem>
+
+            <RevealItem
               className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group"
             >
               <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -328,8 +296,8 @@ const AboutPage = () => {
               <p className="text-slate-500 text-sm leading-relaxed">
                 Free setup, phone-to-phone data restoration, and seamless coordination with service outlets for warranty issues.
               </p>
-            </motion.div>
-          </motion.div>
+            </RevealItem>
+          </RevealStagger>
         </div>
       </section>
     </>

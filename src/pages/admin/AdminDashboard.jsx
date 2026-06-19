@@ -9,6 +9,7 @@ import {
 import adminApi from '../../utils/adminApi';
 import { formatPrice } from '../../utils/formatPrice';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { Reveal, RevealStagger, RevealItem } from '../../components/ui/animations';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -73,8 +74,8 @@ const AdminDashboard = () => {
   return (
     <>
       {/* Stats Cards — REAL data */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+      <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <RevealItem className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
           <div className="w-14 h-14 bg-green-50 text-green-500 rounded-lg flex items-center justify-center shrink-0">
             <FiDollarSign size={24} />
           </div>
@@ -82,9 +83,9 @@ const AdminDashboard = () => {
             <p className="text-sm text-slate-500 font-medium">Total Revenue</p>
             <p className="text-2xl font-bold text-slate-900">{formatPrice(stats?.totalRevenue || 0)}</p>
           </div>
-        </div>
+        </RevealItem>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+        <RevealItem className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
           <div className="w-14 h-14 bg-blue-50 text-blue-500 rounded-lg flex items-center justify-center shrink-0">
             <FiShoppingBag size={24} />
           </div>
@@ -92,32 +93,36 @@ const AdminDashboard = () => {
             <p className="text-sm text-slate-500 font-medium">Total Orders</p>
             <p className="text-2xl font-bold text-slate-900">{stats?.totalOrders ?? 0}</p>
           </div>
-        </div>
+        </RevealItem>
 
-        <Link to="/admin/products" className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="w-14 h-14 bg-orange-50 text-brand-orange rounded-lg flex items-center justify-center shrink-0">
-            <FiPackage size={24} />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 font-medium">Products</p>
-            <p className="text-2xl font-bold text-slate-900">{stats?.totalProducts ?? 0}</p>
-          </div>
-        </Link>
+        <RevealItem>
+          <Link to="/admin/products" className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow h-full">
+            <div className="w-14 h-14 bg-orange-50 text-brand-orange rounded-lg flex items-center justify-center shrink-0">
+              <FiPackage size={24} />
+            </div>
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Products</p>
+              <p className="text-2xl font-bold text-slate-900">{stats?.totalProducts ?? 0}</p>
+            </div>
+          </Link>
+        </RevealItem>
 
-        <Link to="/admin/users" className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
-          <div className="w-14 h-14 bg-purple-50 text-purple-500 rounded-lg flex items-center justify-center shrink-0">
-            <FiUsers size={24} />
-          </div>
-          <div>
-            <p className="text-sm text-slate-500 font-medium">Customers</p>
-            <p className="text-2xl font-bold text-slate-900">{stats?.totalCustomers ?? 0}</p>
-          </div>
-        </Link>
-      </div>
+        <RevealItem>
+          <Link to="/admin/users" className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow h-full">
+            <div className="w-14 h-14 bg-purple-50 text-purple-500 rounded-lg flex items-center justify-center shrink-0">
+              <FiUsers size={24} />
+            </div>
+            <div>
+              <p className="text-sm text-slate-500 font-medium">Customers</p>
+              <p className="text-2xl font-bold text-slate-900">{stats?.totalCustomers ?? 0}</p>
+            </div>
+          </Link>
+        </RevealItem>
+      </RevealStagger>
 
       {/* Revenue chart + Status breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+        <Reveal className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-100 p-6">
           <h2 className="text-lg font-bold text-slate-900 mb-4">Revenue (last 12 months)</h2>
           {revenueSeries.length === 0 ? (
             <p className="text-sm text-slate-500 py-12 text-center">No revenue data yet.</p>
@@ -138,9 +143,9 @@ const AdminDashboard = () => {
               </AreaChart>
             </ResponsiveContainer>
           )}
-        </div>
+        </Reveal>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+        <Reveal delay={0.1} className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
           <h2 className="text-lg font-bold text-slate-900 mb-4">Orders by Status</h2>
           {statusBreakdown.length === 0 ? (
             <p className="text-sm text-slate-500 py-12 text-center">No orders yet.</p>
@@ -156,17 +161,17 @@ const AdminDashboard = () => {
               ))}
             </div>
           )}
-        </div>
+        </Reveal>
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
+      <Reveal className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
         <div className="p-6 border-b border-slate-100 flex justify-between items-center">
           <h2 className="text-lg font-bold text-slate-900">Recent Orders</h2>
           <Link to="/admin/orders" className="text-sm font-medium text-brand-orange hover:underline">View All</Link>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left border-collapse min-w-[600px]">
             <thead>
               <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
                 <th className="p-4 font-semibold">Order ID</th>
@@ -180,15 +185,15 @@ const AdminDashboard = () => {
               {recentOrders.length > 0 ? (
                 recentOrders.map((order) => (
                   <tr key={order._id} className="hover:bg-slate-50">
-                    <td className="p-4 text-sm font-mono text-slate-600">{order._id.substring(order._id.length - 8)}</td>
-                    <td className="p-4 text-sm font-medium text-slate-900">{order.user?.name || order.shippingAddress?.name || 'Guest'}</td>
-                    <td className="p-4 text-sm text-slate-500">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="p-4 text-sm">
+                    <td className="p-4 text-sm font-mono text-slate-600 whitespace-nowrap">{order._id.substring(order._id.length - 8)}</td>
+                    <td className="p-4 text-sm font-medium text-slate-900 whitespace-nowrap">{order.user?.name || order.shippingAddress?.name || 'Guest'}</td>
+                    <td className="p-4 text-sm text-slate-500 whitespace-nowrap">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="p-4 text-sm whitespace-nowrap">
                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${STATUS_STYLES[order.orderStatus] || 'bg-slate-100 text-slate-800'}`}>
                         {order.orderStatus}
                       </span>
                     </td>
-                    <td className="p-4 text-sm font-bold text-slate-900">{formatPrice(order.totalPrice)}</td>
+                    <td className="p-4 text-sm font-bold text-slate-900 whitespace-nowrap">{formatPrice(order.totalPrice)}</td>
                   </tr>
                 ))
               ) : (
@@ -197,7 +202,7 @@ const AdminDashboard = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </Reveal>
     </>
   );
 };

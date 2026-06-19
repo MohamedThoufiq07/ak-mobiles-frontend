@@ -4,9 +4,10 @@ import { Helmet } from 'react-helmet-async';
 import { FiMail, FiLock, FiKey, FiArrowLeft, FiShield } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import adminApi from '../../utils/adminApi';
+import { Reveal } from '../../components/ui/animations';
 
 const inputCls =
-  'w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
+  'w-full pl-10 pr-3 py-3 min-h-[44px] rounded-lg border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
 
 const AdminForgotPassword = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const AdminForgotPassword = () => {
       </Helmet>
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-10">
-        <div className="w-full max-w-md">
+        <Reveal y={16} className="w-full max-w-md">
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/30 mb-4">
               <FiShield size={26} />
@@ -87,7 +88,7 @@ const AdminForgotPassword = () => {
                     <input type="email" required className={inputCls} placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} />
                   </div>
                 </div>
-                <button type="submit" disabled={submitting} className="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20">
+                <button type="submit" disabled={submitting} className="w-full min-h-[44px] py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20">
                   {submitting ? 'Sending...' : 'Send Reset Code'}
                 </button>
               </form>
@@ -114,7 +115,7 @@ const AdminForgotPassword = () => {
                     <input type="password" required className={inputCls} placeholder="Re-enter new password" value={confirm} onChange={(e) => setConfirm(e.target.value)} />
                   </div>
                 </div>
-                <button type="submit" disabled={submitting} className="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20">
+                <button type="submit" disabled={submitting} className="w-full min-h-[44px] py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20">
                   {submitting ? 'Resetting...' : 'Reset Password'}
                 </button>
               </form>
@@ -126,7 +127,7 @@ const AdminForgotPassword = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </>
   );

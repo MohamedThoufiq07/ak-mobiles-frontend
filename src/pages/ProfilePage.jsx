@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../context/AuthContext';
 import { FiUser, FiMail, FiPhone, FiMapPin, FiSave, FiLogOut } from 'react-icons/fi';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal } from '../components/ui/animations';
 
 const ProfilePage = () => {
   const { user, loading, isAuthenticated, updateProfile, logout } = useAuth();
@@ -81,7 +82,7 @@ const ProfilePage = () => {
           <div className="flex flex-col md:flex-row gap-8">
             
             {/* Sidebar */}
-            <div className="md:w-1/3">
+            <Reveal className="md:w-1/3">
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden sticky top-24">
                 <div className="bg-brand-dark p-8 text-center relative">
                   <div className="w-24 h-24 bg-white text-brand-dark rounded-full mx-auto flex items-center justify-center text-4xl font-bold uppercase shadow-lg z-10 relative">
@@ -111,10 +112,10 @@ const ProfilePage = () => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
             {/* Main Content */}
-            <div className="md:w-2/3">
+            <Reveal delay={0.1} className="md:w-2/3">
               <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                 <h1 className="text-2xl font-bold text-slate-900 mb-8 border-b border-slate-100 pb-4">Profile Settings</h1>
                 
@@ -226,17 +227,17 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="flex justify-end">
-                    <button 
+                    <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="btn-primary flex items-center gap-2 min-w-[150px] justify-center disabled:opacity-70"
+                      className="btn-primary flex items-center gap-2 w-full sm:w-auto sm:min-w-[150px] py-3 justify-center disabled:opacity-70"
                     >
                       {isSubmitting ? 'Saving...' : <><FiSave /> Save Changes</>}
                     </button>
                   </div>
                 </form>
               </div>
-            </div>
+            </Reveal>
           </div>
         </div>
       </div>

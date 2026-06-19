@@ -3,6 +3,7 @@ import { FiMail } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import adminApi from '../../utils/adminApi';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { RevealStagger, RevealItem } from '../../components/ui/animations';
 
 const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -39,9 +40,9 @@ const AdminMessages = () => {
           No contact messages yet.
         </div>
       ) : (
-        <div className="space-y-4">
+        <RevealStagger className="space-y-4">
           {messages.map((m) => (
-            <div key={m._id} className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
+            <RevealItem key={m._id} className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
               <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                 <div>
                   <p className="font-bold text-slate-900">{m.subject || '(No subject)'}</p>
@@ -51,10 +52,10 @@ const AdminMessages = () => {
                 </div>
                 <span className="text-xs text-slate-400">{new Date(m.createdAt).toLocaleString()}</span>
               </div>
-              <p className="text-sm text-slate-700 whitespace-pre-wrap">{m.message}</p>
-            </div>
+              <p className="text-sm text-slate-700 whitespace-pre-wrap break-words">{m.message}</p>
+            </RevealItem>
           ))}
-        </div>
+        </RevealStagger>
       )}
 
       {pages > 1 && (

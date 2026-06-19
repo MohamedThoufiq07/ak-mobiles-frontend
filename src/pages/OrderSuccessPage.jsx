@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { FiCheckCircle, FiPackage, FiArrowRight, FiFileText } from 'react-icons/fi';
 import api from '../utils/api';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal } from '../components/ui/animations';
 
 const OrderSuccessPage = () => {
   const { id } = useParams();
@@ -45,7 +46,7 @@ const OrderSuccessPage = () => {
 
       <div className="bg-slate-50 min-h-[80vh] py-12">
         <div className="container mx-auto px-4 max-w-3xl">
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+          <Reveal y={16} className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
             
             {/* Header */}
             <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-center text-white">
@@ -89,8 +90,8 @@ const OrderSuccessPage = () => {
                 A confirmation email has been sent to <span className="font-semibold text-slate-700">{order.shippingAddress.email}</span>
               </p>
             </div>
-            
-          </div>
+
+          </Reveal>
         </div>
       </div>
     </>

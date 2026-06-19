@@ -7,6 +7,7 @@ import { formatPrice } from '../utils/formatPrice';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal } from '../components/ui/animations';
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -163,7 +164,7 @@ const OrderDetailPage = () => {
             <div className="lg:w-2/3 space-y-6">
               
               {/* Order Status & Timeline */}
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+              <Reveal className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
                 <div className="flex flex-wrap justify-between items-end mb-8 border-b border-slate-100 pb-6">
                   <div>
                     <h1 className="text-2xl font-bold text-slate-900 mb-1">Order Details</h1>
@@ -223,10 +224,10 @@ const OrderDetailPage = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </Reveal>
 
               {/* Items List */}
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
+              <Reveal delay={0.05} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8">
                 <h3 className="text-lg font-bold text-slate-900 mb-6">Items in Order</h3>
                 
                 <div className="space-y-6">
@@ -248,15 +249,15 @@ const OrderDetailPage = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Reveal>
 
             </div>
 
             {/* Right Column - Summary & Shipping */}
             <div className="lg:w-1/3 space-y-6">
-              
+
               {/* Payment Summary */}
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+              <Reveal delay={0.1} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 className="text-lg font-bold text-slate-900 mb-4 pb-4 border-b border-slate-100">Payment Summary</h3>
                 
                 <div className="space-y-3 text-sm mb-6">
@@ -288,10 +289,10 @@ const OrderDetailPage = () => {
                     <p className="text-xs text-slate-400 mt-1 font-mono break-all">Txn ID: {order.paymentInfo.razorpayPaymentId}</p>
                   )}
                 </div>
-              </div>
+              </Reveal>
 
               {/* Shipping Address */}
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+              <Reveal delay={0.15} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 className="text-lg font-bold text-slate-900 mb-4 pb-4 border-b border-slate-100">Delivery Information</h3>
                 
                 <p className="font-bold text-slate-900 mb-1">{order.shippingAddress.name}</p>
@@ -303,7 +304,7 @@ const OrderDetailPage = () => {
                   <p>{order.shippingAddress.city}, {order.shippingAddress.state}</p>
                   <p className="font-medium mt-1">PIN: {order.shippingAddress.postalCode}</p>
                 </div>
-              </div>
+              </Reveal>
 
             </div>
           </div>

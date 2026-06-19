@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { FiMail, FiArrowLeft, FiCheckCircle, FiLock } from 'react-icons/fi';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
+import { Reveal } from '../components/ui/animations';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -38,8 +39,8 @@ const ForgotPasswordPage = () => {
           <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full mix-blend-screen filter blur-[100px] opacity-25 bg-purple-600"></div>
         </div>
 
-        <div className="max-w-md w-full glass-card rounded-2xl shadow-xl p-8 relative z-10 border border-slate-200/60 text-center text-slate-800">
-          
+        <Reveal y={16} className="w-full max-w-md glass-card rounded-2xl shadow-xl p-8 relative z-10 border border-slate-200/60 text-center text-slate-800">
+
           {isSuccess ? (
             <div className="py-8">
               <div className="w-20 h-20 bg-green-500/10 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -49,7 +50,7 @@ const ForgotPasswordPage = () => {
               <p className="text-slate-500 mb-8">
                 We've sent password reset instructions to <span className="font-bold">{email}</span>. Please check your inbox and spam folder.
               </p>
-              <Link to="/login" className="btn-premium inline-block">
+              <Link to="/login" className="btn-premium inline-block w-full sm:w-auto py-3">
                 Back to Login
               </Link>
             </div>
@@ -73,7 +74,7 @@ const ForgotPasswordPage = () => {
                     <input
                       type="email"
                       required
-                      className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850"
+                      className="input-field pl-10 py-3 bg-white/90 border-slate-200 text-slate-850"
                       placeholder="Enter your registered email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +98,7 @@ const ForgotPasswordPage = () => {
               </div>
             </>
           )}
-        </div>
+        </Reveal>
       </div>
     </>
   );

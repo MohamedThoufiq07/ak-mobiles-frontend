@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import api from '../utils/api';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 
 // --- DEMO DATA ---
 const DEMO_PRODUCTS = [
@@ -195,7 +196,7 @@ const ProductCardUI = ({ product, disableHover = false }) => {
       </div>
 
       <button
-        className="absolute top-4 right-4 z-10 p-2 bg-white/90 rounded-full text-slate-400 hover:text-brand-danger hover:bg-red-50 transition-colors shadow-sm"
+        className="absolute top-4 right-4 z-10 p-2.5 bg-white/90 rounded-full text-slate-400 hover:text-brand-danger hover:bg-red-50 transition-colors shadow-sm"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -257,13 +258,13 @@ const ProductCardUI = ({ product, disableHover = false }) => {
           <div className="grid grid-cols-2 gap-2 mt-2">
             <button
               onClick={handleAddToCart}
-              className="text-xs sm:text-sm font-semibold border-2 border-brand-blue text-brand-blue rounded-full py-1.5 hover:bg-brand-blue hover:text-white transition-colors flex justify-center items-center gap-1"
+              className="text-xs sm:text-sm font-semibold border-2 border-brand-blue text-brand-blue rounded-full py-2.5 sm:py-2 hover:bg-brand-blue hover:text-white transition-colors flex justify-center items-center gap-1"
             >
               <FiShoppingCart size={14} /> Add
             </button>
             <button
               onClick={handleBuyNow}
-              className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-brand-orange to-red-500 text-white rounded-full py-1.5 hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-95 transition-all duration-200 flex justify-center items-center text-center shadow-sm"
+              className="text-xs sm:text-sm font-semibold bg-gradient-to-r from-brand-orange to-red-500 text-white rounded-full py-2.5 sm:py-2 hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-95 transition-all duration-200 flex justify-center items-center text-center shadow-sm"
             >
               Buy Now
             </button>
@@ -403,7 +404,7 @@ const HomePage = () => {
       </Helmet>
 
       {/* HERO SECTION (Attractive Floating Light Modern glass) */}
-      <section className="relative pt-10 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-tr from-blue-50/60 via-white/80 to-purple-50/60 text-slate-800 mx-4 mt-4 rounded-3xl shadow-[0_15px_35px_rgba(0,0,0,0.05)] border border-slate-200/60">
+      <section className="relative pt-10 pb-16 sm:pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-tr from-blue-50/60 via-white/80 to-purple-50/60 text-slate-800 mx-3 sm:mx-4 mt-4 rounded-3xl shadow-[0_15px_35px_rgba(0,0,0,0.05)] border border-slate-200/60">
         {/* Animated Light Background Mesh */}
         <div className="absolute inset-0 z-0 overflow-hidden opacity-60">
           <motion.div
@@ -430,14 +431,14 @@ const HomePage = () => {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzOXYyMWgyNHYtMjFINzZ6bTAtMzl2MjFINzZWLjEySDM2em0yNC41IDU4LjV2LTE4aC0yM3YxOGgyM3ptMC0zOXYtMThoLTIzdjE4aDIzeiIgZmlsbD0iIzAwMDAwMCIgZmlsbC1vcGFjaXR5PSIwLjAyIi8+PC9nPjwvc3ZnPg==')] opacity-40"></div>
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-full">
+          <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12 lg:gap-20 min-w-0">
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="w-full md:w-1/2 flex flex-col items-start"
+              className="w-full md:w-1/2 flex flex-col items-start min-w-0"
             >
               <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-50 to-red-50 text-brand-orange font-bold text-sm mb-6 border border-orange-200 shadow-md backdrop-blur-md hover:scale-105 transition-transform cursor-pointer">
                 <span className="relative flex h-3 w-3 mr-1">
@@ -447,7 +448,7 @@ const HomePage = () => {
                 Mega Sale Active - Up to 40% Off
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight drop-shadow-sm">
+              <h1 className="text-[clamp(2.25rem,7vw,4.5rem)] font-extrabold text-slate-900 leading-[1.1] mb-6 tracking-tight drop-shadow-sm break-words max-w-full">
                 Upgrade to the <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-pink-500 to-purple-600 animate-gradient-x">
                   Ultimate Experience
@@ -485,7 +486,7 @@ const HomePage = () => {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="w-full md:w-1/2 relative flex justify-center"
+              className="w-full md:w-1/2 relative flex justify-center min-w-0"
             >
               {/* Floating Chips */}
               <motion.div
@@ -523,7 +524,7 @@ const HomePage = () => {
       </section>
 
       {/* MARQUEE BRAND STRIP (Interactive & Faster) */}
-      <section className="py-6 overflow-hidden relative mx-4 rounded-3xl glass-effect my-8 border border-slate-200/50">
+      <Reveal as="section" className="py-6 overflow-hidden relative mx-3 sm:mx-4 rounded-3xl glass-effect my-8 border border-slate-200/50">
         <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none rounded-l-3xl"></div>
         <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none rounded-r-3xl"></div>
 
@@ -573,54 +574,57 @@ const HomePage = () => {
             ))}
           </Swiper>
         </div>
-      </section>
+      </Reveal>
 
       {/* FEATURED CATEGORIES SECTION */}
-      <section className="py-16 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900">Shop by Category</h2>
-            <p className="text-slate-500 text-lg">Everything you need in one place. Authentic accessories to complement your perfect smartphone.</p>
-          </div>
+      <section className="py-12 sm:py-16 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 text-slate-900">Shop by Category</h2>
+            <p className="text-slate-500 text-base sm:text-lg">Everything you need in one place. Authentic accessories to complement your perfect smartphone.</p>
+          </Reveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          <RevealStagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
             {CATEGORIES.map((cat, idx) => (
-              <Link to={`/products?category=${encodeURIComponent(
-                cat.name === 'Mobile Cases' || cat.name === 'Screen Protectors' 
-                  ? 'Accessories' 
-                  : cat.name === 'Earbuds' || cat.name === 'Bluetooth Speakers' || cat.name === 'Neckbands' 
-                    ? 'Earbuds' 
-                    : cat.name
-              )}`} key={idx}>
-                <motion.div
-                  whileHover={{ y: -8 }}
-                  className={`bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300 group flex flex-col items-center h-full`}
-                >
-                  <div className="w-24 h-24 mb-4 flex items-center justify-center bg-slate-50 border border-slate-100 rounded-full p-2 group-hover:scale-110 transition-transform duration-300 overflow-hidden shadow-sm">
-                    <img src={cat.image} alt={cat.name} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain" />
-                  </div>
-                  <h3 className="text-base font-bold text-slate-800 mb-1 text-center">{cat.name}</h3>
-                  <div className="flex items-center text-slate-500 text-xs font-medium">
-                    {cat.count} Products <FiArrowRight className="ml-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-                  </div>
-                </motion.div>
-              </Link>
+              <RevealItem key={idx}>
+                <Link to={`/products?category=${encodeURIComponent(
+                  cat.name === 'Mobile Cases' || cat.name === 'Screen Protectors'
+                    ? 'Accessories'
+                    : cat.name === 'Earbuds' || cat.name === 'Bluetooth Speakers' || cat.name === 'Neckbands'
+                      ? 'Earbuds'
+                      : cat.name
+                )}`} className="block h-full">
+                  <motion.div
+                    whileHover={{ y: -8 }}
+                    className={`bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-slate-200/50 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 transition-all duration-300 group flex flex-col items-center h-full`}
+                  >
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 mb-4 flex items-center justify-center bg-slate-50 border border-slate-100 rounded-full p-2 group-hover:scale-110 transition-transform duration-300 overflow-hidden shadow-sm">
+                      <img src={cat.image} alt={cat.name} loading="lazy" decoding="async" className="max-w-full max-h-full object-contain" />
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800 mb-1 text-center break-words">{cat.name}</h3>
+                    <div className="flex items-center text-slate-500 text-xs font-medium">
+                      {cat.count} Products <FiArrowRight className="ml-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </motion.div>
+                </Link>
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
         </div>
       </section>
 
       {/* BRAND SHOP SECTION */}
-      <section id="brands" className="py-16 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900">Shop by Brand</h2>
-            <p className="text-slate-500 text-lg">Authorized dealer for all major brands. 100% genuine guaranteed.</p>
-          </div>
+      <section id="brands" className="py-12 sm:py-16 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 text-slate-900">Shop by Brand</h2>
+            <p className="text-slate-500 text-base sm:text-lg">Authorized dealer for all major brands. 100% genuine guaranteed.</p>
+          </Reveal>
 
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-5xl mx-auto">
+          <RevealStagger className="flex flex-wrap justify-center gap-4 sm:gap-6 max-w-5xl mx-auto">
             {BRAND_DATA.map((brand, idx) => (
-              <Link to={`/products?brand=${brand.name}`} key={idx}>
+              <RevealItem key={idx}>
+                <Link to={`/products?brand=${brand.name}`} className="block">
                 <motion.div
                   whileHover={{ scale: 1.1, y: -4 }}
                   className="p-4 rounded-full shadow-sm border border-slate-200/60 flex items-center justify-center hover:shadow-lg transition-all duration-300 group w-20 h-20 sm:w-24 sm:h-24 mx-auto bg-white/90"
@@ -658,26 +662,27 @@ const HomePage = () => {
                     </span>
                   )}
                 </motion.div>
-              </Link>
+                </Link>
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
         </div>
       </section>
 
       {/* FEATURED PRODUCTS (HOT DEALS) */}
-      <section id="offers" className="py-16 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-extrabold mb-4 flex items-center gap-3 text-slate-900">
-                <FiZap className="text-brand-orange" /> Hot Deals Today
+      <section id="offers" className="py-12 sm:py-16 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 gap-6">
+            <div className="min-w-0">
+              <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 flex items-center gap-3 text-slate-900">
+                <FiZap className="text-brand-orange shrink-0" /> Hot Deals Today
               </h2>
-              <p className="text-slate-500 text-lg">Limited time offers — grab them before they're gone!</p>
+              <p className="text-slate-500 text-base sm:text-lg">Limited time offers — grab them before they're gone!</p>
             </div>
-            <Link to="/products" className="text-brand-blue font-semibold hover:underline hidden md:flex items-center gap-1">
+            <Link to="/products" className="text-brand-blue font-semibold hover:underline hidden md:flex items-center gap-1 shrink-0">
               View All Offers <FiArrowRight />
             </Link>
-          </div>
+          </Reveal>
 
           {/* Filters */}
           <div className="flex overflow-x-auto hide-scrollbar gap-2 mb-8 pb-2">
@@ -696,11 +701,13 @@ const HomePage = () => {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <RevealStagger className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
             {filteredProducts.map(product => (
-              <ProductCardUI key={product.id} product={product} />
+              <RevealItem key={product.id} className="h-full">
+                <ProductCardUI product={product} />
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
           {filteredProducts.length === 0 && (
             <div className="text-center py-10 text-slate-400">
               No deals found for this brand right now. Check back later!
@@ -710,12 +717,12 @@ const HomePage = () => {
       </section>
 
       {/* FLASH SALE BANNER */}
-      <section className="py-12 bg-gradient-to-r from-blue-50/90 via-indigo-50/90 to-purple-50/90 border border-slate-200/60 backdrop-blur-xl mx-4 rounded-3xl my-10 shadow-[0_15px_35px_rgba(0,0,0,0.05)]">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+      <section className="py-10 sm:py-12 bg-gradient-to-r from-blue-50/90 via-indigo-50/90 to-purple-50/90 border border-slate-200/60 backdrop-blur-xl mx-3 sm:mx-4 rounded-3xl my-10 shadow-[0_15px_35px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 min-w-0">
 
-            <div className="w-full lg:w-1/3 text-center lg:text-left text-slate-800">
-              <h2 className="text-4xl font-black text-brand-blue mb-2 italic flex items-center justify-center lg:justify-start gap-2">
+            <Reveal className="w-full lg:w-1/3 text-center lg:text-left text-slate-800">
+              <h2 className="text-[clamp(2rem,6vw,2.25rem)] font-black text-brand-blue mb-2 italic flex items-center justify-center lg:justify-start gap-2">
                 <FiZap /> {(flashActive && flashSettings?.flashSaleTitle) ? flashSettings.flashSaleTitle.toUpperCase() : 'FLASH SALE'}
               </h2>
               <p className="text-xl text-slate-600 mb-6 font-medium">{(flashActive && flashSettings?.flashSaleSubtitle) ? flashSettings.flashSaleSubtitle : 'Deals ending soon! Lowest prices of the month.'}</p>
@@ -736,9 +743,9 @@ const HomePage = () => {
                   <div className="text-xs text-slate-500 uppercase">Secs</div>
                 </div>
               </div>
-            </div>
+            </Reveal>
 
-            <div className="w-full lg:w-2/3 relative pb-4 flex justify-center lg:justify-start">
+            <div className="w-full lg:w-2/3 relative pb-4 flex justify-center lg:justify-start min-w-0">
               <Swiper
                 modules={[Autoplay]}
                 spaceBetween={24}
@@ -766,14 +773,14 @@ const HomePage = () => {
       </section>
 
       {/* NEW ARRIVALS */}
-      <section className="py-16 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 flex items-center justify-center gap-3 text-slate-900">
-              <FiStar className="text-brand-blue" /> Just Arrived
+      <section className="py-12 sm:py-16 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 flex items-center justify-center gap-3 text-slate-900">
+              <FiStar className="text-brand-blue shrink-0" /> Just Arrived
             </h2>
-            <p className="text-slate-500 text-lg">Be the first to own the latest technology</p>
-          </div>
+            <p className="text-slate-500 text-base sm:text-lg">Be the first to own the latest technology</p>
+          </Reveal>
 
           <div className="relative pb-8 -mx-4 sm:mx-0">
             <Swiper
@@ -799,42 +806,43 @@ const HomePage = () => {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-16 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900">Why Customers Love AK Mobiles</h2>
-          </div>
+      <section className="py-12 sm:py-16 bg-transparent">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
+            <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 text-slate-900">Why Customers Love AK Mobiles</h2>
+          </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[
               { icon: <FiTruck />, color: 'bg-blue-50', text: 'text-blue-600', title: 'Free Delivery', desc: 'Free shipping on orders above ₹499 across Tamil Nadu.' },
               { icon: <FiCheckCircle />, color: 'bg-green-50', text: 'text-green-600', title: '100% Genuine', desc: 'All products are brand authorized, sealed and genuine.' },
               { icon: <FiRefreshCw />, color: 'bg-orange-50', text: 'text-orange-600', title: 'Easy Returns', desc: '7-day hassle-free return and exchange policy.' },
               { icon: <FiCreditCard />, color: 'bg-purple-50', text: 'text-purple-600', title: 'EMI Options', desc: '0% EMI available on all major credit and debit cards.' },
             ].map((feature, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -10 }}
-                className="card-solid p-8 text-center"
-              >
-                <div className={`w-20 h-20 mx-auto rounded-full ${feature.color} ${feature.text} flex items-center justify-center text-4xl mb-6 shadow-inner`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-3 text-slate-800">{feature.title}</h3>
-                <p className="text-slate-500 leading-relaxed">{feature.desc}</p>
-              </motion.div>
+              <RevealItem key={idx} className="h-full">
+                <motion.div
+                  whileHover={{ y: -10 }}
+                  className="card-solid p-6 sm:p-8 text-center h-full"
+                >
+                  <div className={`w-16 h-16 sm:w-20 sm:h-20 mx-auto rounded-full ${feature.color} ${feature.text} flex items-center justify-center text-3xl sm:text-4xl mb-4 sm:mb-6 shadow-inner`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-3 text-slate-800">{feature.title}</h3>
+                  <p className="text-slate-500 leading-relaxed text-sm sm:text-base">{feature.desc}</p>
+                </motion.div>
+              </RevealItem>
             ))}
-          </div>
+          </RevealStagger>
         </div>
       </section>
 
       {/* CUSTOMER REVIEWS */}
-      <section className="py-16 bg-transparent overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-slate-900">What Our Customers Say</h2>
-            <p className="text-slate-500 text-lg">Trusted by 10,000+ happy customers across Tamil Nadu</p>
-          </div>
+      <section className="py-12 sm:py-16 bg-transparent overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-full">
+          <Reveal className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+            <h2 className="text-[clamp(1.75rem,4vw,2.25rem)] font-extrabold mb-4 text-slate-900">What Our Customers Say</h2>
+            <p className="text-slate-500 text-base sm:text-lg">Trusted by 10,000+ happy customers across Tamil Nadu</p>
+          </Reveal>
 
           <Swiper
             modules={[Pagination, Autoplay]}
@@ -880,29 +888,29 @@ const HomePage = () => {
       </section>
 
       {/* NEWSLETTER */}
-      <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-50/80 to-purple-50/80 border border-slate-200/60 shadow-md backdrop-blur-xl text-slate-800 mx-4 rounded-3xl my-10">
+      <section className="py-14 sm:py-20 relative overflow-hidden bg-gradient-to-br from-blue-50/80 to-purple-50/80 border border-slate-200/60 shadow-md backdrop-blur-xl text-slate-800 mx-3 sm:mx-4 rounded-3xl my-10">
         {/* Background elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white opacity-40 rounded-full blur-[100px] -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-white opacity-40 rounded-full blur-[100px] -ml-20 -mb-20"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 max-w-full bg-white opacity-40 rounded-full blur-[100px] -mr-20 -mt-20 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 max-w-full bg-white opacity-40 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none"></div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-5xl font-extrabold mb-6 text-slate-900">Get Exclusive Deals & Offers!</h2>
-            <p className="text-xl text-slate-600 mb-10">Subscribe to our newsletter and get ₹500 off your first order.</p>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-full">
+          <Reveal className="max-w-3xl mx-auto text-center">
+            <h2 className="text-[clamp(1.75rem,5vw,3rem)] font-extrabold mb-6 text-slate-900">Get Exclusive Deals &amp; Offers!</h2>
+            <p className="text-lg sm:text-xl text-slate-600 mb-8 sm:mb-10">Subscribe to our newsletter and get ₹500 off your first order.</p>
 
             <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto mb-4">
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-grow px-6 py-4 rounded-full text-slate-900 bg-white border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-blue/20 shadow-sm"
+                className="flex-grow min-w-0 px-6 py-4 rounded-full text-slate-900 bg-white border border-slate-200 focus:outline-none focus:ring-4 focus:ring-brand-blue/20 shadow-sm"
                 required
               />
-              <button type="submit" className="bg-brand-orange hover:bg-brand-orangeHover text-white font-bold px-8 py-4 rounded-full transition-colors shadow-xl shadow-brand-orange/40 whitespace-nowrap">
+              <button type="submit" className="bg-brand-orange hover:bg-brand-orangeHover text-white font-bold px-8 py-4 rounded-full transition-colors shadow-xl shadow-brand-orange/40 whitespace-nowrap hover:scale-[1.03] active:scale-95">
                 Subscribe Now
               </button>
             </form>
             <p className="text-sm text-slate-500">No spam. Unsubscribe anytime.</p>
-          </div>
+          </Reveal>
         </div>
       </section>
     </div>

@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiShield } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { useAdminAuth } from '../../context/AdminAuthContext';
+import { Reveal } from '../../components/ui/animations';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ const AdminLogin = () => {
   };
 
   const inputCls =
-    'w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
+    'w-full pl-10 pr-3 py-3 min-h-[44px] rounded-lg border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition';
 
   return (
     <>
@@ -42,7 +43,7 @@ const AdminLogin = () => {
       </Helmet>
 
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-10">
-        <div className="w-full max-w-md">
+        <Reveal y={16} className="w-full max-w-md">
           {/* Brand / badge */}
           <div className="text-center mb-6">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/30 mb-4">
@@ -102,7 +103,7 @@ const AdminLogin = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20"
+                className="w-full min-h-[44px] py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold transition-colors disabled:opacity-70 shadow-lg shadow-blue-600/20"
               >
                 {isSubmitting ? 'Signing in...' : 'Sign In to Dashboard'}
               </button>
@@ -112,7 +113,7 @@ const AdminLogin = () => {
           <p className="text-center text-xs text-slate-400 mt-6">
             This is a restricted area. Customer accounts are not permitted.
           </p>
-        </div>
+        </Reveal>
       </div>
     </>
   );

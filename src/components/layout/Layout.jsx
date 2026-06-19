@@ -2,13 +2,14 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { PageTransition } from '../ui/animations';
 
 const Layout = () => {
   const { pathname } = useLocation();
 
-  // Scroll to top on route change
+  // Scroll to top on route change (instant — avoids fighting the page-in fade)
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [pathname]);
 
   return (
@@ -33,7 +34,9 @@ const Layout = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
         <main className="flex-grow pt-[81px]">
-          <Outlet />
+          <PageTransition routeKey={pathname}>
+            <Outlet />
+          </PageTransition>
         </main>
         <Footer />
       </div>

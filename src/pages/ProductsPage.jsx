@@ -5,6 +5,7 @@ import { FiFilter, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import api from '../utils/api';
 import ProductCard from '../components/ui/ProductCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 import { BRANDS, CATEGORIES, SORT_OPTIONS } from '../utils/constants';
 
 const ProductsPage = () => {
@@ -138,12 +139,12 @@ const ProductsPage = () => {
       </Helmet>
 
       {/* Page Header */}
-      <div className="bg-slate-100 py-8 border-b border-slate-200">
-        <div className="container mx-auto px-4">
+      <Reveal className="bg-slate-100 py-8 border-b border-slate-200">
+        <div className="container mx-auto px-4 min-w-0">
           <h1 className="text-3xl font-bold text-slate-800">Shop All Products</h1>
           <p className="text-slate-500 mt-2">Showing {products.length} of {totalProducts} products</p>
         </div>
-      </div>
+      </Reveal>
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
@@ -434,11 +435,11 @@ const ProductsPage = () => {
           <div className="lg:w-3/4">
             
             {/* Desktop Sort Bar */}
-            <div className="hidden lg:flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-4">
-              <span className="text-slate-500 text-sm font-medium">
+            <Reveal className="hidden lg:flex justify-between items-center bg-white p-4 rounded-xl shadow-sm border border-slate-100 mb-4">
+              <span className="text-slate-500 text-sm font-medium min-w-0 truncate">
                 Showing {((page - 1) * 12) + 1}-{Math.min(page * 12, totalProducts)} of {totalProducts} Products
               </span>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <label className="text-sm font-semibold text-slate-700">Sort by:</label>
                 <select 
                   value={filters.sort}
@@ -450,7 +451,7 @@ const ProductsPage = () => {
                   ))}
                 </select>
               </div>
-            </div>
+            </Reveal>
 
             {/* Brand Filter Tabs */}
             <div className="flex flex-wrap gap-2 mb-6 p-3 bg-white rounded-xl shadow-sm border border-slate-100">
@@ -493,11 +494,13 @@ const ProductsPage = () => {
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                <RevealStagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                   {products.map(product => (
-                    <ProductCard key={product._id} product={product} />
+                    <RevealItem key={product._id} className="min-w-0">
+                      <ProductCard product={product} />
+                    </RevealItem>
                   ))}
-                </div>
+                </RevealStagger>
 
                 {/* Pagination */}
                 {totalPages > 1 && (

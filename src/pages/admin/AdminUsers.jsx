@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import adminApi from '../../utils/adminApi';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { Reveal } from '../../components/ui/animations';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -35,9 +36,9 @@ const AdminUsers = () => {
       {users.length === 0 ? (
         <div className="bg-white rounded-xl border border-slate-100 p-12 text-center text-slate-500">No customers yet.</div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <Reveal className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[640px]">
               <thead>
                 <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
                   <th className="p-4 font-semibold">Customer</th>
@@ -55,19 +56,19 @@ const AdminUsers = () => {
                         <div className="w-9 h-9 bg-brand-blue/10 text-brand-blue rounded-full flex items-center justify-center font-bold uppercase shrink-0">
                           {u.name?.charAt(0) || 'U'}
                         </div>
-                        <span className="font-medium text-slate-900 text-sm">{u.name}</span>
+                        <span className="font-medium text-slate-900 text-sm whitespace-nowrap">{u.name}</span>
                       </div>
                     </td>
-                    <td className="p-4 text-sm text-slate-600">{u.email}</td>
-                    <td className="p-4 text-sm text-slate-600">{u.phone || '—'}</td>
-                    <td className="p-4 text-sm text-slate-600">{u.wishlist?.length || 0}</td>
-                    <td className="p-4 text-sm text-slate-500">{new Date(u.createdAt).toLocaleDateString()}</td>
+                    <td className="p-4 text-sm text-slate-600 whitespace-nowrap">{u.email}</td>
+                    <td className="p-4 text-sm text-slate-600 whitespace-nowrap">{u.phone || '—'}</td>
+                    <td className="p-4 text-sm text-slate-600 whitespace-nowrap">{u.wishlist?.length || 0}</td>
+                    <td className="p-4 text-sm text-slate-500 whitespace-nowrap">{new Date(u.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </Reveal>
       )}
 
       {pages > 1 && (

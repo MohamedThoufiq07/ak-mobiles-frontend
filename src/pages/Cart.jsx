@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 
 // ─── Error Boundary ───────────────────────────────────────────────────────────
 class ErrorBoundary extends React.Component {
@@ -130,17 +131,18 @@ const CartInner = () => {
           <span style={styles.countBadge}>{safeCart.length} item{safeCart.length > 1 ? 's' : ''}</span>
         </div>
 
-        <div style={styles.grid}>
+        <div className="flex flex-col lg:flex-row gap-5 items-start">
 
           {/* ── LEFT: Items ── */}
-          <div>
+          <div className="w-full lg:flex-1 min-w-0">
+            <RevealStagger>
             {safeCart.map((item) => {
               const id  = item.product || item.id;
               const qty = Number(item.quantity || item.qty) || 1;
               const itemTotal = (Number(item.price) || 0) * qty;
 
               return (
-                <div key={id} style={styles.itemCard}>
+                <RevealItem key={id} style={styles.itemCard} className="flex-wrap sm:flex-nowrap">
 
                   {/* Phone Image */}
                   <div style={styles.imgBox}>
@@ -189,23 +191,24 @@ const CartInner = () => {
                     <span style={styles.itemTotalLabel}>Item total</span>
                     <span style={styles.itemTotalVal}>₹{itemTotal.toLocaleString('en-IN')}</span>
                   </div>
-                </div>
+                </RevealItem>
               );
             })}
+            </RevealStagger>
 
             {/* Delivery Strip */}
-            <div style={styles.deliveryStrip}>
+            <Reveal style={styles.deliveryStrip}>
               <span style={{ fontSize: 20 }}>🚚</span>
               <div style={{ flex: 1 }}>
                 <div style={styles.deliveryTitle}>Free delivery to Virudhachalam</div>
                 <div style={styles.deliverySub}>Estimated 2–4 business days · Genuine products guaranteed</div>
               </div>
               <span style={styles.deliveryCheck}>✓</span>
-            </div>
+            </Reveal>
           </div>
 
           {/* ── RIGHT: Summary ── */}
-          <div style={styles.summaryCard}>
+          <Reveal style={styles.summaryCard} className="w-full lg:w-[320px] lg:shrink-0 lg:sticky lg:top-[90px]">
             <h3 style={styles.summaryTitle}>Order summary</h3>
 
             <div style={styles.summaryRow}>
@@ -266,7 +269,7 @@ const CartInner = () => {
             </Link>
 
 
-          </div>
+          </Reveal>
         </div>
       </div>
     </div>
@@ -325,9 +328,9 @@ const styles = {
 
   actionRow:  { display:'flex', alignItems:'center', gap:10, flexWrap:'wrap' },
   qtyBox:     { display:'flex', alignItems:'center', border:'1.5px solid #EEEDFE', borderRadius:8, overflow:'hidden', background:'#F8F7FF' },
-  qtyBtn:     { width:32, height:32, border:'none', background:'transparent', fontSize:18, cursor:'pointer', color:'#534AB7', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center' },
-  qtyVal:     { width:32, textAlign:'center', fontSize:14, fontWeight:600, color:'#0F172A' },
-  removeBtn:  { background:'#FEE2E2', color:'#EF4444', border:'none', borderRadius:8, padding:'6px 12px', cursor:'pointer', fontSize:12, fontWeight:600 },
+  qtyBtn:     { width:44, height:44, border:'none', background:'transparent', fontSize:18, cursor:'pointer', color:'#534AB7', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center' },
+  qtyVal:     { width:36, textAlign:'center', fontSize:14, fontWeight:600, color:'#0F172A' },
+  removeBtn:  { background:'#FEE2E2', color:'#EF4444', border:'none', borderRadius:8, padding:'0 14px', minHeight:44, cursor:'pointer', fontSize:12, fontWeight:600, display:'flex', alignItems:'center', gap:4 },
 
   itemTotalBox:  { textAlign:'right', flexShrink:0, minWidth:80 },
   itemTotalLabel:{ fontSize:10, color:'#94A3B8', display:'block', marginBottom:4 },
@@ -340,7 +343,7 @@ const styles = {
   deliveryCheck: { fontSize:16, color:'#1D9E75', fontWeight:700 },
 
   // Summary card
-  summaryCard:   { background:'#fff', borderRadius:16, padding:22, height:'fit-content', position:'sticky', top:90, boxShadow:'0 2px 12px rgba(83,74,183,0.10)', border:'1px solid #EEEDFE' },
+  summaryCard:   { background:'#fff', borderRadius:16, padding:22, height:'fit-content', boxShadow:'0 2px 12px rgba(83,74,183,0.10)', border:'1px solid #EEEDFE' },
   summaryTitle:  { fontSize:16, fontWeight:700, color:'#0F172A', marginBottom:18, paddingBottom:12, borderBottom:'1.5px solid #F1F0FB' },
   summaryRow:    { display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 },
   summaryLabel:  { fontSize:13, color:'#64748B' },

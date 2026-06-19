@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../context/AuthContext';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { Reveal } from '../components/ui/animations';
 import logo from '../assets/logo_dark_text.png';
 
 const LoginPage = () => {
@@ -49,7 +50,7 @@ const LoginPage = () => {
           <div className="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] rounded-full mix-blend-screen filter blur-[100px] opacity-25 bg-purple-600"></div>
         </div>
 
-        <div className="max-w-md w-full glass-card rounded-2xl shadow-lg pt-4 pb-5 px-6 relative z-10 border border-slate-200/60 text-slate-800">
+        <Reveal y={16} className="w-full max-w-md glass-card rounded-2xl shadow-lg pt-4 pb-5 px-6 relative z-10 border border-slate-200/60 text-slate-800">
           <div className="text-center mb-3">
             <Link to="/" className="inline-block mb-1">
               <img src={logo} alt="AK Mobiles" className="h-16 mx-auto object-contain" />
@@ -68,7 +69,7 @@ const LoginPage = () => {
                 <input
                   type="email"
                   required
-                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-2 text-sm"
+                  className="input-field pl-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-sm"
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -90,7 +91,7 @@ const LoginPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   required
-                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-2 text-sm"
+                  className="input-field pl-10 pr-10 bg-white/90 border-slate-200 text-slate-850 py-3 text-sm"
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -108,7 +109,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full btn-premium py-2.5 disabled:opacity-70 text-sm font-bold"
+              className="w-full btn-premium py-3 disabled:opacity-70 text-sm font-bold"
             >
               {isSubmitting ? 'Signing in...' : 'Sign In'}
             </button>
@@ -120,7 +121,7 @@ const LoginPage = () => {
               Create one now
             </Link>
           </div>
-        </div>
+        </Reveal>
       </div>
     </>
   );

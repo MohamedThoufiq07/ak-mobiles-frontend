@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import adminApi from '../../utils/adminApi';
 import { formatPrice } from '../../utils/formatPrice';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import { Reveal } from '../../components/ui/animations';
 
 // ISO date -> value for <input type="datetime-local">
 const toLocalInput = (iso) => {
@@ -97,7 +98,7 @@ const AdminFlashSale = () => {
   return (
     <div className="space-y-6">
       {/* Settings card */}
-      <form onSubmit={saveSettings} className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
+      <Reveal as="form" onSubmit={saveSettings} className="bg-white rounded-xl shadow-sm border border-slate-100 p-6">
         <div className="flex items-center gap-2 mb-5">
           <FiZap className="text-brand-orange" />
           <h2 className="text-lg font-bold text-slate-900">Flash Sale Settings</h2>
@@ -131,10 +132,10 @@ const AdminFlashSale = () => {
             <FiSave size={16} /> {savingSettings ? 'Saving...' : 'Save Settings'}
           </button>
         </div>
-      </form>
+      </Reveal>
 
       {/* Product picker */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+      <Reveal className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h2 className="text-lg font-bold text-slate-900">Choose Flash Sale Products</h2>
           <div className="relative">
@@ -167,7 +168,7 @@ const AdminFlashSale = () => {
             <p className="p-8 text-center text-slate-500 text-sm">No products match "{search}".</p>
           )}
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import api from '../utils/api';
 import { formatPrice } from '../utils/formatPrice';
 import { STATUS_COLORS } from '../utils/constants';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 
 const MyOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -34,7 +35,7 @@ const MyOrdersPage = () => {
 
       <div className="bg-slate-50 py-10 min-h-[80vh]">
         <div className="container mx-auto px-4 max-w-6xl">
-          <h1 className="text-3xl font-bold text-slate-900 mb-8">My Orders</h1>
+          <Reveal as="h1" className="text-3xl font-bold text-slate-900 mb-8">My Orders</Reveal>
 
           {loading ? (
             <LoadingSpinner />
@@ -50,9 +51,9 @@ const MyOrdersPage = () => {
               </Link>
             </div>
           ) : (
-            <div className="space-y-6">
+            <RevealStagger className="space-y-6">
               {orders.map((order) => (
-                <div key={order._id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <RevealItem key={order._id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                   {/* Order Header */}
                   <div className="bg-slate-50 border-b border-slate-200 p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex flex-wrap gap-x-8 gap-y-2">
@@ -123,9 +124,9 @@ const MyOrdersPage = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealStagger>
           )}
         </div>
       </div>
