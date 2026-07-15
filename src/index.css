@@ -175,29 +175,46 @@
 /* Custom Swiper Navigation Arrows */
 .swiper-custom-nav .swiper-button-next,
 .swiper-custom-nav .swiper-button-prev {
-  background-color: #ffffff !important;
-  backdrop-filter: blur(8px);
-  width: 38px !important;
-  height: 38px !important;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  color: #2563eb !important;
-  transition: all 0.3s ease;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 10px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 100px !important;
+  background-color: rgb(255, 255, 255) !important;
+  box-shadow: rgba(216, 216, 216, 0.4) 0px 0px 4px 0px !important;
+  border: none !important;
+  outline: none !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.swiper-custom-nav .swiper-button-next {
+  right: 16px !important;
+  left: auto !important;
+}
+
+.swiper-custom-nav .swiper-button-prev {
+  left: 16px !important;
+  right: auto !important;
 }
 
 .swiper-custom-nav .swiper-button-next:hover,
 .swiper-custom-nav .swiper-button-prev:hover {
-  background-color: #2563eb !important;
-  color: white !important;
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.25);
+  background-color: #f8fafc !important;
+  transform: translateY(-50%) scale(1.05) !important;
+  box-shadow: rgba(216, 216, 216, 0.6) 0px 2px 8px 0px !important;
 }
 
 .swiper-custom-nav .swiper-button-next::after,
 .swiper-custom-nav .swiper-button-prev::after {
-  font-size: 14px !important;
-  font-weight: 850 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #0f172a !important;
 }
 
 /* Multi Range Slider styling */
