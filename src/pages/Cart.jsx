@@ -39,7 +39,7 @@ class ErrorBoundary extends React.Component {
 const StepBar = () => {
   const steps = ['Browse', 'Cart', 'Checkout', 'Payment'];
   return (
-    <div style={styles.stepBar}>
+    <div style={styles.stepBar} className="overflow-x-auto">
       {steps.map((label, i) => {
         const isDone   = i === 0;
         const isActive = i === 1;
@@ -187,7 +187,10 @@ const CartInner = () => {
                   </div>
 
                   {/* Item Total */}
-                  <div style={styles.itemTotalBox}>
+                  <div
+                    style={styles.itemTotalBox}
+                    className="w-full flex items-center justify-between mt-3 pt-3 border-t border-slate-100 sm:w-auto sm:block sm:mt-0 sm:pt-0 sm:border-t-0"
+                  >
                     <span style={styles.itemTotalLabel}>Item total</span>
                     <span style={styles.itemTotalVal}>₹{itemTotal.toLocaleString('en-IN')}</span>
                   </div>

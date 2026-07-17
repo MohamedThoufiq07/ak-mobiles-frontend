@@ -193,8 +193,8 @@ const ProductFormModal = ({ product, onClose, onSaved }) => {
             <label className={labelCls}>Image URLs</label>
             <div className="space-y-2">
               {form.images.map((url, idx) => (
-                <div key={idx} className="flex gap-2">
-                  <input className={inputCls} value={url} onChange={(e) => setImage(idx, e.target.value)} placeholder="https://..." />
+                <div key={idx} className="flex gap-2 min-w-0">
+                  <input className={`${inputCls} min-w-0 flex-1`} value={url} onChange={(e) => setImage(idx, e.target.value)} placeholder="https://..." />
                   {url ? <img src={url} alt="" className="w-10 h-10 object-contain border border-slate-200 rounded shrink-0" onError={(e) => { e.target.style.visibility = 'hidden'; }} /> : null}
                   <button type="button" onClick={() => removeImage(idx)} className="p-2 text-red-500 hover:bg-red-50 rounded shrink-0"><FiTrash2 /></button>
                 </div>

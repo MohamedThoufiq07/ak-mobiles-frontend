@@ -52,7 +52,7 @@ const Header = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b bg-white border-slate-200/80 ${scrolled ? 'py-3.5 shadow-md shadow-slate-100/10' : 'py-5'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 py-3 border-b bg-white border-slate-200/80 transition-shadow duration-200 ${scrolled ? 'shadow-md shadow-slate-100/10' : ''}`}>
         <div className="w-full pl-2 pr-4 md:pl-4 md:pr-8 xl:pl-6 xl:pr-12 flex items-center justify-between gap-4 lg:gap-8">
 
           {/* 1. Logo */}
@@ -60,7 +60,7 @@ const Header = () => {
             <img
               src={logo}
               alt="AK Mobiles"
-              className={`w-auto object-contain transition-all duration-300 group-hover:scale-105 -translate-y-1 ${scrolled ? 'h-12' : 'h-16'}`}
+              className="w-auto h-12 object-contain transition-transform duration-300 group-hover:scale-105 -translate-y-1"
             />
           </Link>
 
@@ -109,7 +109,7 @@ const Header = () => {
           {/* Actions (Cart & User Profile) */}
           <div className="flex items-center gap-4 z-50 shrink-0">
             {/* Wishlist */}
-            <Link to="/wishlist" className="relative text-slate-600 hover:text-red-500 transition-colors p-2 hidden sm:block">
+            <Link to="/wishlist" className="relative text-slate-600 hover:text-red-500 transition-colors p-2">
               <FiHeart size={22} />
               {wishlist?.length > 0 && (
                 <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-white">

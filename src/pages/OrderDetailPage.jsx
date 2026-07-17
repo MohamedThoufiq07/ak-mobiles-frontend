@@ -145,12 +145,12 @@ const OrderDetailPage = () => {
 
       <div className="bg-slate-50 py-10 min-h-screen">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
             <Link to="/my-orders" className="inline-flex items-center gap-2 text-slate-500 hover:text-brand-orange transition-colors">
               <FiArrowLeft /> Back to Orders
             </Link>
-            
-            <button 
+
+            <button
               onClick={generateInvoice}
               className="btn-outline py-2 px-4 text-sm flex items-center gap-2 bg-white"
             >
@@ -187,7 +187,7 @@ const OrderDetailPage = () => {
                       <FiInfo size={20} /> Order Cancelled
                     </div>
                   ) : (
-                    <div className="flex justify-between relative">
+                    <div className="flex justify-between relative px-2 sm:px-4">
                       {/* Line behind steps */}
                       <div className="absolute top-5 left-0 w-full h-1 bg-slate-200 z-0"></div>
                       

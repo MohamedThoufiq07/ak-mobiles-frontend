@@ -33,7 +33,7 @@ const Layout = () => {
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header />
-        <main className="flex-grow pt-[81px]">
+        <main className="flex-grow pt-[73px]">
           <PageTransition routeKey={pathname}>
             <Outlet />
           </PageTransition>

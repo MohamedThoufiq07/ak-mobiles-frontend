@@ -508,7 +508,7 @@ const ProductsPage = () => {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center items-center mt-12 gap-2">
+                  <div className="flex flex-wrap justify-center items-center mt-12 gap-2">
                     <button
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                       disabled={page === 1}
@@ -516,12 +516,12 @@ const ProductsPage = () => {
                     >
                       <FiChevronLeft size={20} />
                     </button>
-                    
+
                     {[...Array(totalPages)].map((_, i) => (
                       <button
                         key={i}
                         onClick={() => setPage(i + 1)}
-                        className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg font-medium transition-colors ${
                           page === i + 1 
                             ? 'bg-brand-blue text-white shadow-md shadow-brand-blue/20' 
                             : 'border border-slate-200 hover:bg-slate-100 text-slate-600'

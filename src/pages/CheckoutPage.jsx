@@ -205,7 +205,7 @@ const CheckoutPage = () => {
             <FiArrowLeft /> Back to Cart
           </Link>
           
-          <h1 className="text-3xl font-bold text-slate-900 mb-8">Checkout</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-8">Checkout</h1>
 
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Left Column - Forms */}
@@ -328,7 +328,7 @@ const CheckoutPage = () => {
 
             {/* Right Column - Order Summary & Payment */}
             <div className="lg:w-1/3">
-              <Reveal delay={0.1} className="bg-white rounded-2xl shadow-sm border border-slate-200 sticky top-24 overflow-hidden">
+              <Reveal delay={0.1} className="bg-white rounded-2xl shadow-sm border border-slate-200 lg:sticky lg:top-24 overflow-hidden">
                 <div className="bg-slate-50 p-6 border-b border-slate-200">
                   <h2 className="text-xl font-bold text-slate-900 mb-4">Order Summary</h2>
                   

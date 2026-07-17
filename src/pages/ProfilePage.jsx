@@ -83,8 +83,8 @@ const ProfilePage = () => {
             
             {/* Sidebar */}
             <Reveal className="md:w-1/3">
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden sticky top-24">
-                <div className="bg-brand-dark p-8 text-center relative">
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden md:sticky md:top-24">
+                <div className="bg-brand-dark p-6 sm:p-8 text-center relative">
                   <div className="w-24 h-24 bg-white text-brand-dark rounded-full mx-auto flex items-center justify-center text-4xl font-bold uppercase shadow-lg z-10 relative">
                     {user.name.charAt(0)}
                   </div>
@@ -116,7 +116,7 @@ const ProfilePage = () => {
 
             {/* Main Content */}
             <Reveal delay={0.1} className="md:w-2/3">
-              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 sm:p-8">
                 <h1 className="text-2xl font-bold text-slate-900 mb-8 border-b border-slate-100 pb-4">Profile Settings</h1>
                 
                 <form onSubmit={handleSubmit}>

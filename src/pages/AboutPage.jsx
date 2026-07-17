@@ -1,65 +1,28 @@
-import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiCheckCircle, FiUsers, FiAward, FiShield } from 'react-icons/fi';
+import { FiCheckCircle, FiUsers, FiAward, FiShield, FiStar } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { Reveal, RevealStagger, RevealItem } from '../components/ui/animations';
 import logoDarkText from '../assets/logo_dark_text.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+const REVIEWS = [
+  { name: 'Raj Kumar', location: 'Chennai', text: 'Best prices in Tamil Nadu! Got my iPhone 15 Pro Max delivered the next day.', product: 'iPhone 15 Pro Max', rating: 5, color: '2563EB' },
+  { name: 'Priya S', location: 'Trichy', text: 'Very genuine products and amazing customer service. Will buy again!', product: 'Samsung Galaxy S24', rating: 5, color: '10B981' },
+  { name: 'Karthik N', location: 'Madurai', text: 'The EMI process was so smooth. Highly recommend AK Mobiles.', product: 'OnePlus 12', rating: 5, color: 'F97316' }
+];
+
+const getInitials = (name) => {
+  const parts = name.split(' ');
+  if (parts.length > 1) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name[0].toUpperCase();
+};
 
 const AboutPage = () => {
-  const [animationStage, setAnimationStage] = useState('static'); // 'static', 'flying', 'landed'
-  const [flyPath, setFlyPath] = useState(null);
-  const heroRef = useRef(null);
-  const phoneRef = useRef(null);
-  const landingRef = useRef(null);
-
-  useEffect(() => {
-    const calculatePositions = () => {
-      if (heroRef.current && phoneRef.current && landingRef.current) {
-        const heroRect = heroRef.current.getBoundingClientRect();
-        const phoneRect = phoneRef.current.getBoundingClientRect();
-        const landingRect = landingRef.current.getBoundingClientRect();
-
-        // Butterfly size: w-24=96px on mobile, md:w-32=128px, lg:w-40=160px
-        const bSize = window.innerWidth >= 1024 ? 160 : window.innerWidth >= 768 ? 128 : 96;
-
-        // Start position: center of phone screen
-        const startX = phoneRect.left + phoneRect.width * 0.5 - heroRect.left - bSize / 2;
-        const startY = phoneRect.top + phoneRect.height * 0.38 - heroRect.top - bSize / 2;
-
-        // End position: center of the butterfly landing zone (next to text logo)
-        const endX = landingRect.left + landingRect.width / 2 - heroRect.left - bSize / 2;
-        const endY = landingRect.top + landingRect.height / 2 - heroRect.top - bSize / 2;
-
-        setFlyPath({ startX, startY, endX, endY });
-      }
-    };
-
-    // Calculate positions after layout settles
-    const posTimer = setTimeout(calculatePositions, 100);
-
-    // Start flight after butterfly is visible on phone for 1.3 seconds
-    const flightTimer = setTimeout(() => {
-      calculatePositions(); // Recalculate for accuracy right before flight
-      setAnimationStage('flying');
-    }, 1300);
-
-    return () => {
-      clearTimeout(posTimer);
-      clearTimeout(flightTimer);
-    };
-  }, []);
-
-  // Transition from flying → landed after flight animation duration
-  useEffect(() => {
-    if (animationStage === 'flying') {
-      const landTimer = setTimeout(() => {
-        setAnimationStage('landed');
-      }, 2600); // 2.5s flight + 100ms buffer
-      return () => clearTimeout(landTimer);
-    }
-  }, [animationStage]);
-
   return (
     <>
       <Helmet>
@@ -68,7 +31,7 @@ const AboutPage = () => {
       </Helmet>
 
       {/* Light & Modern Hero Section */}
-      <section ref={heroRef} className="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-tr from-blue-50/70 via-white to-purple-50/70 text-slate-800 mx-4 mt-4 rounded-3xl shadow-[0_15px_35px_rgba(0,0,0,0.03)] border border-slate-200/50">
+      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-tr from-blue-50/70 via-white to-purple-50/70 text-slate-800 mx-4 mt-4 rounded-3xl shadow-[0_15px_35px_rgba(0,0,0,0.03)] border border-slate-200/50">
         {/* Decorative Glowing Orbs */}
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-tr from-purple-300/10 to-transparent rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-300/10 to-transparent rounded-full blur-[100px] pointer-events-none"></div>
@@ -82,25 +45,16 @@ const AboutPage = () => {
               transition={{ duration: 0.8, ease: 'easeOut' }}
               className="lg:w-7/12 text-center lg:text-left"
             >
-              {/* Logo: Full AK Mobiles logo (butterfly + text combined) */}
+              {/* Logo: Full AK Mobiles logo */}
               <div className="flex items-center justify-center lg:justify-start mb-6 overflow-visible relative">
-                {/* Hidden ref target for butterfly flight path calculation */}
-                <div ref={landingRef} className="absolute left-0 top-0 w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 pointer-events-none" />
-                
-                {/* Complete logo appears after butterfly animation lands */}
-                {animationStage === 'landed' ? (
-                  <motion.img 
-                    src={logoDarkText} 
-                    alt="AK Mobiles" 
-                    className="h-24 md:h-32 lg:h-40 object-contain drop-shadow-lg"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5, ease: 'easeOut' }}
-                  />
-                ) : (
-                  /* Placeholder to maintain layout space before logo appears */
-                  <div className="h-24 md:h-32 lg:h-40" />
-                )}
+                <motion.img
+                  src={logoDarkText}
+                  alt="AK Mobiles"
+                  className="h-24 md:h-32 lg:h-40 object-contain drop-shadow-lg"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                />
               </div>
 
               <span className="text-xs font-extrabold tracking-widest text-brand-blue uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block mb-4 shadow-sm">
@@ -123,8 +77,8 @@ const AboutPage = () => {
               </div>
             </motion.div>
 
-            {/* Floating Mobile Phone (Right Side) */}
-            <motion.div 
+            {/* Floating Mobile Phone Card (Right Side) */}
+            <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
@@ -132,84 +86,119 @@ const AboutPage = () => {
             >
               {/* Soft glow behind phone */}
               <div className="absolute w-[280px] h-[280px] rounded-full bg-gradient-to-tr from-brand-blue/15 to-transparent blur-[50px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 animate-pulse"></div>
-              
-              {/* Floating Phone Container */}
-              <motion.div 
-                ref={phoneRef}
-                animate={{ y: [0, -15, 0], rotate: [0, 2, 0] }}
+
+              {/* Floating Phone Showcase Card */}
+              <motion.div
+                animate={{ y: [0, -15, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative z-10 flex justify-center items-center"
+                className="relative z-10 flex justify-center items-center bg-white rounded-3xl shadow-xl p-10 md:p-14"
               >
-                <img 
-                  src="https://www.myg.in/images/thumbnails/260/260/detailed/91/tv1-removebg-preview.png.png" 
-                  alt="AK Mobiles Premium Phone Display" 
-                  className="max-h-[380px] md:max-h-[460px] object-contain drop-shadow-[0_20px_45px_rgba(0,0,0,0.12)] cursor-grab active:cursor-grabbing"
+                <img
+                  src="https://img-prd-pim.poorvika.com/cdn-cgi/image/width=500,height=500,quality=75/product/Apple-iphone-15-pro-natural-titanium-512gb-Front-Back-View.png"
+                  alt="AK Mobiles Premium Phone Display"
+                  className="max-h-[220px] md:max-h-[280px] object-contain"
                 />
+
+                {/* 5G Ready badge */}
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute -left-8 top-1/3 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3"
+                >
+                  <div className="w-9 h-9 rounded-full bg-blue-50 text-brand-blue flex items-center justify-center font-bold text-xs">5G</div>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800 leading-none mb-1">5G Ready</p>
+                    <p className="text-xs text-slate-400 leading-none">Lightning fast</p>
+                  </div>
+                </motion.div>
+
+                {/* Warranty badge */}
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                  className="absolute -right-8 bottom-1/4 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3"
+                >
+                  <div className="w-9 h-9 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
+                    <FiShield size={18} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-slate-800 leading-none mb-1">1 Yr Warranty</p>
+                    <p className="text-xs text-slate-400 leading-none">Brand protection</p>
+                  </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
         </div>
-
-        {/* Flying Butterfly — section-level for smooth, straight flight from phone → logo */}
-        {flyPath && animationStage !== 'landed' && (
-          <motion.img
-            src="/favicon.png"
-            alt="AK Butterfly Flying"
-            className="absolute z-50 w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 pointer-events-none"
-            style={{ left: flyPath.startX, top: flyPath.startY }}
-            animate={animationStage === 'flying' ? {
-              x: flyPath.endX - flyPath.startX,
-              y: flyPath.endY - flyPath.startY,
-              rotate: [0, -8, 5, -3, 0],
-              scaleX: [1, 0.3, 1],
-            } : {
-              x: 0,
-              y: 0,
-              scaleX: [1, 0.5, 1],
-            }}
-            transition={animationStage === 'flying' ? {
-              default: { duration: 2.5, ease: [0.25, 0.1, 0.25, 1] },
-              rotate: { duration: 2.5, ease: 'easeInOut' },
-              scaleX: { duration: 0.2, repeat: 12, ease: 'easeInOut' },
-            } : {
-              scaleX: { duration: 0.7, repeat: Infinity, ease: 'easeInOut' },
-            }}
-          />
-        )}
       </section>
 
-      {/* Story & Vision Section */}
-      <section className="py-24 bg-white relative">
+      {/* Customer Satisfaction Section */}
+      <section className="pt-16 pb-24 mt-8 bg-white relative">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-16 items-center">
             {/* Visual Frame */}
-            <Reveal className="lg:w-1/2 relative w-full">
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue to-purple-600 rounded-3xl transform rotate-2 opacity-5 scale-[0.98]"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&q=80" 
-                alt="AK Mobiles Premium Phone Showcase" 
-                className="rounded-3xl shadow-xl w-full object-cover max-h-[420px] relative z-10 border border-slate-100 p-2 bg-white"
-              />
+            <Reveal className="lg:w-1/2 relative w-full flex justify-center">
+              <div className="absolute w-[380px] h-[380px] rounded-full bg-gradient-to-tr from-brand-blue/15 to-purple-600/10 blur-[70px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"></div>
+
+              <div className="relative z-10 w-full rounded-3xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-slate-100 shadow-xl flex justify-center items-center min-h-[540px] p-6">
+                <img
+                  src="/product-bundle.png"
+                  alt="AK Mobiles Product Bundle"
+                  className="w-full h-full max-h-[640px] object-contain scale-110"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
             </Reveal>
 
             {/* Content block */}
             <Reveal delay={0.1} className="lg:w-1/2">
-              <span className="text-[10px] font-extrabold tracking-widest text-purple-600 uppercase bg-purple-50 border border-purple-100 px-3 py-1 rounded-full inline-block mb-3">
-                Established Regionally
+              <span className="inline-flex items-center gap-2 text-xs font-extrabold tracking-widest text-purple-600 uppercase bg-purple-50 border border-purple-100 px-3 py-1.5 rounded-full mb-4">
+                <FiUsers size={14} /> AK Mobiles
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 leading-tight">
-                Our Journey & Customer First Vision
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2 leading-tight">
+                Customer Satisfaction
               </h2>
-              <div className="space-y-5 text-slate-600 leading-relaxed text-base md:text-lg">
-                <p>
-                  AK Mobiles started with a simple belief: that everyone in Virudhachalam deserves easy access to authentic, high-quality, and cutting-edge mobile technology. Over the past decade, we've grown from a humble local shop into a trusted retail hub.
-                </p>
-                <p>
-                  Rather than just sales transactions, we focus on digital matching—connecting our patrons with devices tailored to their functional demands and budget constraints. We are proud authorized partners for top brands, guaranteeing brand new inventory with valid guarantees.
-                </p>
-                <p>
-                  From data transfer and configuration assistance to direct warranty coordination, we follow up every purchase with robust after-sales care, ensuring your digital companion is fully supported.
-                </p>
+              <h2 className="text-3xl md:text-4xl font-black mb-6 leading-tight bg-gradient-to-r from-brand-blue via-purple-600 to-orange-500 bg-clip-text text-transparent">
+                is Our Priority
+              </h2>
+              <p className="text-slate-600 leading-relaxed text-base md:text-lg mb-8">
+                At AK Mobiles, we don't just sell products – we build relationships. Every decision we make is centered around delivering the best experience to our customers.
+              </p>
+
+              <div className="space-y-5 mb-8">
+                {[
+                  { icon: FiShield, title: '100% Authentic Products', desc: 'We guarantee original products from top brands with official warranty.' },
+                  { icon: FiUsers, title: 'Dedicated Customer Support', desc: 'Our support team is always ready to assist you before and after your purchase.' },
+                  { icon: FiCheckCircle, title: 'Easy Returns & Exchange', desc: 'Hassle-free return and exchange policy for your peace of mind.' },
+                  { icon: FiAward, title: 'Fast & Secure Delivery', desc: 'Quick delivery across India with safe and secure packaging.' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-4 pb-5 border-b border-slate-200/60 last:border-0 last:pb-0">
+                    <div className="w-11 h-11 rounded-xl bg-white border border-slate-100 shadow-sm flex items-center justify-center shrink-0 text-purple-600">
+                      <item.icon size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-base mb-0.5">{item.title}</h4>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-5 grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[
+                  { icon: FiShield, title: '1 Year', sub: 'Warranty' },
+                  { icon: FiAward, title: 'Original', sub: 'Products' },
+                  { icon: FiCheckCircle, title: '7 Days', sub: 'Easy Returns' },
+                  { icon: FiUsers, title: 'Pan India', sub: 'Fast Delivery' },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <item.icon size={18} className="text-purple-600 shrink-0" />
+                    <div>
+                      <p className="text-sm font-bold text-slate-800 leading-tight">{item.title}</p>
+                      <p className="text-xs text-slate-400 leading-tight">{item.sub}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </Reveal>
           </div>
@@ -298,6 +287,88 @@ const AboutPage = () => {
               </p>
             </RevealItem>
           </RevealStagger>
+        </div>
+      </section>
+
+      {/* Testimonials / Customer Reviews Section */}
+      <section className="py-24 bg-gradient-to-tr from-blue-50/50 via-purple-50/50 to-pink-50/50 relative overflow-hidden">
+        {/* Soft decorative background glows */}
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-blue-300/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-purple-300/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <Reveal className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-[clamp(1.875rem,4vw,2.5rem)] font-black text-slate-900 mb-4">
+              What Our Customers Say
+            </h2>
+            <p className="text-slate-500 text-lg">
+              Trusted by 10,000+ happy customers across Tamil Nadu
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.2}>
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              spaceBetween={30}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 }
+              }}
+              loop={true}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+              }}
+              pagination={{ clickable: true }}
+              className="reviews-swiper pb-14"
+            >
+              {REVIEWS.map((review, idx) => {
+                const initials = getInitials(review.name);
+                return (
+                  <SwiperSlide key={idx} className="h-auto py-2">
+                    <motion.div
+                      whileHover={{
+                        y: -8,
+                        boxShadow: `0 20px 25px -5px #${review.color}20, 0 8px 10px -6px #${review.color}20`,
+                        borderColor: `#${review.color}50`
+                      }}
+                      className="bg-white p-8 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between h-full transition-colors duration-300 cursor-grab active:cursor-grabbing"
+                    >
+                      <div>
+                        {/* Stars */}
+                        <div className="flex gap-1 mb-5">
+                          {[...Array(review.rating)].map((_, i) => (
+                            <FiStar key={i} className="fill-yellow-400 text-yellow-400" size={18} />
+                          ))}
+                        </div>
+                        {/* Text */}
+                        <p className="text-slate-600 font-medium italic text-base leading-relaxed mb-6">
+                          "{review.text}"
+                        </p>
+                      </div>
+                      
+                      {/* Divider */}
+                      <div className="pt-5 border-t border-slate-100 mt-auto flex items-center gap-4">
+                        {/* Initial Circle with Dynamic Background Color */}
+                        <div 
+                          className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white shadow-md text-base tracking-wider shrink-0"
+                          style={{ backgroundColor: `#${review.color}` }}
+                        >
+                          {initials}
+                        </div>
+                        <div>
+                          <h4 className="font-extrabold text-sm text-slate-800">{review.name}</h4>
+                          <p className="text-xs text-slate-400 font-medium">{review.location} • Bought {review.product}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </Reveal>
         </div>
       </section>
     </>

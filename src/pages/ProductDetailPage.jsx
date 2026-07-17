@@ -95,13 +95,13 @@ const ProductDetailPage = () => {
 
       {/* Breadcrumb */}
       <div className="bg-slate-100 py-3 border-b border-slate-200 text-sm">
-        <div className="container mx-auto px-4 flex text-slate-500">
-          <Link to="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span className="mx-2 text-slate-400">/</span>
-          <Link to="/products" className="hover:text-brand-blue transition-colors">Products</Link>
-          <span className="mx-2 text-slate-400">/</span>
-          <Link to={`/products?category=${product.category}`} className="hover:text-brand-blue transition-colors">{product.category}</Link>
-          <span className="mx-2 text-slate-400">/</span>
+        <div className="container mx-auto px-4 flex items-center overflow-x-auto whitespace-nowrap text-slate-500 no-scrollbar">
+          <Link to="/" className="hover:text-brand-blue transition-colors shrink-0">Home</Link>
+          <span className="mx-2 text-slate-400 shrink-0">/</span>
+          <Link to="/products" className="hover:text-brand-blue transition-colors shrink-0">Products</Link>
+          <span className="mx-2 text-slate-400 shrink-0">/</span>
+          <Link to={`/products?category=${product.category}`} className="hover:text-brand-blue transition-colors shrink-0">{product.category}</Link>
+          <span className="mx-2 text-slate-400 shrink-0">/</span>
           <span className="text-slate-800 font-medium truncate">{product.name}</span>
         </div>
       </div>
@@ -172,10 +172,10 @@ const ProductDetailPage = () => {
               <span className="text-sm text-slate-500">{product.numSold} sold</span>
             </div>
 
-            <div className="mb-6 flex items-end gap-3">
-              <span className="text-4xl font-bold text-slate-900">{formatPrice(product.offerPrice)}</span>
+            <div className="mb-6 flex items-end gap-3 flex-wrap">
+              <span className="text-3xl sm:text-4xl font-bold text-slate-900">{formatPrice(product.offerPrice)}</span>
               {product.originalPrice > product.offerPrice && (
-                <span className="text-xl text-slate-400 line-through mb-1">{formatPrice(product.originalPrice)}</span>
+                <span className="text-lg sm:text-xl text-slate-400 line-through mb-1">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
 
@@ -261,22 +261,22 @@ const ProductDetailPage = () => {
 
         {/* Product Details Tabs */}
         <Reveal className="mt-12 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="flex border-b border-slate-200">
-            <button 
-              className={`flex-1 py-4 font-bold text-center border-b-2 transition-colors ${activeTab === 'description' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+          <div className="flex overflow-x-auto no-scrollbar border-b border-slate-200">
+            <button
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'description' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('description')}
             >
               Description
             </button>
-            <button 
-              className={`flex-1 py-4 font-bold text-center border-b-2 transition-colors ${activeTab === 'specifications' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+            <button
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'specifications' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('specifications')}
             >
               Specifications
             </button>
-            <button 
+            <button
               id="reviews"
-              className={`flex-1 py-4 font-bold text-center border-b-2 transition-colors ${activeTab === 'reviews' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'reviews' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('reviews')}
             >
               Reviews ({product.numReviews})

@@ -65,7 +65,7 @@ const WishlistPage = () => {
 
       <div className="bg-slate-50 py-10 min-h-[80vh]">
         <div className="container mx-auto px-4 max-w-6xl">
-          <Reveal as="h1" className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
+          <Reveal as="h1" className="text-2xl sm:text-3xl font-bold text-slate-900 mb-8 flex items-center gap-3">
             <FiHeart className="text-brand-orange" /> My Wishlist
           </Reveal>
 

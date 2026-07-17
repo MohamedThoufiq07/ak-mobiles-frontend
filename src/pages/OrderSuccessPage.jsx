@@ -49,16 +49,16 @@ const OrderSuccessPage = () => {
           <Reveal y={16} className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
             
             {/* Header */}
-            <div className="bg-gradient-to-r from-green-500 to-green-600 p-8 text-center text-white">
+            <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 sm:p-8 text-center text-white">
               <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
                 <FiCheckCircle size={48} className="text-white" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Order Successfully Placed!</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">Order Successfully Placed!</h1>
               <p className="text-green-50">Thank you for your purchase from AK Mobiles.</p>
             </div>
 
             {/* Content */}
-            <div className="p-8">
+            <div className="p-6 sm:p-8">
               <div className="text-center mb-8 pb-8 border-b border-slate-100">
                 <p className="text-sm text-slate-500 mb-1">Order ID</p>
                 <p className="text-xl font-mono font-bold text-slate-900">{order._id}</p>

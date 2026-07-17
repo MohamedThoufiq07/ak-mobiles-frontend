@@ -41,6 +41,31 @@
   }
 }
 
+.hero-swiper-pagination .swiper-pagination-bullet {
+  width: 7px;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 1;
+  margin: 0 !important;
+  border-radius: 9999px;
+  transition: all 0.25s ease;
+}
+.hero-swiper-pagination .swiper-pagination-bullet-active {
+  width: 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+}
+
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply bg-gradient-to-r from-brand-blue to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 font-semibold shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand-blue/35 hover:-translate-y-0.5 active:scale-[0.98];
