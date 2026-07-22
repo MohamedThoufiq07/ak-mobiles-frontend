@@ -3,7 +3,7 @@ import { NavLink, Link, useNavigate, Outlet, useLocation } from 'react-router-do
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  FiTrendingUp, FiPackage, FiShoppingBag, FiUsers, FiMail, FiZap, FiLogOut, FiExternalLink, FiMenu, FiX,
+  FiTrendingUp, FiPackage, FiShoppingBag, FiUsers, FiMail, FiZap, FiImage, FiLogOut, FiExternalLink, FiMenu, FiX,
 } from 'react-icons/fi';
 import { useAdminAuth } from '../../context/AdminAuthContext';
 
@@ -11,6 +11,7 @@ const NAV = [
   { to: '/admin', label: 'Dashboard', icon: FiTrendingUp, end: true },
   { to: '/admin/products', label: 'Products', icon: FiPackage },
   { to: '/admin/orders', label: 'Orders', icon: FiShoppingBag },
+  { to: '/admin/banners', label: 'Banners CMS', icon: FiImage },
   { to: '/admin/flash-sale', label: 'Flash Sale', icon: FiZap },
   { to: '/admin/users', label: 'Users', icon: FiUsers },
   { to: '/admin/messages', label: 'Messages', icon: FiMail },
@@ -20,6 +21,7 @@ const TITLES = {
   '/admin': 'Dashboard Overview',
   '/admin/products': 'Manage Products',
   '/admin/orders': 'Manage Orders',
+  '/admin/banners': 'Hero Banners CMS',
   '/admin/flash-sale': 'Flash Sale',
   '/admin/users': 'Customers',
   '/admin/messages': 'Contact Messages',

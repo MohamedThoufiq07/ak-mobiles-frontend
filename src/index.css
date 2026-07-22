@@ -68,7 +68,7 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-gradient-to-r from-brand-blue to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 font-semibold shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand-blue/35 hover:-translate-y-0.5 active:scale-[0.98];
+    @apply bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-700 text-white px-6 py-2.5 rounded-full transition-all duration-300 font-semibold shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand-blue/35 hover:-translate-y-0.5 active:scale-[0.98];
   }
   
   .btn-secondary {
@@ -84,7 +84,7 @@
   }
 
   .btn-premium {
-    @apply bg-gradient-to-r from-brand-blue to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white px-6 py-2.5 rounded-full transition-all duration-300 font-semibold shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand-blue/35 hover:scale-105 hover:-translate-y-1 active:scale-[0.98];
+    @apply bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-500 text-white px-6 py-2.5 rounded-full transition-all duration-300 font-semibold shadow-lg shadow-brand-blue/20 flex items-center justify-center gap-2 hover:shadow-xl hover:shadow-brand-blue/35 hover:scale-105 hover:-translate-y-1 active:scale-[0.98];
   }
 
   .btn-premium-outline {

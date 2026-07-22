@@ -293,11 +293,11 @@ const ContactPage = () => {
         <div className="flex flex-col lg:flex-row gap-8 items-center min-w-0">
           
           <Reveal className="w-full lg:w-1/2 text-left space-y-6">
-            <span className="text-[10px] font-extrabold tracking-widest text-blue-600 uppercase bg-blue-50 border border-blue-200 px-3 py-1.5 rounded-full inline-block">
+            <span className="text-[10px] font-extrabold tracking-widest text-brand-blue uppercase bg-pink-50 border border-pink-200 px-3 py-1.5 rounded-full inline-block">
               Store Locator
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-              Visit Our Showroom in <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Virudhachalam</span>
+              Visit Our Showroom in <span className="bg-gradient-to-r from-brand-blue to-purple-600 bg-clip-text text-transparent">Virudhachalam</span>
             </h2>
             <p className="text-slate-500 text-sm sm:text-base leading-relaxed font-medium">
               Drop by to experience and test the latest flagships and mobile accessories in person. Our experts are ready to help you find your next phone.
@@ -321,7 +321,7 @@ const ContactPage = () => {
                 href="https://maps.google.com/?q=AK+Mobiles+Junction+Road+Virudhachalam" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="px-8 py-3.5 text-sm bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl inline-flex items-center justify-center gap-2 transition-all shadow-md transform hover:scale-103"
+                className="px-8 py-3.5 text-sm bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-700 text-white font-extrabold rounded-xl inline-flex items-center justify-center gap-2 transition-all shadow-md transform hover:scale-103"
               >
                 🗺️ See Location in Google Maps &rarr;
               </a>
@@ -343,7 +343,7 @@ const ContactPage = () => {
                   <h4 className="font-extrabold text-slate-900 text-xs">AK Mobiles Store</h4>
                   <p className="text-[10px] text-slate-500 mt-0.5 font-semibold">Opposite Bus Stand, Virudhachalam</p>
                 </div>
-                <span className="bg-blue-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
+                <span className="bg-gradient-to-r from-brand-blue to-purple-600 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
                   Directions
                 </span>
               </div>

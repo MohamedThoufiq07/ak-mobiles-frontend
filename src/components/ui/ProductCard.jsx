@@ -75,7 +75,7 @@ const ProductCard = ({ product }) => {
     >
       {/* Discount Badge — top right */}
       {product.discount > 0 && (
-        <div className="absolute top-3 right-3 z-10 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
+        <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg shadow-md">
           {product.discount}% OFF
         </div>
       )}
@@ -164,10 +164,10 @@ const ProductCard = ({ product }) => {
             <button
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
-              className={`flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center gap-1 font-semibold text-xs transition-all duration-300
+              className={`flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center gap-1.5 font-semibold text-xs transition-all duration-300
                 ${product.stock > 0
-                  ? 'border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white active:scale-[0.97]'
-                  : 'border-2 border-slate-200 text-slate-400 cursor-not-allowed'
+                  ? 'border border-brand-blue text-brand-blue bg-white hover:bg-brand-blue hover:text-white active:scale-[0.97]'
+                  : 'border border-slate-200 text-slate-400 bg-white cursor-not-allowed'
                 }`}
             >
               <FiShoppingCart size={14} />
@@ -177,7 +177,7 @@ const ProductCard = ({ product }) => {
             {product.stock > 0 && (
               <button
                 onClick={handleBuyNow}
-                className="flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-orange to-red-500 text-white hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-[0.97] transition-all duration-200 shadow-sm"
+                className="flex-1 min-w-0 py-2 min-h-[40px] rounded-full flex items-center justify-center font-semibold text-xs bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-700 text-white hover:scale-105 hover:shadow-md hover:brightness-105 active:scale-[0.97] transition-all duration-200 shadow-sm"
               >
                 Buy Now
               </button>

@@ -22,15 +22,15 @@ export default {
         brand: {
           white: '#FFFFFF',
           dark: '#1E293B',
-          blue: '#2563EB',
-          blueHover: '#1D4ED8',
+          blue: '#db2777',
+          blueHover: '#be185d',
           orange: '#F97316',
           orangeHover: '#EA580C',
           grey: '#F8FAFC',
           slate: '#64748B',
           success: '#10B981',
           danger: '#EF4444',
-          gradientStart: '#2563EB',
+          gradientStart: '#db2777',
           gradientEnd: '#7C3AED',
         }
       },

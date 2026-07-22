@@ -139,14 +139,14 @@ const CATEGORIES = [
 
 // Marketing offer cards for the "Hot Category Deals" section
 const CATEGORY_DEALS = [
-  { name: 'Smartphones', offer: 'Up to 40% Off', image: 'https://static0.xdaimages.com/wordpress/wp-content/uploads/2024/01/galaxy-s24-ultra-1.png?q=50&fit=contain&w=420&dpr=1.5', bg: '#EFE7FF', accent: '#7C3AED' },
-  { name: 'Smart Watches', offer: 'Up to 60% Off', image: 'https://png.pngtree.com/png-vector/20241025/ourmid/pngtree-smart-watch-png-image_14171827.png', bg: '#EAF6FF', accent: '#0284C7' },
-  { name: 'Earbuds', offer: 'Up to 55% Off', image: 'https://static.vecteezy.com/system/resources/thumbnails/050/361/399/small/pair-of-wireless-earbuds-in-compact-charging-case-on-transparent-background-png.png', bg: '#FFF0F2', accent: '#E11D74' },
+  { name: 'Smartphones', offer: 'Up to 40% Off', image: 'https://static0.xdaimages.com/wordpress/wp-content/uploads/2024/01/galaxy-s24-ultra-1.png?q=50&fit=contain&w=420&dpr=1.5', bg: '#EEF8F0', accent: '#16A34A' },
+  { name: 'Smart Watches', offer: 'Up to 60% Off', image: 'https://png.pngtree.com/png-vector/20241025/ourmid/pngtree-smart-watch-png-image_14171827.png', bg: '#EEF8F0', accent: '#16A34A' },
+  { name: 'Earbuds', offer: 'Up to 55% Off', image: 'https://static.vecteezy.com/system/resources/thumbnails/050/361/399/small/pair-of-wireless-earbuds-in-compact-charging-case-on-transparent-background-png.png', bg: '#EEF8F0', accent: '#16A34A' },
   { name: 'Power Banks', offer: 'Up to 45% Off', image: '/images/categories/powerbank.png', bg: '#EEF8F0', accent: '#16A34A' },
-  { name: 'Chargers', offer: 'Up to 35% Off', image: 'https://png.pngtree.com/png-vector/20250619/ourmid/pngtree-a-3d-charger-with-cable-icon0n-realistic-png-image_16551830.png', bg: '#FFF3EC', accent: '#EA580C' },
-  { name: 'Accessories', offer: 'Up to 50% Off', image: 'https://png.pngtree.com/png-vector/20250125/ourmid/pngtree-universal-portable-three-sided-pyramid-mobile-accessory-png-image_15329597.png', bg: '#FDF0E8', accent: '#DB2777' },
-  { name: 'Laptops', offer: 'Up to 40% Off', image: 'https://freepngimg.com/save/162035-laptop-notebook-png-file-hd/800x620', bg: '#F2EEFF', accent: '#4338CA' },
-  { name: 'Tablets', offer: 'Up to 35% Off', image: 'https://www.pngarts.com/files/1/Apple-Tablet-Transparent-Image.png', bg: '#EEF5FF', accent: '#0369A1' }
+  { name: 'Chargers', offer: 'Up to 35% Off', image: 'https://png.pngtree.com/png-vector/20250619/ourmid/pngtree-a-3d-charger-with-cable-icon0n-realistic-png-image_16551830.png', bg: '#EEF8F0', accent: '#16A34A' },
+  { name: 'Accessories', offer: 'Up to 50% Off', image: 'https://png.pngtree.com/png-vector/20250125/ourmid/pngtree-universal-portable-three-sided-pyramid-mobile-accessory-png-image_15329597.png', bg: '#EEF8F0', accent: '#16A34A' },
+  { name: 'Laptops', offer: 'Up to 40% Off', image: 'https://freepngimg.com/save/162035-laptop-notebook-png-file-hd/800x620', bg: '#EEF8F0', accent: '#16A34A' },
+  { name: 'Tablets', offer: 'Up to 35% Off', image: 'https://www.pngarts.com/files/1/Apple-Tablet-Transparent-Image.png', bg: '#EEF8F0', accent: '#16A34A' }
 ];
 
 const REVIEWS = [
@@ -183,12 +183,12 @@ const ProductCardUI = ({ product, disableHover = false }) => {
       className={`bg-white rounded-2xl border border-slate-200/60 p-4 relative group h-full flex flex-col transition-shadow hover:shadow-xl`}
     >
       <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-        <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm tracking-wider uppercase">
+        <span className="bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm tracking-wider uppercase">
           {product.discount}% OFF
         </span>
         {product.tag && (
           <span className={`text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm tracking-wider uppercase ${
-            product.tag === 'NEW' ? 'bg-green-600' : product.tag === 'HOT' ? 'bg-orange-500' : 'bg-blue-600'
+            product.tag === 'NEW' ? 'bg-purple-600' : product.tag === 'HOT' ? 'bg-fuchsia-600' : 'bg-violet-600'
           }`}>
             {product.tag}
           </span>
@@ -228,7 +228,7 @@ const ProductCardUI = ({ product, disableHover = false }) => {
         </div>
 
         <Link to={detailUrl}>
-          <h3 className="font-extrabold text-slate-800 text-sm sm:text-base mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
+          <h3 className="font-extrabold text-slate-800 text-sm sm:text-base mb-1 line-clamp-2 group-hover:text-brand-blue transition-colors">
             {product.name}
           </h3>
           <p className="text-xs text-slate-400 mb-2 font-bold">{product.brand}</p>
@@ -252,13 +252,13 @@ const ProductCardUI = ({ product, disableHover = false }) => {
           <div className="grid grid-cols-2 gap-2 mt-1">
             <button
               onClick={handleAddToCart}
-              className="text-xs font-bold border border-blue-600 text-blue-600 rounded-full py-2 hover:bg-blue-600 hover:text-white transition-colors flex justify-center items-center gap-1"
+              className="text-xs font-bold border border-brand-blue text-brand-blue bg-white hover:bg-brand-blue hover:text-white rounded-full py-2 transition-colors flex justify-center items-center gap-1.5"
             >
               <FiShoppingCart size={12} /> Add
             </button>
             <button
               onClick={handleBuyNow}
-              className="text-xs font-bold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full py-2 hover:shadow-md transition-all flex justify-center items-center"
+              className="text-xs font-bold bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-700 text-white rounded-full py-2 hover:shadow-md transition-all flex justify-center items-center"
             >
               Buy Now
             </button>
@@ -287,11 +287,12 @@ const toCard = (p) => ({
 });
 
 const HomePage = () => {
-  const [filter, setFilter] = useState('All');
   const [realProducts, setRealProducts] = useState([]);
   const [flashSaleProducts, setFlashSaleProducts] = useState([]);
   const [flashSettings, setFlashSettings] = useState(null);
+  const [customBanners, setCustomBanners] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState('All');
 
   useEffect(() => {
     const fetchHomeData = async () => {
@@ -305,7 +306,15 @@ const HomePage = () => {
         const allProds = prodRes.data.products || [];
         setRealProducts(allProds);
         setFlashSaleProducts(allProds.filter(p => p.flashSale === true).slice(0, 8));
-        setFlashSettings(setRes.data.settings || null);
+        
+        const settingsData = setRes.data?.settings;
+        setFlashSettings(settingsData || null);
+        if (settingsData?.banners && Array.isArray(settingsData.banners)) {
+          const activeBanners = settingsData.banners.filter(b => b.active !== false);
+          if (activeBanners.length > 0) {
+            setCustomBanners(activeBanners);
+          }
+        }
       } catch (err) {
         console.error('Error fetching storefront dataset:', err);
       } finally {
@@ -314,6 +323,8 @@ const HomePage = () => {
     };
     fetchHomeData();
   }, []);
+
+  const heroSlides = customBanners.length > 0 ? customBanners : HERO_MARKETING_SLIDES;
 
   const flashActive = Boolean(flashSaleProducts.length > 0);
   const flashCards = flashActive ? flashSaleProducts.map(toCard) : null;
@@ -366,12 +377,12 @@ const HomePage = () => {
             }}
             className="w-full aspect-[21/9] rounded-2xl overflow-hidden shadow-sm"
           >
-            {HERO_MARKETING_SLIDES.map((slide, idx) => (
-              <SwiperSlide key={idx}>
-                <Link to={slide.link} className="block relative w-full h-full overflow-hidden bg-white">
+            {heroSlides.map((slide, idx) => (
+              <SwiperSlide key={slide.id || slide._id || idx}>
+                <Link to={slide.link || '/products'} className="block relative w-full h-full overflow-hidden bg-white">
                   <img
                     src={slide.image}
-                    alt={slide.alt}
+                    alt={slide.alt || slide.title || 'Banner'}
                     className="absolute inset-0 w-full h-full object-cover"
                     loading={idx === 0 ? 'eager' : 'lazy'}
                   />
@@ -400,7 +411,7 @@ const HomePage = () => {
           {/* Section header: title left, view-all right */}
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-black text-slate-800">Hot Deals by Category</h2>
-            <Link to="/products" className="flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700">
+            <Link to="/products" className="flex items-center gap-1 text-xs font-bold text-brand-blue hover:text-brand-blueHover">
               VIEW ALL <FiChevronRight />
             </Link>
           </div>
@@ -548,7 +559,7 @@ const HomePage = () => {
             <h3 className="text-lg sm:text-xl font-black text-slate-800 tracking-tight">Trending Products &amp; Hot Deals</h3>
             <div className="flex flex-wrap gap-2">
               {['All', 'Apple', 'Samsung', 'OnePlus'].map(f => (
-                <button key={f} onClick={() => setFilter(f)} className={`px-4 py-1 text-xs font-bold rounded-full border ${filter === f ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-600 border-slate-200'}`}>
+                <button key={f} onClick={() => setFilter(f)} className={`px-4 py-1 text-xs font-bold rounded-full border ${filter === f ? 'bg-brand-blue text-white border-brand-blue' : 'bg-white text-slate-600 border-slate-200'}`}>
                   {f}
                 </button>
               ))}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { FiShoppingCart, FiHeart, FiCheck, FiTruck, FiShield } from 'react-icons/fi';
+import { FiShoppingCart, FiHeart, FiCheck, FiTruck, FiShield, FiZap } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import api from '../utils/api';
 import { useCart } from '../context/CartContext';
@@ -27,6 +27,42 @@ const ProductDetailPage = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
+  const [showZoom, setShowZoom] = useState(false);
+  const [zoomState, setZoomState] = useState({ lensX: 0, lensY: 0, bgX: 0, bgY: 0 });
+
+  const handleMouseMove = (e) => {
+    const container = e.currentTarget;
+    const rect = container.getBoundingClientRect();
+    
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Lens dimensions
+    const lensWidth = 160;
+    const lensHeight = 160;
+    
+    // Position lens, centering it on the mouse pointer
+    let lensX = x - lensWidth / 2;
+    let lensY = y - lensHeight / 2;
+    
+    // Constraint boundaries
+    if (lensX < 0) lensX = 0;
+    if (lensX > rect.width - lensWidth) lensX = rect.width - lensWidth;
+    
+    if (lensY < 0) lensY = 0;
+    if (lensY > rect.height - lensHeight) lensY = rect.height - lensHeight;
+    
+    // Calculate percentage position
+    const bgX = (lensX / (rect.width - lensWidth)) * 100;
+    const bgY = (lensY / (rect.height - lensHeight)) * 100;
+    
+    setZoomState({
+      lensX,
+      lensY,
+      bgX,
+      bgY
+    });
+  };
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -51,7 +87,7 @@ const ProductDetailPage = () => {
 
     fetchProductDetails();
     window.scrollTo(0, 0);
-  }, [id]); // Re-run when ID changes
+  }, [id]);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -93,41 +129,55 @@ const ProductDetailPage = () => {
         <meta name="description" content={product.description.substring(0, 150)} />
       </Helmet>
 
-      {/* Breadcrumb */}
-      <div className="bg-slate-100 py-3 border-b border-slate-200 text-sm">
-        <div className="container mx-auto px-4 flex items-center overflow-x-auto whitespace-nowrap text-slate-500 no-scrollbar">
-          <Link to="/" className="hover:text-brand-blue transition-colors shrink-0">Home</Link>
-          <span className="mx-2 text-slate-400 shrink-0">/</span>
-          <Link to="/products" className="hover:text-brand-blue transition-colors shrink-0">Products</Link>
-          <span className="mx-2 text-slate-400 shrink-0">/</span>
-          <Link to={`/products?category=${product.category}`} className="hover:text-brand-blue transition-colors shrink-0">{product.category}</Link>
-          <span className="mx-2 text-slate-400 shrink-0">/</span>
-          <span className="text-slate-800 font-medium truncate">{product.name}</span>
-        </div>
-      </div>
-
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-12 bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100">
           
           {/* Left Column - Images */}
           <Reveal className="lg:w-1/2 min-w-0 flex flex-col md:flex-row-reverse gap-4">
             {/* Main Image */}
-            <div className="flex-1 bg-slate-50 rounded-xl p-8 relative flex items-center justify-center border border-slate-100 group">
+            <div 
+              className="flex-1 bg-slate-50 rounded-xl p-8 relative flex items-center justify-center border border-slate-100 group cursor-zoom-in"
+              onMouseEnter={() => setShowZoom(true)}
+              onMouseLeave={() => setShowZoom(false)}
+              onMouseMove={handleMouseMove}
+            >
               {product.discount > 0 && (
-                <div className="absolute top-4 left-4 bg-red-500 text-white font-bold px-3 py-1 rounded shadow-md z-10">
+                <div className="absolute top-4 left-4 bg-red-500 text-white font-bold text-xs px-3 py-1 rounded shadow-md z-10">
                   {product.discount}% OFF
                 </div>
               )}
               <img 
                 src={uniqueImages[activeImage]?.url} 
                 alt={product.name} 
-                className="w-full h-auto max-h-[500px] object-contain transition-transform duration-300 group-hover:scale-105"
+                className="w-full h-auto max-h-[500px] object-contain select-none pointer-events-none"
                 loading="lazy"
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = `https://placehold.co/400x500/f1f5f9/64748b?text=${encodeURIComponent(product.brand)}`;
                 }}
               />
+              {showZoom && (
+                <div 
+                  className="absolute bg-white/40 border border-white/70 pointer-events-none z-10 shadow-sm"
+                  style={{
+                    left: `${zoomState.lensX}px`,
+                    top: `${zoomState.lensY}px`,
+                    width: '160px',
+                    height: '160px',
+                  }}
+                />
+              )}
+              {showZoom && (
+                <div 
+                  className="hidden lg:block absolute left-[105%] top-0 w-[600px] h-[500px] bg-slate-50 border border-slate-200 shadow-2xl rounded-2xl z-30 overflow-hidden pointer-events-none"
+                  style={{
+                    backgroundImage: `url(${uniqueImages[activeImage]?.url})`,
+                    backgroundPosition: `${zoomState.bgX}% ${zoomState.bgY}%`,
+                    backgroundSize: '250% 250%',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+              )}
             </div>
             
             {/* Thumbnails */}
@@ -165,7 +215,7 @@ const ProductDetailPage = () => {
                 <span className="font-bold mr-2 text-sm text-slate-800">{product.rating.toFixed(1)}</span>
                 <RatingStars rating={product.rating} />
               </div>
-              <a href="#reviews" className="text-sm text-brand-blue hover:underline">
+              <a href="#reviews" className="text-sm text-brand-blue hover:underline font-medium">
                 {product.numReviews} Reviews
               </a>
               <span className="text-slate-300">|</span>
@@ -183,76 +233,86 @@ const ProductDetailPage = () => {
               <h3 className="font-bold text-slate-800 mb-3">Key Highlights</h3>
               <ul className="space-y-2">
                 {product.highlights?.slice(0, 4).map((highlight, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-sm text-slate-650">
-                    <FiCheck className="text-green-500 mt-1 shrink-0" />
+                  <li key={idx} className="flex items-start gap-2 text-sm text-slate-600">
+                    <FiCheck className="text-emerald-500 mt-1 shrink-0" />
                     <span>{highlight}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
+            {/* ACTION BUTTONS SECTION */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <span className={`font-semibold ${product.stock > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                <span className={`font-semibold text-sm ${product.stock > 0 ? 'text-emerald-600' : 'text-red-500'}`}>
                   {product.stock > 0 ? `In Stock (${product.stock} available)` : 'Out of Stock'}
                 </span>
               </div>
               
-              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-                {/* Quantity */}
-                <div className="flex items-center border border-slate-300 rounded-lg h-12 w-36 shrink-0 bg-white">
+              <div className="flex flex-col sm:flex-row gap-3">
+                {/* Clean Quantity Selector */}
+                <div className="flex items-center border border-slate-200 rounded-xl h-12 w-32 shrink-0 bg-slate-50/50 p-1">
                   <button
                     onClick={() => setQuantity(q => Math.max(1, q - 1))}
                     disabled={product.stock <= 0}
-                    className="w-11 h-full text-slate-600 hover:bg-slate-100 rounded-l-lg disabled:opacity-50"
-                  >-</button>
+                    className="w-9 h-full flex items-center justify-center font-semibold text-slate-600 hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-40"
+                  >
+                    -
+                  </button>
                   <input
                     type="number"
                     value={quantity}
                     readOnly
-                    className="w-full text-center border-x border-slate-300 h-full font-bold focus:outline-none text-slate-800"
+                    className="w-full text-center bg-transparent font-bold text-slate-800 text-sm focus:outline-none"
                   />
                   <button
                     onClick={() => setQuantity(q => Math.min(product.stock, q + 1))}
                     disabled={product.stock <= 0 || quantity >= product.stock}
-                    className="w-11 h-full text-slate-600 hover:bg-slate-100 rounded-r-lg disabled:opacity-50"
-                  >+</button>
+                    className="w-9 h-full flex items-center justify-center font-semibold text-slate-600 hover:bg-white hover:shadow-sm rounded-lg transition-all disabled:opacity-40"
+                  >
+                    +
+                  </button>
                 </div>
 
+                {/* Add to Cart Button */}
                 <button 
                   onClick={handleAddToCart}
                   disabled={product.stock <= 0}
-                  className="flex-1 min-w-[140px] btn-premium h-12 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 h-12 px-5 bg-pink-50 hover:bg-pink-100/80 text-brand-blue font-bold rounded-xl flex items-center justify-center gap-2 border border-pink-200/60 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-pink-50"
                 >
-                  <FiShoppingCart /> Add to Cart
+                  <FiShoppingCart className="text-lg" />
+                  <span>Add to Cart</span>
                 </button>
 
+                {/* Wishlist Button */}
                 <button 
                   onClick={() => toggleWishlist(product._id)}
-                  className="h-12 w-12 shrink-0 border-2 border-slate-200 rounded-lg flex items-center justify-center hover:border-brand-blue hover:bg-blue-50/50 transition-colors text-slate-500 focus:outline-none"
+                  className="h-12 w-12 shrink-0 border border-slate-200 rounded-xl flex items-center justify-center hover:border-red-200 hover:bg-red-50/50 transition-all text-slate-400 hover:text-red-500 focus:outline-none"
                   title="Wishlist"
                 >
-                  {isWished ? <FaHeart className="text-brand-blue" size={20} /> : <FiHeart size={20} />}
+                  {isWished ? <FaHeart className="text-red-500" size={20} /> : <FiHeart size={20} />}
                 </button>
               </div>
-              
+
+              {/* Buy it Now Button */}
               <button 
                 onClick={handleBuyNow}
                 disabled={product.stock <= 0}
-                className="w-full mt-4 btn-premium h-12 text-lg shadow-lg shadow-brand-blue/15 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+                className="w-full mt-3 h-12 bg-gradient-to-r from-brand-blue to-purple-600 hover:from-brand-blueHover hover:to-purple-700 text-white font-bold rounded-xl text-base flex items-center justify-center gap-2 shadow-md shadow-brand-blue/20 hover:shadow-lg hover:shadow-brand-blue/30 active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
               >
-                Buy it Now
+                <FiZap className="text-lg" />
+                <span>Buy it Now</span>
               </button>
             </div>
 
             {/* Trust Badges */}
-            <div className="flex gap-4 p-4 bg-slate-50/50 rounded-xl mt-auto">
-              <div className="flex items-center gap-2 text-sm text-slate-600">
-                <FiTruck className="text-brand-blue" size={20} />
+            <div className="flex gap-6 p-4 bg-slate-50/70 rounded-xl mt-auto border border-slate-100">
+              <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                <FiTruck className="text-brand-blue" size={18} />
                 <span>Free Delivery</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-slate-600">
-                <FiShield className="text-brand-blue" size={20} />
+              <div className="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                <FiShield className="text-brand-blue" size={18} />
                 <span>1 Year Warranty</span>
               </div>
             </div>
@@ -261,22 +321,22 @@ const ProductDetailPage = () => {
 
         {/* Product Details Tabs */}
         <Reveal className="mt-12 bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="flex overflow-x-auto no-scrollbar border-b border-slate-200">
+          <div className="flex overflow-x-auto border-b border-slate-200">
             <button
-              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'description' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'description' ? 'border-brand-blue text-brand-blue bg-pink-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('description')}
             >
               Description
             </button>
             <button
-              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'specifications' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'specifications' ? 'border-brand-blue text-brand-blue bg-pink-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('specifications')}
             >
               Specifications
             </button>
             <button
               id="reviews"
-              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'reviews' ? 'border-brand-blue text-brand-blue bg-blue-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
+              className={`flex-1 min-w-[110px] py-3 sm:py-4 px-2 text-sm sm:text-base font-bold text-center border-b-2 transition-colors ${activeTab === 'reviews' ? 'border-brand-blue text-brand-blue bg-pink-50/30' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}
               onClick={() => setActiveTab('reviews')}
             >
               Reviews ({product.numReviews})
@@ -327,11 +387,10 @@ const ProductDetailPage = () => {
                     </div>
                   </div>
                   
-                  {/* Note: Full review form logic would go here if authenticated, keeping it simple for UI demo */}
                   <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 max-w-sm w-full text-center">
-                    <p className="font-semibold mb-2 text-slate-850">Bought this product?</p>
+                    <p className="font-semibold mb-2 text-slate-800">Bought this product?</p>
                     <p className="text-sm text-slate-500 mb-4">Share your experience with other customers</p>
-                    <Link to="/login" className="btn-outline w-full block">Write a Review</Link>
+                    <Link to="/login" className="px-4 py-2 bg-white border border-slate-300 font-semibold rounded-lg hover:bg-slate-100 text-slate-700 block transition-all">Write a Review</Link>
                   </div>
                 </div>
 
@@ -341,7 +400,7 @@ const ProductDetailPage = () => {
                       <div key={review._id} className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
                         <div className="flex justify-between items-start mb-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-brand-blue text-white rounded-full flex items-center justify-center font-bold uppercase">
+                            <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-purple-600 text-white rounded-full flex items-center justify-center font-bold uppercase">
                               {review.name.charAt(0)}
                             </div>
                             <div>
@@ -353,7 +412,7 @@ const ProductDetailPage = () => {
                             </div>
                           </div>
                         </div>
-                        <p className="text-slate-650">{review.comment}</p>
+                        <p className="text-slate-600">{review.comment}</p>
                       </div>
                     ))
                   ) : (

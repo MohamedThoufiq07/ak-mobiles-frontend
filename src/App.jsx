@@ -41,6 +41,7 @@ const AdminOrders = lazy(() => import('./pages/admin/AdminOrders'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 const AdminFlashSale = lazy(() => import('./pages/admin/AdminFlashSale'));
+const AdminBanners = lazy(() => import('./pages/admin/AdminBanners'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminForgotPassword = lazy(() => import('./pages/admin/AdminForgotPassword'));
 
@@ -114,6 +115,7 @@ function App() {
                       <Route index element={<AdminDashboard />} />
                       <Route path="products" element={<AdminProducts />} />
                       <Route path="orders" element={<AdminOrders />} />
+                      <Route path="banners" element={<AdminBanners />} />
                       <Route path="flash-sale" element={<AdminFlashSale />} />
                       <Route path="users" element={<AdminUsers />} />
                       <Route path="messages" element={<AdminMessages />} />
